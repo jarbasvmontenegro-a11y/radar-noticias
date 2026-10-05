@@ -16,11 +16,13 @@
   </div>
   <h2 class="title"><a href="{{ a.url }}" target="_blank" rel="noopener">{{ a.title }}</a></h2>
   {% if a.desc %}<p class="desc">{{ a.desc }}</p>{% endif %}
+  {% if a.also %}<p class="also">Também noticiado por: {{ a.also|join(", ") }}</p>{% endif %}
   <div class="actions">
     <a class="btn btn-read" href="{{ a.url }}" target="_blank" rel="noopener" aria-label="Ler na fonte: {{ a.title }}">Ler na fonte <span aria-hidden="true">↗</span></a>
     {% if a.kind == "noticia" %}
     <button type="button" class="btn btn-sum" data-url="{{ a.url }}" data-title="{{ a.title }}" data-source="{{ a.source_name }}" data-desc="{{ a.desc }}">Resumir com IA</button>
     {% endif %}
+    <a class="btn btn-zap" href="{{ a.wa }}" target="_blank" rel="noopener noreferrer" aria-label="Enviar no WhatsApp: {{ a.title }}"><span aria-hidden="true">💬</span> {% if a.kind == "checagem" %}Enviar checagem no Zap{% else %}Enviar no Zap{% endif %}</a>
   </div>
   <div class="sum" hidden aria-live="polite"></div>
 </article>

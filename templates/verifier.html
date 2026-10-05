@@ -13,6 +13,8 @@
 
   <form id="vform" class="vform" novalidate>
     <label for="vtext">Texto, boato ou link</label>
+    <p id="vnote" class="paste-row small" hidden>Recebemos o texto que você compartilhou. Toque em <strong>Verificar</strong>.</p>
+    <p class="paste-row"><button type="button" class="btn" id="vpaste" hidden>Colar o que copiei</button></p>
     <textarea id="vtext" name="texto" rows="6" maxlength="2000" required placeholder="Ex.: &quot;Urgente! Compartilhe antes que apaguem...&quot; ou https://..."></textarea>
     <p class="hint"><span id="vcount">0</span>/2000 caracteres</p>
     <div id="turnstile-box"></div>
@@ -24,6 +26,8 @@
   {{ ad("topo", "ad-top") }}
 
   <section class="prose" aria-labelledby="como">
+    <h2 id="zap">Como responder no WhatsApp</h2>
+    <p>Depois de verificar, você recebe uma mensagem pronta. Quando uma agência de checagem classificou o conteúdo como falso ou enganoso, a mensagem já traz a conclusão e o link da checagem. Edite se quiser e envie para o grupo. Se ninguém checou ainda, a mensagem pede calma e conferência, sem afirmar que é falso.</p>
     <h2 id="como">Como a verificação funciona</h2>
     <ol>
       <li><strong>Agências de checagem.</strong> Procuramos o assunto em bases públicas de checagem (como Lupa, Aos Fatos, Estadão Verifica e Comprova). Se alguma já analisou, mostramos a conclusão dela e o link.</li>

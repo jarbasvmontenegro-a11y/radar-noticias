@@ -32,7 +32,7 @@ python -m radar check-feeds          # testa quais feeds estão vivos (precisa d
 python -m radar update               # coleta + gera o site em site/
 
 python -m unittest discover -s tests -v   # testes do coletor
-node --test tests/functions.test.mjs      # testes das funções (IA e rede simuladas)
+node --test tests/functions.test.mjs tests/share.test.mjs      # testes das funções (IA e rede simuladas)
 ```
 
 > **Importante:** os endereços de RSS em `config/sources.json` não foram testados com a rede real. Rode `check-feeds` e corrija os que falharem. A página "Como funciona" do site mostra a situação de cada fonte depois da primeira coleta.
@@ -71,6 +71,16 @@ Repositório privado gasta minutos do Actions (2.000/mês no plano grátis, e o 
 4. A IA aponta **sinais de alerta** e o que conferir. **Nunca** diz se é verdadeiro ou falso.
 
 O veredito exibido ("falso", "enganoso", "verdadeiro", "misto") vem das avaliações das agências. Sem checagem, o resultado é "nenhuma agência checou ainda" e o site avisa que isso não significa que seja verdade. Não verifica imagens nem vídeos.
+
+## Compartilhar no WhatsApp
+
+- **Verificador:** depois de verificar, aparece uma mensagem pronta e editável (botões *Enviar no WhatsApp*, *Copiar* e *Outros apps*). Se uma agência classificou como **falso** ou **enganoso**, a mensagem desmente, citando a agência, a avaliação e o link da checagem. Se ninguém checou (ou a consulta falhou), a mensagem **nunca** diz que é falso: pede calma e conferência. Texto em `templates/static/share.js` (testado em `tests/share.test.mjs`).
+- **Cada notícia** tem o botão *Enviar no Zap* (link `wa.me`, funciona até sem JavaScript). Nas checagens de agências a mensagem é apresentada como checagem.
+- **Instalável:** o site tem `manifest.webmanifest` com *share target*. Instalado no celular (Android/Chrome), o app aparece na lista de compartilhamento do WhatsApp e o texto cai direto no verificador. Também aceita `/verificador/?texto=...`. Depende do aparelho; o botão *Colar o que copiei* cobre o resto.
+
+## Para todos os públicos
+
+Faixa "Recebeu um boato no WhatsApp?" no topo da home, filtros por tema (`config/topics.json`, por palavras-chave, sem IA), bloco **Mais cobertos agora** e "Também noticiado por" (agrupa manchetes parecidas de veículos diferentes, sem IA), botões maiores para toque, tema claro/escuro, letra ajustável.
 
 ## Robustez
 

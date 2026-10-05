@@ -86,6 +86,37 @@ class BuildTests(unittest.TestCase):
                 b.build(self.out)
         self.assertEqual((b.ROOT / self.out / "index.html").read_text(encoding="utf-8"), before)
 
+    def test_zap_em_cada_noticia_e_destaques_por_cobertura(self):
+        arts = [article(1, title="Senado aprova projeto da reforma tributária em votação apertada", source="g1"),
+                article(2, url="https://oglobo.globo.com/a/2", title="Senado aprova reforma tributária após votação apertada", source="oglobo"),
+                article(3, url="https://folha.uol.com.br/a/3", title="Reforma tributária aprovada no Senado em votação apertada", source="folha"),
+                article(4, title="Outro assunto totalmente diferente sobre eleições municipais")]
+        self.write(arts)
+        b.build(self.out)
+        home = (b.ROOT / self.out / "index.html").read_text(encoding="utf-8")
+        self.assertIn("https://wa.me/?text=", home)
+        self.assertIn("Mais cobertos agora", home)
+        self.assertIn("Também noticiado por", home)
+        self.assertIn("Enviar no Zap", home)
+
+    def test_paginas_de_tema_manifest_e_share_target(self):
+        self.write([article(1, title="Senado aprova projeto de lei em plenário")])
+        b.build(self.out)
+        site = b.ROOT / self.out
+        self.assertTrue((site / "tema" / "congresso" / "index.html").is_file())
+        mf = json.loads((site / "manifest.webmanifest").read_text(encoding="utf-8"))
+        self.assertEqual(mf["share_target"]["params"]["text"], "text")
+        self.assertIn("/tema/congresso/", (site / "sitemap.xml").read_text(encoding="utf-8"))
+        self.assertTrue((site / "share.js").is_file())
+
+    def test_mensagem_do_zap_de_checagem_nao_afirma_falso(self):
+        a = {"source_name": "Lupa", "title": "Título", "url": "https://lupa.news/x", "kind": "checagem"}
+        txt = b.share_text(a, {"name": "Radar", "site_url": "https://x.org"})
+        self.assertIn("Checagem do(a) Lupa", txt)
+        self.assertNotIn("FALSO", txt)
+        self.assertTrue(b.wa_link(txt).startswith("https://wa.me/?text="))
+        self.assertNotIn("\n", b.wa_link(txt))
+
 
 if __name__ == "__main__":
     unittest.main()

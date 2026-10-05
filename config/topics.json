@@ -1,0 +1,8 @@
+[
+  {"id": "congresso", "name": "Congresso", "keywords": ["congresso", "senado", "senador", "camara dos deputados", "deputado", "deputada", "câmara", "projeto de lei", "cpi", "lira", "pacheco", "motta", "alcolumbre"]},
+  {"id": "governo", "name": "Governo federal", "keywords": ["planalto", "lula", "presidente da republica", "ministro", "ministra", "ministerio", "governo federal", "casa civil", "esplanada"]},
+  {"id": "justica", "name": "STF e Justiça", "keywords": ["stf", "supremo", "moraes", "tse", "pgr", "justica", "juiz", "tribunal", "stj", "inquerito", "denuncia", "policia federal"]},
+  {"id": "eleicoes", "name": "Eleições", "keywords": ["eleicao", "eleicoes", "eleitor", "candidato", "candidata", "pesquisa eleitoral", "urna", "partido", "campanha", "datafolha", "quaest", "prefeito", "governador"]},
+  {"id": "economia", "name": "Economia e orçamento", "keywords": ["economia", "orcamento", "imposto", "tributa", "haddad", "fazenda", "selic", "inflacao", "juros", "arcabouco", "fiscal", "reforma", "banco central", "dolar"]},
+  {"id": "mundo", "name": "Brasil e o mundo", "keywords": ["trump", "eua", "estados unidos", "china", "diplomacia", "itamaraty", "tarifa", "onu", "g20", "brics", "mercosul", "europa", "argentina", "milei"]}
+]

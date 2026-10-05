@@ -17,16 +17,17 @@
   <meta property="og:url" content="{{ cfg.site_url }}{{ path }}">
   <meta name="twitter:card" content="summary">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%238c1c13'/%3E%3Cpath d='M16 18h32v6H16zm0 11h32v6H16zm0 11h20v6H16z' fill='%23fff'/%3E%3C/svg%3E">
+  <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/style.css">
   <meta name="built" content="{{ built_iso }}">
-  <script>document.documentElement.className+=" js";try{var s=localStorage.getItem("radar-size");if(s)document.documentElement.dataset.size=s}catch(e){}</script>
+  <script>document.documentElement.className+=" js";try{var s=localStorage.getItem("radar-size");if(s)document.documentElement.dataset.size=s;var th=localStorage.getItem("radar-theme");if(th)document.documentElement.dataset.theme=th}catch(e){}</script>
   {% block jsonld %}
   <script type="application/ld+json">{{ {"@context":"https://schema.org","@type":"WebSite","name":cfg.name,"url":cfg.site_url,"inLanguage":"pt-BR","description":cfg.tagline}|jsonld|safe }}</script>
   {% endblock %}
   {% if cfg.adsense_client %}<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ cfg.adsense_client }}" crossorigin="anonymous"></script>{% endif %}
   {% if cfg.cloudflare_analytics_token %}<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ cfg.cloudflare_analytics_token }}"}'></script>{% endif %}
 </head>
-<body data-turnstile="{{ cfg.turnstile_sitekey }}">
+<body data-turnstile="{{ cfg.turnstile_sitekey }}" data-site-url="{{ cfg.site_url }}" data-site-name="{{ cfg.name }}">
   <a class="skip" href="#conteudo">Pular para o conteúdo</a>
 
   <header class="masthead">
@@ -35,6 +36,7 @@
       <span class="tools" role="group" aria-label="Tamanho da letra">
         <button type="button" id="size-down" aria-label="Diminuir letra">A−</button>
         <button type="button" id="size-up" aria-label="Aumentar letra">A+</button>
+        <button type="button" id="theme" aria-label="Alternar tema claro e escuro">Tema</button>
       </span>
     </div>
     <a class="brand" href="/"><span class="brand-name">{{ cfg.name }}</span></a>
@@ -67,6 +69,7 @@
     <div><button type="button" class="btn" id="consent-no">Só não personalizados</button> <button type="button" class="btn btn-primary" id="consent-yes">Aceitar</button></div>
   </div>
 
+  <script src="/share.js" defer></script>
   <script src="/app.js" defer></script>
 </body>
 </html>

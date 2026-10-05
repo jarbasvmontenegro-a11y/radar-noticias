@@ -24,7 +24,34 @@
       {% if source is defined %}<p class="sub"><a href="{{ source.home }}" target="_blank" rel="noopener">Ir ao site de {{ source.name }} ↗</a></p>{% endif %}
     </header>
 
+    {% if path == "/" %}
+    <section class="zap-band" aria-labelledby="zap-h">
+      <div>
+        <h2 id="zap-h">Recebeu um boato no WhatsApp?</h2>
+        <p>Cole o texto aqui. Se uma agência de checagem já analisou, você recebe uma mensagem pronta para responder no grupo.</p>
+      </div>
+      <a class="btn btn-primary btn-big" href="/verificador/">Verificar agora</a>
+    </section>
+    {% endif %}
+
     {{ ad("topo", "ad-top") }}
+
+    <nav class="chips" aria-label="Filtrar por tema">
+      <a href="/" {% if path == "/" %}aria-current="page"{% endif %}>Tudo</a>
+      {% for t in topic_links if t.n %}<a href="/tema/{{ t.id }}/" {% if active_topic == t.id %}aria-current="page"{% endif %}>{{ t.name }}</a>{% endfor %}
+    </nav>
+
+    {% if highlights %}
+    <section class="hot" aria-labelledby="hot-h">
+      <h2 id="hot-h">Mais cobertos agora</h2>
+      <ol>
+        {% for h in highlights %}
+        <li><a href="{{ h.lead.url }}" target="_blank" rel="noopener">{{ h.lead.title }}</a>
+          <span class="src">{{ h.n }} veículos: {{ h.names|join(", ") }}</span></li>
+        {% endfor %}
+      </ol>
+    </section>
+    {% endif %}
 
     <div class="searchbar">
       <label for="q" class="sr">Buscar nas manchetes</label>

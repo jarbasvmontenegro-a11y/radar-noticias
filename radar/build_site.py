@@ -10,12 +10,13 @@ import shutil
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import quote, urlsplit
 from xml.sax.saxutils import escape
 from zoneinfo import ZoneInfo
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+from .cluster import cluster, topic_of
 from .collect import DATA, ROOT, load_json, load_sources, safe_url
 
 TZ = ZoneInfo("America/Sao_Paulo")
@@ -49,6 +50,26 @@ def prepare(articles: list[dict], sources: dict, now: datetime) -> list[dict]:
     return out
 
 
+def share_text(a: dict, cfg: dict) -> str:
+    """Mensagem pronta para o WhatsApp (espelha RadarShare.newsMessage, em static/share.js).
+    Uma checagem publicada por agência é apresentada como checagem; notícia comum, como notícia. Nunca afirmamos que algo é falso."""
+    src, title = a["source_name"], a["title"][:200]
+    if a["kind"] == "checagem":
+        lines = [f"🔎 *Checagem do(a) {src}:*", title, a["url"], "", "Confira antes de repassar boatos. 🙏"]
+    else:
+        lines = [f"📰 *{src}:*", title, a["url"]]
+    lines += ["", f"Via {cfg['name']}: {cfg['site_url']}"]
+    return "\n".join(lines)
+
+
+def wa_link(text: str) -> str:
+    return "https://wa.me/?text=" + quote(text, safe="")
+
+
+MANIFEST_ICON = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="10" fill="#8c1c13"/>'
+                 '<path d="M16 18h32v6H16zm0 11h32v6H16zm0 11h20v6H16z" fill="#fff"/></svg>')
+
+
 class BuildError(RuntimeError):
     pass
 
@@ -61,7 +82,8 @@ def verify_site(path: Path, min_items: int = 0) -> list[str]:
     """Confere o site gerado antes de publicar. Devolve a lista de problemas (vazia = ok)."""
     problems: list[str] = []
     required = ["index.html", "404.html", "sitemap.xml", "robots.txt", "verificador/index.html", "sobre/index.html",
-                "privacidade/index.html", "data/search-index.json", "data/allowed-hosts.json", "style.css", "app.js"]
+                "privacidade/index.html", "data/search-index.json", "data/allowed-hosts.json", "style.css", "app.js", "share.js",
+                "manifest.webmanifest"]
     for f in required:
         if not (path / f).is_file():
             problems.append(f"arquivo ausente: {f}")
@@ -111,6 +133,23 @@ def build(out_dir: str = "site") -> str:
     news = [a for a in items if a["kind"] == "noticia"]
     checks = [a for a in items if a["kind"] == "checagem"]
 
+    # temas e assuntos cobertos por vários veículos: comparação de palavras, sem IA
+    topics = json.loads((ROOT / "config" / "topics.json").read_text(encoding="utf-8"))
+    for a in news:
+        a["topics"] = topic_of(a, topics)
+        a["also"] = []
+    recent = [a for a in news if (now - a["dt"]).total_seconds() < 36 * 3600]
+    groups = cluster(recent)
+    for g in groups:
+        for a in g:
+            a["also"] = sorted({x["source_name"] for x in g if x["source"] != a["source"]})
+    highlights = []
+    for g in groups[:5]:
+        names = sorted({x["source_name"] for x in g})
+        highlights.append({"lead": g[0], "n": len(names), "names": names})
+    for a in items:
+        a["wa"] = wa_link(share_text(a, cfg))
+
     final = ROOT / out_dir
     out = final.with_name(final.name + ".new")  # monta numa pasta temporária; só troca se passar na verificação
     if out.exists():
@@ -137,6 +176,8 @@ def build(out_dir: str = "site") -> str:
         "now": now, "today_long": long_date(now), "weekday_long": weekday_date(now),
         "updated_label": now.strftime("%d/%m/%Y às %H:%M"), "checks": checks[:6],
         "built_iso": datetime.now(timezone.utc).isoformat(timespec="seconds"), "health": health,
+        "highlights": [], "topics": topics, "active_topic": None,
+        "topic_links": [{"id": t["id"], "name": t["name"], "n": sum(1 for a in news if t["id"] in a["topics"])} for t in topics],
     }
     pages: list[tuple[str, str | None]] = []  # (caminho, lastmod) para o sitemap
 
@@ -144,7 +185,7 @@ def build(out_dir: str = "site") -> str:
         if "articles" in kw:
             kw["ld_items"] = [{"@type": "ListItem", "position": i + 1, "url": a["url"], "name": a["title"]}
                               for i, a in enumerate(kw["articles"][:10])]
-        html = env.get_template(template).render(**ctx, **kw)
+        html = env.get_template(template).render(**{**ctx, **kw})
         dest = out / page_path.strip("/") / "index.html" if page_path != "/" else out / "index.html"
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(html, encoding="utf-8")
@@ -153,7 +194,7 @@ def build(out_dir: str = "site") -> str:
 
     # --- home ---------------------------------------------------------------------------
     page_size = cfg["page_size"]
-    render("/", "index.html", path="/", articles=news[:page_size], total=len(news), active=None,
+    render("/", "index.html", path="/", articles=news[:page_size], total=len(news), active=None, highlights=highlights,
            title=f"Notícias de política hoje, {long_date(now)} | {cfg['name']}",
            description=(f"As últimas notícias de política do Brasil, {long_date(now)}: títulos e resumos curtos de "
                         f"{len(news_sources)} veículos, atualizados a cada 30 minutos, com link direto para a fonte. "
@@ -171,6 +212,18 @@ def build(out_dir: str = "site") -> str:
                heading=f"{s['name']}", subheading="Últimas manchetes de política")
         if lst:
             pages.append((f"/fonte/{s['id']}/", lst[0]["dt"].strftime("%Y-%m-%d")))
+
+    # --- por tema -----------------------------------------------------------------------
+    for t in topics:
+        lst = [a for a in news if t["id"] in a["topics"]]
+        if not lst:
+            continue
+        render(f"/tema/{t['id']}/", "index.html", path=f"/tema/{t['id']}/", articles=lst[:page_size], total=len(lst), active=None,
+               active_topic=t["id"],
+               title=f"{t['name']}: últimas notícias de política | {cfg['name']}",
+               description=f"Manchetes recentes sobre {t['name'].lower()} na política brasileira, de {len({a['source'] for a in lst})} veículos, com link para ler na fonte.",
+               heading=t["name"], subheading="Manchetes por tema")
+        pages.append((f"/tema/{t['id']}/", lst[0]["dt"].strftime("%Y-%m-%d")))
 
     # --- por dia (arquivo) --------------------------------------------------------------
     for d in days:
@@ -210,6 +263,15 @@ def build(out_dir: str = "site") -> str:
         pub = cfg["adsense_client"].replace("ca-", "")
         (out / "ads.txt").write_text(f"google.com, {pub}, DIRECT, f08c47fec0942fa0\n", encoding="utf-8")
 
+    # app instalável + recebe "compartilhar" do WhatsApp: o texto cai direto no verificador
+    (out / "manifest.webmanifest").write_text(json.dumps({
+        "name": cfg["name"], "short_name": cfg["name"][:12], "description": cfg["tagline"], "lang": cfg["lang"],
+        "start_url": "/", "scope": "/", "display": "standalone", "background_color": "#f6f1e7", "theme_color": "#8c1c13",
+        "icons": [{"src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}],
+        "share_target": {"action": "/verificador/", "method": "GET", "params": {"title": "title", "text": "text", "url": "url"}},
+    }, ensure_ascii=False), encoding="utf-8")
+    (out / "icon.svg").write_text(MANIFEST_ICON, encoding="utf-8")
+
     # índice leve usado pelo verificador (títulos recentes de fontes confiáveis)
     index = [{"t": a["title"], "s": a["source_name"], "u": a["url"], "p": a["published"][:16]} for a in items[:1500]]
     (out / "data").mkdir()
@@ -223,6 +285,7 @@ def build(out_dir: str = "site") -> str:
         "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n"
         "  X-Frame-Options: SAMEORIGIN\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n"
         "/*.css\n  Cache-Control: public, max-age=86400\n/*.js\n  Cache-Control: public, max-age=86400\n"
+        "/manifest.webmanifest\n  Content-Type: application/manifest+json\n"
         "/\n  Cache-Control: public, max-age=300, s-maxage=300\n/fonte/*\n  Cache-Control: public, max-age=300, s-maxage=300\n"
         "/data/*\n  Cache-Control: public, max-age=300\n", encoding="utf-8")
 

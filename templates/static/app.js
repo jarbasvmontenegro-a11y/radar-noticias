@@ -32,6 +32,16 @@
   if (up) up.addEventListener("click", function () { setSize(curSize() + 1); });
   if (down) down.addEventListener("click", function () { setSize(curSize() - 1); });
 
+  // ---- tema claro/escuro (padrão: o do aparelho) -------------------------------------
+  var themeBtn = $("#theme");
+  if (themeBtn) themeBtn.addEventListener("click", function () {
+    var cur = document.documentElement.dataset.theme;
+    var dark = cur ? cur === "dark" : !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    var next = dark ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    store("radar-theme", next);
+  });
+
   // ---- anúncios e consentimento ---------------------------------------------------
   var ads = $$("ins.adsbygoogle");
   if (ads.length) {
@@ -155,6 +165,61 @@
     function add(n) { if (n) res.appendChild(n); }
     function link(a) { return el("a", { href: a.url, target: "_blank", rel: "noopener noreferrer", text: a.titulo || a.url }); }
 
+    // texto recebido ao "compartilhar" do WhatsApp para o site instalado, ou link com ?texto=
+    try {
+      var qs = new URLSearchParams(location.search);
+      var incoming = [qs.get("text"), qs.get("url"), qs.get("texto")].filter(Boolean).join("\n").slice(0, 2000);
+      if (incoming) {
+        ta.value = incoming; cnt.textContent = ta.value.length;
+        var note = $("#vnote");
+        if (note) { note.hidden = false; }
+        ta.focus();
+      }
+    } catch (e) { /* sem prefill */ }
+
+    // colar o que foi copiado (mais fácil que segurar e colar no celular)
+    var pasteBtn = $("#vpaste");
+    if (pasteBtn && navigator.clipboard && navigator.clipboard.readText) {
+      pasteBtn.hidden = false;
+      pasteBtn.addEventListener("click", function () {
+        navigator.clipboard.readText().then(function (t) {
+          if (t) { ta.value = t.slice(0, 2000); cnt.textContent = ta.value.length; ta.focus(); }
+        }, function () { pasteBtn.hidden = true; /* sem permissão: o campo continua funcionando */ });
+      });
+    }
+
+    // bloco "mensagem pronta": editável, com WhatsApp, copiar e compartilhar do aparelho
+    function shareBox(d) {
+      var R = window.RadarShare;
+      if (!R) return null;
+      var opts = { siteUrl: document.body.dataset.siteUrl, siteName: document.body.dataset.siteName };
+      var refute = d.veredito === "falso" || d.veredito === "enganoso";
+      var box = el("section", { class: "sharebox" });
+      box.appendChild(el("h3", { text: refute ? "Responder no WhatsApp com a checagem" : "Compartilhar no WhatsApp" }));
+      box.appendChild(el("p", { text: refute
+        ? "Mensagem pronta, com a conclusão e o link da agência. Você pode editar antes de enviar."
+        : "Mensagem pronta. Você pode editar antes de enviar." }));
+      var area = el("textarea", { rows: "10", "aria-label": "Mensagem pronta para compartilhar" });
+      area.value = R.verdictMessage(d, opts);
+      var wa = el("a", { class: "btn btn-zap", target: "_blank", rel: "noopener noreferrer", text: "Enviar no WhatsApp" });
+      var sync = function () { wa.href = R.waLink(area.value); };
+      area.addEventListener("input", sync); sync();
+      var copy = el("button", { type: "button", class: "btn", text: "Copiar mensagem" });
+      copy.addEventListener("click", function () {
+        var done = function (ok) { copy.textContent = ok ? "Copiado!" : "Selecione e copie o texto acima"; setTimeout(function () { copy.textContent = "Copiar mensagem"; }, 2500); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(area.value).then(function () { done(true); }, function () { done(false); });
+        else { area.select(); try { done(document.execCommand("copy")); } catch (e) { done(false); } }
+      });
+      var row = el("div", { class: "row" }, [wa, copy]);
+      if (navigator.share) {
+        var more = el("button", { type: "button", class: "btn", text: "Outros apps…" });
+        more.addEventListener("click", function () { navigator.share({ text: area.value }).catch(function () { /* cancelado */ }); });
+        row.appendChild(more);
+      }
+      box.appendChild(area); box.appendChild(row);
+      return box;
+    }
+
     form.addEventListener("submit", function (ev) {
       ev.preventDefault();
       var text = ta.value.trim();
@@ -170,6 +235,7 @@
           el("h2", { text: d.afirmacao ? "Sobre: " + d.afirmacao : "Resultado" }),
           el("p", { text: intro[v] || intro.sem_checagem })
         ]));
+        add(shareBox(d));
         add(section("Checagens encontradas", d.checagens, function (c) {
           return el("li", {}, [link(c), el("br"), el("span", { class: "src", text: c.agencia + (c.avaliacao ? " · avaliação: " + c.avaliacao : "") })]);
         }));
