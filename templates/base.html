@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="{{ cfg.lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ description }}">
+  <link rel="canonical" href="{{ cfg.site_url }}{{ path }}">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#f6f1e7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14120e" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="{{ cfg.name }}">
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:description" content="{{ description }}">
+  <meta property="og:url" content="{{ cfg.site_url }}{{ path }}">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%238c1c13'/%3E%3Cpath d='M16 18h32v6H16zm0 11h32v6H16zm0 11h20v6H16z' fill='%23fff'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
+  <script>try{var s=localStorage.getItem("radar-size");if(s)document.documentElement.dataset.size=s}catch(e){}</script>
+  {% block jsonld %}
+  <script type="application/ld+json">{{ {"@context":"https://schema.org","@type":"WebSite","name":cfg.name,"url":cfg.site_url,"inLanguage":"pt-BR","description":cfg.tagline}|jsonld|safe }}</script>
+  {% endblock %}
+  {% if cfg.adsense_client %}<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ cfg.adsense_client }}" crossorigin="anonymous"></script>{% endif %}
+  {% if cfg.cloudflare_analytics_token %}<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ cfg.cloudflare_analytics_token }}"}'></script>{% endif %}
+</head>
+<body data-turnstile="{{ cfg.turnstile_sitekey }}">
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="masthead">
+    <div class="top">
+      <span class="date">{{ weekday_long }}</span>
+      <span class="tools" role="group" aria-label="Tamanho da letra">
+        <button type="button" id="size-down" aria-label="Diminuir letra">A−</button>
+        <button type="button" id="size-up" aria-label="Aumentar letra">A+</button>
+      </span>
+    </div>
+    <a class="brand" href="/"><span class="brand-name">{{ cfg.name }}</span></a>
+    <p class="tagline">{{ cfg.tagline }}</p>
+    <nav class="mainnav" aria-label="Principal">
+      <a href="/" {% if path == "/" %}aria-current="page"{% endif %}>Últimas</a>
+      <a href="/verificador/" {% if path == "/verificador/" %}aria-current="page"{% endif %}>Verificador de fake news</a>
+      <a href="/sobre/" {% if path == "/sobre/" %}aria-current="page"{% endif %}>Como funciona</a>
+    </nav>
+  </header>
+
+  <main id="conteudo">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <nav aria-label="Fontes">
+      <strong>Fontes monitoradas:</strong>
+      {% for s in news_sources %}<a href="/fonte/{{ s.id }}/">{{ s.name }}</a>{% if not loop.last %} · {% endif %}{% endfor %}
+    </nav>
+    <p>Checagens: {% for s in check_sources %}<a href="/fonte/{{ s.id }}/">{{ s.name }}</a>{% if not loop.last %} · {% endif %}{% endfor %}</p>
+    <p class="small">Exibimos apenas título, descrição curta e link. Os textos e direitos pertencem aos veículos. Resumos de IA podem conter erros: confirme sempre na fonte.</p>
+    <p class="small"><a href="/sobre/">Como funciona</a> · <a href="/privacidade/">Privacidade</a>{% if cfg.contact_email %} · <a href="mailto:{{ cfg.contact_email }}">Contato</a>{% endif %} · © {{ now.year }} {{ cfg.name }}</p>
+  </footer>
+
+  <div id="consent" class="consent" role="region" aria-label="Aviso de cookies" hidden>
+    <p>Usamos cookies para medir o uso do site e exibir anúncios. Você pode aceitar anúncios personalizados ou ficar só com os não personalizados. <a href="/privacidade/">Saiba mais</a></p>
+    <div><button type="button" class="btn" id="consent-no">Só não personalizados</button> <button type="button" class="btn btn-primary" id="consent-yes">Aceitar</button></div>
+  </div>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>

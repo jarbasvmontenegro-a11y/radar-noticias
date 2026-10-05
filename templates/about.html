@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page prose">
+  <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a> › <span>Como funciona</span></nav>
+  <h1>Como funciona o {{ cfg.name }}</h1>
+  <p class="lead">Reunimos as manchetes de política de veículos brasileiros em uma lista simples e rápida de ler. Você vê título, descrição curta e a fonte, e clica para ler a matéria completa no site de quem a produziu.</p>
+
+  <h2>De onde vêm as notícias</h2>
+  <p>Monitoramos os feeds RSS públicos de {{ news_sources|length }} veículos e agências de notícias. A coleta roda automaticamente a cada 30 minutos e não usa inteligência artificial. Guardamos apenas o título, uma descrição curta e o link original. O texto completo e os direitos são dos veículos.</p>
+  <p>Misturamos veículos de perfis editoriais diferentes e agências oficiais (Agência Brasil, Agência Senado, Agência Câmara) para que você compare como cada um cobre o mesmo assunto. A presença de uma fonte aqui não é um aval ao seu conteúdo.</p>
+
+  <h2>Resumo com IA, só quando você pede</h2>
+  <p>O botão "Resumir com IA" gera um resumo curto da matéria sob demanda. O resumo pode conter erros e não substitui a leitura. Em matérias com acesso restrito (paywall), o resumo usa apenas o título e a descrição disponíveis. Para evitar abusos, há um limite de resumos por pessoa por dia.</p>
+
+  <h2>Verificador de fake news</h2>
+  <p>O <a href="/verificador/">verificador</a> consulta bases públicas de agências de checagem e as manchetes recentes dos nossos veículos. A IA só aponta sinais de alerta. Quem conclui se algo é falso ou verdadeiro são as agências de checagem, nunca a IA.</p>
+
+  <h2>Transparência</h2>
+  <ul>
+    <li>Não escrevemos opinião nem alteramos títulos.</li>
+    <li>Erros ou pedidos de remoção: {% if cfg.contact_email %}<a href="mailto:{{ cfg.contact_email }}">{{ cfg.contact_email }}</a>{% else %}use o contato informado no rodapé{% endif %}.</li>
+    <li>Este projeto é independente e se mantém com anúncios simples.</li>
+  </ul>
+
+  <h2>Situação das fontes</h2>
+  <p class="small">Última verificação da coleta automática.</p>
+  <table class="status">
+    <thead><tr><th scope="col">Fonte</th><th scope="col">Situação</th><th scope="col">Itens</th></tr></thead>
+    <tbody>
+    {% for s in news_sources + check_sources %}
+      {% set st = status.get(s.id) %}
+      <tr><th scope="row"><a href="/fonte/{{ s.id }}/">{{ s.name }}</a></th>
+        <td>{% if not st %}aguardando primeira coleta{% elif st.ok %}ok{% else %}fora do ar na última coleta{% endif %}</td>
+        <td>{{ counts.get(s.id, 0) }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

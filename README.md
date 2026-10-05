@@ -1,82 +1,87 @@
 # Radar de Notícias
 
-Agregador diário no formato de jornal: junta as notícias de vários veículos brasileiros, agrupa as que falam da mesma história, resume cada assunto com IA e mostra uma **régua dos temas** ao longo dos dias.
+Site de notícias de política no formato de jornal: lista compacta no meio, com **título, descrição curta e fonte** de 15 veículos, atualizada a cada 30 minutos. Resumo com IA **só quando o leitor pede**, e um **verificador de fake news**.
 
-- **Edição do dia**: assuntos agrupados, com filtros por dia, tema, fonte e busca.
-- **Resumos**: um parágrafo por dia com os principais assuntos.
-- **Régua dos temas**: mapa de calor com o peso de cada tema na cobertura, dia a dia, e marca nos dias de clima tenso.
-- Site 100% estático (HTML + JS), hospedagem grátis.
+A busca de notícias **não usa IA** (só RSS), então o custo fixo é praticamente zero. A IA só roda sob demanda, com cache e limites.
 
 ## Como funciona
 
 ```
-RSS dos veículos ─▶ coleta ─▶ SQLite ─▶ agrupamento (TF-IDF) ─▶ IA resume cada grupo
-                                                                  └▶ IA faz o resumo do dia
-                                                         ─▶ site/ (HTML estático)
+GitHub Actions (a cada 30 min)                         Cloudflare Pages
+  coleta RSS ─▶ data/articles.json ─▶ gera HTML  ─▶     site estático (SEO)
+  (sem IA)      (commit só se houver novidade)           + /api/resumir   (IA sob demanda)
+                                                         + /api/verificar (checagens + IA)
 ```
 
-| Peça | Arquivo | Observação |
+| Peça | Onde | Observação |
 |---|---|---|
-| Fontes | `config/sources.json` | só RSS; edite à vontade |
-| Coleta | `radar/collect.py` | guarda manchete, link e trecho de até 280 caracteres |
-| Agrupamento | `radar/cluster.py` | local e gratuito (sem embeddings pagos) |
-| IA | `radar/llm.py` | qualquer API compatível com OpenAI (DeepSeek, OpenAI...) |
-| Resumo do dia | `radar/summarize.py` | também calcula a régua dos temas |
-| Site | `radar/build_site.py` + `templates/` | gera a pasta `site/` |
+| Fontes | `config/sources.json` | 15 veículos de política + 4 agências de checagem |
+| Coleta | `radar/collect.py` | só título, descrição de até 260 caracteres e link |
+| Site | `radar/build_site.py`, `templates/` | HTML puro, sem framework, fontes do sistema (rápido) |
+| Resumo | `functions/api/resumir.js` | lê a matéria no servidor, resume, guarda cache por 24 h |
+| Verificador | `functions/api/verificar.js`, `lib/verify.js` | veredito vem **só** de agências de checagem |
+| Configuração | `config/site.json` | nome, anúncios, Turnstile, janela de dias |
 
-## Rodando
+## Rodar localmente
 
 ```bash
 pip install -r requirements.txt
-cp .env.example .env            # coloque sua LLM_API_KEY
+python -m radar demo                 # dados fictícios, sem internet e sem IA
+python -m http.server -d site-demo   # http://localhost:8000
+python -m radar check-feeds          # testa quais feeds estão vivos (precisa de internet)
+python -m radar update               # coleta + gera o site em site/
 
-python -m radar demo            # testa tudo com dados fictícios, sem internet e sem IA
-python -m radar check-feeds     # confere quais feeds estão vivos
-python -m radar daily           # coleta + resume + gera o site (o que roda todo dia)
-python -m http.server -d site   # abre em http://localhost:8000
+python -m unittest discover -s tests -v   # testes do coletor
+node --test tests/functions.test.mjs      # testes das funções (IA e rede simuladas)
 ```
 
-Para testar sem gastar nada com IA, use `LLM_PROVIDER=mock` no `.env`.
+> **Importante:** os endereços de RSS em `config/sources.json` não foram testados com a rede real. Rode `check-feeds` e corrija os que falharem. A página "Como funciona" do site mostra a situação de cada fonte depois da primeira coleta.
 
-### Trocar de modelo de IA
+## Publicar (uma vez só)
 
-Só muda o `.env`, sem tocar no código:
+1. **Cloudflare Pages:** crie um projeto "Direct Upload" chamado `radar-noticias`.
+2. **KV:** `npx wrangler kv namespace create RADAR_KV` e cole o `id` em `wrangler.toml`.
+3. **Segredos** (Cloudflare Pages → Settings → Variables and Secrets):
+   - `LLM_API_KEY`: chave do DeepSeek (ou outro provedor compatível com OpenAI; ajuste `LLM_BASE_URL` e `LLM_MODEL`).
+   - `FACTCHECK_API_KEY`: chave gratuita da *Google Fact Check Tools API* (Google Cloud Console).
+   - Opcionais: `TURNSTILE_SECRET`, `IP_DAILY_LIMIT` (padrão 10), `DAILY_CAP` (padrão 1500), `IP_SALT`.
+4. **GitHub** (Settings → Secrets and variables → Actions):
+   - Secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
+   - Variables: `SITE_URL` (seu domínio), e depois `ADSENSE_CLIENT`, `TURNSTILE_SITEKEY`, `CONTACT_EMAIL`, `CF_PROJECT` se usar.
+5. Rode **Actions → Monitorar notícias → Run workflow**. Depois disso roda sozinho a cada 30 minutos e só publica quando há notícia nova.
 
-```
-# DeepSeek (padrão, bem barato)
-LLM_PROVIDER=deepseek
-LLM_BASE_URL=https://api.deepseek.com
-LLM_MODEL_CHEAP=deepseek-chat
+Repositório privado gasta minutos do Actions (2.000/mês no plano grátis, e o intervalo de 30 min usa quase tudo). Em repositório público é ilimitado.
 
-# OpenAI, por exemplo
-LLM_PROVIDER=openai
-LLM_BASE_URL=https://api.openai.com/v1
-LLM_MODEL_CHEAP=<modelo pequeno>
-```
+## Controle de custo da IA
 
-Dica: use um modelo barato para os resumos por assunto (`LLM_MODEL_CHEAP`) e, se quiser, um melhor só para o resumo final do dia (`LLM_MODEL_BEST`). Compare 2 ou 3 modelos nas mesmas notícias antes de decidir.
+- Busca de notícias nunca chama IA.
+- Resumo e verificador só rodam por clique, com **cache de 24 h** (o mesmo link ou texto não é processado duas vezes).
+- **Limite por IP** (10/dia por função) e **teto diário global** (1.500). Se o teto estourar, a função para de responder.
+- Sem KV ou sem chave configurados, as funções se recusam a rodar.
+- O resumo só aceita links dos domínios monitorados.
+- Recomendado: ativar o **Cloudflare Turnstile** (grátis) e uma regra de *Rate Limiting* no painel do Cloudflare para `/api/*`.
+- Estimativa: cada resumo usa cerca de 2 mil tokens de entrada e 150 de saída. Com modelos baratos, 1.000 resumos custam centavos.
 
-## Publicação automática (GitHub Actions + Pages)
+## Verificador de fake news: o que faz e o que não faz
 
-O workflow `.github/workflows/daily.yml` roda todo dia às 06:00 (Brasília), atualiza o banco e publica o site.
+1. A IA extrai a afirmação central do texto (ou da página, se for link).
+2. Busca em **agências de checagem** via Google Fact Check Tools. Só aceita resultados com termos em comum com a afirmação.
+3. Busca manchetes recentes dos 15 veículos monitorados sobre o tema.
+4. A IA aponta **sinais de alerta** e o que conferir. **Nunca** diz se é verdadeiro ou falso.
 
-1. No repositório: **Settings → Secrets and variables → Actions → New repository secret** → `LLM_API_KEY`.
-2. **Settings → Pages → Source: GitHub Actions**.
-3. (Opcional) em **Variables**, defina `LLM_PROVIDER`, `LLM_BASE_URL`, `LLM_MODEL_CHEAP`, `LLM_MODEL_BEST`.
-4. Rode uma vez manualmente em **Actions → Edição diária → Run workflow**.
+O veredito exibido ("falso", "enganoso", "verdadeiro", "misto") vem das avaliações das agências. Sem checagem, o resultado é "nenhuma agência checou ainda" e o site avisa que isso não significa que seja verdade. Não verifica imagens nem vídeos.
 
-Observação: GitHub Pages em repositório privado exige plano pago. No plano grátis, deixe o repositório público (a chave da API fica segura no Secret) ou publique a pasta `site/` no Cloudflare Pages.
+## SEO e anúncios
 
-## Direitos autorais e transparência
+Já incluído: HTML renderizado no servidor, `title` e `description` por página com data, canonical, Open Graph, JSON-LD (`CollectionPage`, `ItemList`, `WebApplication`), `sitemap.xml`, `robots.txt`, páginas por fonte (`/fonte/g1/`) e por dia (`/dia/2026-10-04/`), HTML leve (sem fontes externas), breadcrumbs, `ads.txt` automático, páginas de privacidade e "Como funciona".
 
-- Não copiamos o texto das matérias: só manchete, link e trecho curto, sempre com link para a fonte.
-- Os resumos são gerados pela IA com palavras próprias e o prompt proíbe opinião e invenção.
-- O "clima da cobertura" (neutro, tenso, positivo) é uma classificação automática do tom, não um julgamento sobre quem tem razão. A régua mede **volume de cobertura**, não importância real.
-- Em ano eleitoral, mantenha a metodologia pública (a aba "Como funciona" do site já descreve) e a lista de fontes diversa.
+Anúncios: preencha em `config/site.json` o `adsense_client` e os `adsense_slots` (topo, lista, lateral). Sem isso, nenhum espaço de anúncio aparece. Há aviso de cookies com opção de anúncios não personalizados, e os espaços têm altura reservada para não "pular" a página.
 
-## Próximos passos possíveis
+Expectativas honestas:
+- Agregador de manchetes tem **pouco conteúdo próprio**. Buscadores tendem a valorizar mais o original, e o AdSense pode recusar sites "finos". O verificador, a página de metodologia e conteúdo próprio (por exemplo, explicações semanais) são o que pode diferenciar o site.
+- SEO leva semanas ou meses. Cadastre o domínio no Google Search Console e envie o `sitemap.xml`.
+- Direitos autorais: mostramos só título, descrição curta e link, sempre apontando para a fonte. Se um veículo pedir remoção, remova-o de `config/sources.json`.
 
-- Embeddings no lugar de TF-IDF para agrupar melhor.
-- Viés de cobertura: quais fontes cobrem (ou ignoram) cada assunto.
-- Newsletter diária por e-mail com o resumo.
-- Mais editorias além de política e economia.
+## Antigo pipeline de resumos diários e régua dos temas
+
+Foi removido desta versão para focar no formato de jornal e no custo mínimo. Está no histórico do Git (commit "Primeira versão do Radar de Notícias") caso queira trazer de volta.

@@ -1,63 +1,54 @@
-"""Dados de exemplo (fictícios) para testar o pipeline e ver o site sem internet nem IA.
-
-Nada aqui é notícia real: as fontes são "Jornal A/B/C" e os links apontam para example.com.
-"""
+"""Dados de exemplo (fictícios) para ver o site sem internet. Nada aqui é notícia real:
+os links apontam para example.com e os títulos levam a marca [exemplo]."""
+import json
 import random
 from datetime import datetime, timedelta, timezone
-from zoneinfo import ZoneInfo
 
-from .db import connect
-from .summarize import summarize_day
+from .collect import DATA, article_id, load_sources
 
-TZ = ZoneInfo("America/Sao_Paulo")
-
-HISTORIAS = [
-    ("Congresso", ["Câmara vota projeto de lei sobre reforma administrativa [exemplo]",
-                   "Deputados aprovam projeto de lei sobre reforma administrativa [exemplo]",
-                   "Projeto de lei da reforma administrativa avança na Câmara [exemplo]"]),
-    ("Economia", ["Banco Central mantém Selic e cita inflação de serviços [exemplo]",
-                  "Copom mantém juros e aponta inflação de serviços como risco [exemplo]"]),
-    ("Judiciário", ["Supremo julga recurso sobre regras de foro privilegiado [exemplo]",
-                    "STF retoma julgamento sobre foro privilegiado [exemplo]",
-                    "Ministros do STF divergem sobre foro privilegiado [exemplo]"]),
-    ("Eleições", ["TSE divulga calendário e novas regras de propaganda [exemplo]",
-                  "Novas regras de propaganda eleitoral são divulgadas pelo TSE [exemplo]"]),
-    ("Segurança", ["Operação da polícia prende suspeitos de fraude em licitações [exemplo]",
-                   "Polícia prende suspeitos em operação contra fraude em licitações [exemplo]"]),
-    ("Política externa", ["Governo anuncia missão diplomática para reunião do G20 [exemplo]",
-                          "Missão diplomática brasileira vai à reunião do G20 [exemplo]"]),
-    ("Governo federal", ["Planalto anuncia pacote de investimentos em infraestrutura [exemplo]",
-                         "Governo federal detalha pacote de infraestrutura [exemplo]"]),
+TEMAS = [
+    ("Câmara aprova projeto sobre reforma administrativa", "Texto segue para análise do Senado após votação em plenário."),
+    ("Senado adia votação de proposta sobre segurança pública", "Líderes pedem mais tempo para negociar mudanças no relatório."),
+    ("STF retoma julgamento sobre regras de foro privilegiado", "Ministros divergem sobre alcance da decisão em casos em andamento."),
+    ("TSE divulga novas regras de propaganda eleitoral", "Resolução detalha limites para impulsionamento e uso de inteligência artificial."),
+    ("Governo anuncia pacote de investimentos em infraestrutura", "Plano prevê obras em rodovias, portos e saneamento nos próximos anos."),
+    ("Banco Central mantém juros e cita risco de inflação de serviços", "Decisão foi unânime e comunicado indica cautela nos próximos meses."),
+    ("Oposição apresenta requerimento de convocação de ministro", "Pedido será analisado pela comissão na próxima semana."),
+    ("Comissão aprova parecer sobre marco regulatório", "Relator manteve pontos principais e acatou ajustes de redação."),
+    ("Presidente sanciona lei que altera regras de licitação", "Norma entra em vigor na data da publicação no Diário Oficial."),
+    ("Pesquisa mostra avaliação de governadores em estados do Nordeste", "Levantamento ouviu eleitores em entrevistas presenciais."),
+    ("Congresso promulga emenda constitucional sobre orçamento", "Mudança afeta regras de emendas parlamentares a partir do próximo ano."),
+    ("Ministério da Fazenda detalha meta fiscal do próximo ano", "Equipe econômica afirma que corte de gastos será gradual."),
 ]
-FONTES = ["Jornal A", "Jornal B", "Jornal C", "Jornal D"]
 
 
-def seed_demo(days: int = 7) -> None:
-    rnd = random.Random(42)
-    now = datetime.now(TZ)
-    with connect() as conn:
-        for back in range(days):
-            dia = now - timedelta(days=back)
-            day = dia.strftime("%Y-%m-%d")
-            conn.execute("DELETE FROM articles WHERE day = ?", (day,))
-            # cada dia dá peso diferente aos temas, para a régua ter variação
-            for tema, titulos in HISTORIAS:
-                if rnd.random() < 0.25 and back > 0:
-                    continue
-                reps = rnd.randint(1, 3)
-                for r in range(reps):
-                    for i, titulo in enumerate(titulos):
-                        fonte = FONTES[(i + r) % len(FONTES)]
-                        pub = dia.replace(hour=8 + i, minute=rnd.randint(0, 59)).astimezone(timezone.utc)
-                        conn.execute(
-                            """INSERT OR IGNORE INTO articles
-                               (url, title, snippet, source_id, source_name, section, published, day)
-                               VALUES (?,?,?,?,?,?,?,?)""",
-                            (f"https://example.com/{day}/{tema}/{i}/{r}", f"{titulo} #{back}-{r}" if r else titulo,
-                             f"Trecho de exemplo sobre {tema.lower()}. Conteúdo fictício.",
-                             fonte.lower().replace(" ", "-"), fonte, "politica",
-                             pub.isoformat(), day),
-                        )
-    for back in range(days):
-        day = (now - timedelta(days=back)).strftime("%Y-%m-%d")
-        summarize_day(day)
+def seed_demo() -> None:
+    rnd = random.Random(7)
+    now = datetime.now(timezone.utc)
+    sources = [s for s in load_sources() if s.get("kind") == "noticia"]
+    checks = [s for s in load_sources() if s.get("kind") == "checagem"]
+    arts = []
+    for i in range(160):
+        src = rnd.choice(sources)
+        title, desc = rnd.choice(TEMAS)
+        pub = now - timedelta(minutes=rnd.randint(3, 60 * 24 * 6))
+        url = f"https://example.com/{src['id']}/{i}"
+        arts.append({"id": article_id(url), "title": f"{title} [exemplo]", "desc": desc, "url": url,
+                     "source": src["id"], "kind": "noticia", "published": pub.isoformat(timespec="seconds"),
+                     "seen": now.isoformat(timespec="seconds")})
+    for i, (t, d) in enumerate([
+        ("É falso que urnas eletrônicas aceitam voto duplo [exemplo]", "Checagem mostra que o sistema impede o registro de mais de um voto por eleitor."),
+        ("Vídeo antigo circula como se fosse de protesto atual [exemplo]", "Imagens são de anos atrás e não têm relação com o episódio citado."),
+        ("Texto sobre suposto fim de benefício é enganoso [exemplo]", "Mensagem mistura dados e não cita a fonte oficial."),
+    ]):
+        src = checks[i % len(checks)]
+        url = f"https://example.com/check/{i}"
+        pub = now - timedelta(hours=3 + i * 9)
+        arts.append({"id": article_id(url), "title": t, "desc": d, "url": url, "source": src["id"], "kind": "checagem",
+                     "published": pub.isoformat(timespec="seconds"), "seen": now.isoformat(timespec="seconds")})
+    arts.sort(key=lambda a: a["published"], reverse=True)
+    DATA.mkdir(exist_ok=True)
+    (DATA / "articles.json").write_text(json.dumps({"articles": arts}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    status = {s["id"]: {"name": s["name"], "ok": True, "items": 0, "new": 0, "error": "", "checked": now.isoformat(timespec="seconds")}
+              for s in load_sources()}
+    (DATA / "status.json").write_text(json.dumps(status, ensure_ascii=False, indent=1), encoding="utf-8")

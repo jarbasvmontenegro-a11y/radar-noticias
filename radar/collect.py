@@ -1,28 +1,38 @@
-"""Coleta de RSS/Atom. Guarda só manchete, link e trecho curto (nunca o texto completo).
+"""Coleta de RSS/Atom, sem IA e sem custo. Guarda só título, descrição curta e link.
 
-Usa só a biblioteca padrão para ler o XML (sem feedparser) para manter as dependências mínimas.
+O armazenamento é um JSON simples (data/articles.json), fácil de versionar no Git e de
+persistir entre execuções do GitHub Actions. Só a biblioteca padrão lê o XML.
 """
+import hashlib
 import html
 import json
+import os
 import re
 import time
 import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
-from zoneinfo import ZoneInfo
+from pathlib import Path
+from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
 
 import requests
 
-from .db import connect
+ROOT = Path(__file__).resolve().parent.parent
+DATA = Path(os.environ.get("RADAR_DATA") or ROOT / "data")
+UA = "RadarNoticias/1.0 (agregador; respeita RSS; contato no site)"
+MAX_DESC = 260  # trecho curto de propósito
+TRACKING = {"utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid", "fbclid", "ref"}
 
-TZ = ZoneInfo("America/Sao_Paulo")
-UA = "RadarNoticias/0.1 (agregador pessoal; respeita RSS)"
-MAX_SNIPPET = 280  # caracteres; trecho curto de propósito
+
+def load_json(path: Path, default):
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return default
 
 
-def load_config(path: str = "config/sources.json") -> dict:
-    with open(path, encoding="utf-8") as f:
-        return json.load(f)
+def load_sources(path: Path = ROOT / "config" / "sources.json") -> list[dict]:
+    return load_json(path, {"sources": []})["sources"]
 
 
 def clean(text: str) -> str:
@@ -31,8 +41,24 @@ def clean(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+def short(text: str, n: int = MAX_DESC) -> str:
+    if len(text) <= n:
+        return text
+    cut = text[:n].rsplit(" ", 1)[0].rstrip(",;:.- ")
+    return cut + "…"
+
+
+def canonical_url(url: str) -> str:
+    parts = urlsplit(url.strip())
+    q = [(k, v) for k, v in parse_qsl(parts.query) if k.lower() not in TRACKING]
+    return urlunsplit((parts.scheme, parts.netloc.lower(), parts.path, urlencode(q), ""))
+
+
+def article_id(url: str) -> str:
+    return hashlib.sha1(canonical_url(url).encode()).hexdigest()[:12]
+
+
 def _local(tag: str) -> str:
-    """'{ns}title' -> 'title'"""
     return tag.rsplit("}", 1)[-1].lower()
 
 
@@ -43,40 +69,42 @@ def _child_text(node: ET.Element, *names: str) -> str:
     return ""
 
 
-def _parse_date(raw: str) -> datetime:
+def _parse_date(raw: str):
     raw = (raw or "").strip()
     if raw:
         try:
-            dt = parsedate_to_datetime(raw)  # RFC 822 (RSS)
+            dt = parsedate_to_datetime(raw)
             return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
         except (TypeError, ValueError):
             pass
         try:
-            dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))  # ISO 8601 (Atom)
+            dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
             return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
         except ValueError:
             pass
-    return datetime.now(timezone.utc)
+    return None
 
 
 def parse_feed(content: bytes) -> list[dict]:
-    """Devolve [{title, url, snippet, published}] de um feed RSS 2.0 ou Atom."""
+    """Devolve [{title, url, desc, published(datetime|None)}] de um feed RSS 2.0 ou Atom."""
     root = ET.fromstring(content)
-    entries = [n for n in root.iter() if _local(n.tag) in ("item", "entry")]
     out = []
-    for n in entries:
+    for n in (x for x in root.iter() if _local(x.tag) in ("item", "entry")):
         url = _child_text(n, "link")
-        if not url:  # Atom guarda o link em <link href="...">
+        if not url:
             for child in n:
-                if _local(child.tag) == "link" and child.get("href"):
-                    if child.get("rel", "alternate") == "alternate":
-                        url = child.get("href")
-                        break
+                if _local(child.tag) == "link" and child.get("href") and child.get("rel", "alternate") == "alternate":
+                    url = child.get("href")
+                    break
+        title = clean(_child_text(n, "title"))
+        desc = clean(_child_text(n, "description", "summary", "content"))
+        if desc.lower().startswith(title.lower()[:40]) and len(desc) < len(title) + 20:
+            desc = ""  # descrição que só repete o título não ajuda ninguém
         out.append(
             {
-                "title": clean(_child_text(n, "title")),
+                "title": title,
                 "url": url.strip(),
-                "snippet": clean(_child_text(n, "description", "summary", "content"))[:MAX_SNIPPET],
+                "desc": short(desc),
                 "published": _parse_date(_child_text(n, "pubdate", "published", "updated", "date")),
             }
         )
@@ -84,46 +112,67 @@ def parse_feed(content: bytes) -> list[dict]:
 
 
 def fetch_feed(source: dict) -> list[dict]:
-    resp = requests.get(source["url"], headers={"User-Agent": UA}, timeout=20)
+    resp = requests.get(source["url"], headers={"User-Agent": UA, "Accept": "application/rss+xml, application/xml, */*"}, timeout=20)
     resp.raise_for_status()
     return parse_feed(resp.content)
 
 
-def collect(config_path: str = "config/sources.json", max_age_hours: int = 36) -> dict:
-    cfg = load_config(config_path)
+def collect(window_days: int = 7, per_source_limit: int = 40) -> dict:
+    """Atualiza data/articles.json e data/status.json. Devolve estatísticas."""
+    DATA.mkdir(exist_ok=True)
     now = datetime.now(timezone.utc)
-    stats = {"novas": 0, "falhas": []}
-    with connect() as conn:
-        for src in cfg["sources"]:
-            try:
-                entries = fetch_feed(src)
-            except Exception as exc:  # um feed quebrado não derruba os outros
-                stats["falhas"].append(f"{src['id']}: {exc}")
-                continue
-            for e in entries:
-                if not e["url"] or not e["title"]:
-                    continue
-                if (now - e["published"]).total_seconds() > max_age_hours * 3600:
-                    continue
-                day = e["published"].astimezone(TZ).strftime("%Y-%m-%d")
-                cur = conn.execute(
-                    """INSERT OR IGNORE INTO articles
-                       (url, title, snippet, source_id, source_name, section, published, day)
-                       VALUES (?,?,?,?,?,?,?,?)""",
-                    (e["url"], e["title"], e["snippet"], src["id"], src["name"],
-                     src.get("section", "geral"), e["published"].isoformat(), day),
-                )
-                stats["novas"] += cur.rowcount
-            time.sleep(0.5)  # educação com os servidores
-    return stats
+    cutoff = now - timedelta(days=window_days)
 
+    store = {a["id"]: a for a in load_json(DATA / "articles.json", {"articles": []})["articles"]}
+    status = {}
+    novas = 0
 
-def check_feeds(config_path: str = "config/sources.json") -> None:
-    """Testa cada feed e mostra quais estão vivos."""
-    cfg = load_config(config_path)
-    for src in cfg["sources"]:
+    for src in load_sources():
         try:
             entries = fetch_feed(src)
-            print(f"OK    {src['id']:<24} {len(entries)} itens")
+            ok, err = True, ""
+        except Exception as exc:  # um feed quebrado não derruba os outros
+            entries, ok, err = [], False, str(exc)[:160]
+        added = 0
+        for e in entries[:per_source_limit]:
+            if not e["url"] or not e["title"]:
+                continue
+            aid = article_id(e["url"])
+            if aid in store:
+                continue
+            pub = e["published"] or now  # sem data no feed: usamos o momento da coleta
+            if pub > now + timedelta(hours=2):
+                pub = now
+            if pub < cutoff:
+                continue
+            store[aid] = {
+                "id": aid,
+                "title": e["title"],
+                "desc": e["desc"],
+                "url": canonical_url(e["url"]),
+                "source": src["id"],
+                "kind": src.get("kind", "noticia"),
+                "published": pub.isoformat(timespec="seconds"),
+                "seen": now.isoformat(timespec="seconds"),
+            }
+            added += 1
+        novas += added
+        status[src["id"]] = {"name": src["name"], "ok": ok, "items": len(entries), "new": added, "error": err,
+                             "checked": now.isoformat(timespec="seconds")}
+        time.sleep(0.3)  # educação com os servidores
+
+    articles = [a for a in store.values() if datetime.fromisoformat(a["published"]) >= cutoff]
+    articles.sort(key=lambda a: a["published"], reverse=True)
+    (DATA / "articles.json").write_text(json.dumps({"articles": articles}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    (DATA / "status.json").write_text(json.dumps(status, ensure_ascii=False, indent=1), encoding="utf-8")
+    return {"novas": novas, "total": len(articles), "fontes_ok": sum(s["ok"] for s in status.values()), "fontes": len(status)}
+
+
+def check_feeds() -> None:
+    """Testa cada feed e mostra quais estão vivos."""
+    for src in load_sources():
+        try:
+            entries = fetch_feed(src)
+            print(f"OK    {src['id']:<22} {len(entries)} itens")
         except Exception as exc:
-            print(f"FALHA {src['id']:<24} {exc}")
+            print(f"FALHA {src['id']:<22} {str(exc)[:110]}")

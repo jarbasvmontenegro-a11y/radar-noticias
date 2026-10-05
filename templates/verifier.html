@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% from "_macros.html" import ad with context %}
+
+{% block jsonld %}
+<script type="application/ld+json">{{ {"@context":"https://schema.org","@type":"WebApplication","name":"Verificador de fake news","url":cfg.site_url ~ path,"applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"pt-BR","description":description,"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"}}|jsonld|safe }}</script>
+{% endblock %}
+
+{% block content %}
+<div class="page">
+  <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a> › <span>Verificador de fake news</span></nav>
+  <h1>Verificador de fake news</h1>
+  <p class="lead">Cole abaixo um texto, uma frase ou um link que chegou até você. Vamos conferir se agências de checagem já analisaram o assunto e quais notícias de fontes confiáveis tratam dele.</p>
+
+  <form id="vform" class="vform" novalidate>
+    <label for="vtext">Texto, boato ou link</label>
+    <textarea id="vtext" name="texto" rows="6" maxlength="2000" required placeholder="Ex.: &quot;Urgente! Compartilhe antes que apaguem...&quot; ou https://..."></textarea>
+    <p class="hint"><span id="vcount">0</span>/2000 caracteres</p>
+    <div id="turnstile-box"></div>
+    <button type="submit" class="btn btn-primary btn-big" id="vbtn">Verificar</button>
+  </form>
+
+  <div id="vresult" class="vresult" aria-live="polite" hidden></div>
+
+  {{ ad("topo", "ad-top") }}
+
+  <section class="prose" aria-labelledby="como">
+    <h2 id="como">Como a verificação funciona</h2>
+    <ol>
+      <li><strong>Agências de checagem.</strong> Procuramos o assunto em bases públicas de checagem (como Lupa, Aos Fatos, Estadão Verifica e Comprova). Se alguma já analisou, mostramos a conclusão dela e o link.</li>
+      <li><strong>Notícias confiáveis.</strong> Procuramos manchetes recentes dos veículos monitorados sobre o mesmo tema.</li>
+      <li><strong>Sinais de alerta.</strong> Uma IA aponta pistas de desinformação no texto (apelo emocional, falta de fonte, pedido para compartilhar) e o que você pode conferir.</li>
+    </ol>
+    <h2>O que o verificador não faz</h2>
+    <ul>
+      <li>Não decide sozinho se algo é verdadeiro ou falso. Só indicamos "falso", "enganoso" ou "verdadeiro" quando uma agência de checagem já concluiu isso.</li>
+      <li>Se ninguém checou ainda, isso <strong>não significa</strong> que é verdade. Desconfie e procure a fonte original.</li>
+      <li>Não verificamos imagens ou vídeos, apenas texto e links.</li>
+    </ul>
+    <h2>Dicas rápidas antes de compartilhar</h2>
+    <ul>
+      <li>Procure quem publicou primeiro e se existe link para um documento ou fonte oficial.</li>
+      <li>Desconfie de textos que dizem "compartilhe antes que apaguem" ou que provocam raiva.</li>
+      <li>Confira a data: conteúdo antigo costuma voltar como se fosse novo.</li>
+    </ul>
+  </section>
+</div>
+{% endblock %}

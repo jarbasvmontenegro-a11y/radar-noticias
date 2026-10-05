@@ -1,0 +1,17 @@
+name = "radar-noticias"
+compatibility_date = "2025-01-01"
+pages_build_output_dir = "site"
+
+# Cache, limites diários e contadores. Crie com:  npx wrangler kv namespace create RADAR_KV
+# e cole o id abaixo.
+[[kv_namespaces]]
+binding = "RADAR_KV"
+id = "COLE_O_ID_DO_KV_AQUI"
+
+# Segredos (configure no painel do Cloudflare Pages > Settings > Variables and Secrets):
+#   LLM_API_KEY          chave do DeepSeek (ou outro provedor compatível com OpenAI)
+#   FACTCHECK_API_KEY    chave gratuita do Google Fact Check Tools API
+#   TURNSTILE_SECRET     (opcional) segredo do Cloudflare Turnstile
+# Variáveis opcionais:
+#   LLM_BASE_URL (padrão https://api.deepseek.com)   LLM_MODEL (padrão deepseek-chat)
+#   IP_DAILY_LIMIT (padrão 10)   DAILY_CAP (padrão 1500)   IP_SALT (qualquer texto)

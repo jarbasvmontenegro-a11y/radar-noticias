@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page prose">
+  <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a> › <span>Privacidade</span></nav>
+  <h1>Política de privacidade</h1>
+  <p class="lead">Resumo: não pedimos cadastro, não vendemos dados e coletamos o mínimo necessário para o site funcionar e se manter com anúncios.</p>
+
+  <h2>Quais dados tratamos</h2>
+  <ul>
+    <li><strong>Texto enviado ao resumo e ao verificador.</strong> O conteúdo que você cola é enviado a um provedor de IA para gerar a resposta. Não cole dados pessoais ou sensíveis. Podemos guardar o resultado em cache por até 24 horas para evitar repetir o mesmo processamento.</li>
+    <li><strong>Limite de uso.</strong> Para impedir abuso, usamos uma versão embaralhada (hash) do seu endereço de IP, que expira em até 24 horas.</li>
+    <li><strong>Preferências no navegador.</strong> O tamanho da letra e a escolha sobre cookies ficam salvos no seu próprio navegador.</li>
+    <li><strong>Estatísticas de acesso.</strong> {% if cfg.cloudflare_analytics_token %}Usamos o Cloudflare Web Analytics, que mede audiência sem cookies de rastreamento.{% else %}Podemos usar uma ferramenta de audiência sem cookies de rastreamento.{% endif %}</li>
+  </ul>
+
+  <h2>Anúncios e cookies</h2>
+  <p>O site pode exibir anúncios do Google AdSense. O Google e seus parceiros podem usar cookies para mostrar anúncios. Você escolhe entre anúncios personalizados e não personalizados no aviso exibido na primeira visita. Também é possível gerenciar anúncios personalizados em <a href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>.</p>
+
+  <h2>Links externos</h2>
+  <p>Os links levam a sites de terceiros (veículos de notícia), que têm suas próprias políticas de privacidade.</p>
+
+  <h2>Seus direitos (LGPD)</h2>
+  <p>Você pode solicitar informações, correção ou exclusão de dados que tenhamos sobre você. {% if cfg.contact_email %}Escreva para <a href="mailto:{{ cfg.contact_email }}">{{ cfg.contact_email }}</a>.{% else %}Use o contato informado no rodapé.{% endif %}</p>
+
+  <p class="small">Última atualização: {{ today_long }}.</p>
+</div>
+{% endblock %}

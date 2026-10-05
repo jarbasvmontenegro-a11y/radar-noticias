@@ -1,0 +1,14 @@
+{
+  "name": "Radar de Notícias",
+  "tagline": "Política do Brasil em um só lugar, direto das fontes",
+  "site_url": "https://radar-noticias.pages.dev",
+  "lang": "pt-BR",
+  "contact_email": "",
+  "adsense_client": "",
+  "adsense_slots": {"topo": "", "lista": "", "lateral": ""},
+  "turnstile_sitekey": "",
+  "cloudflare_analytics_token": "",
+  "window_days": 7,
+  "per_source_limit": 40,
+  "page_size": 60
+}

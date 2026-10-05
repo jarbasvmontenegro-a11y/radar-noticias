@@ -1,70 +1,76 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Radar de Notícias</title>
-  <meta name="description" content="As principais notícias do dia, agrupadas por assunto, com resumos neutros e um termômetro dos temas.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header class="masthead">
-    <div class="masthead-top">
-      <span id="today-label"></span>
-      <span>Atualizado em {{ generated }}</span>
+{% extends "base.html" %}
+{% from "_macros.html" import ad, item with context %}
+
+{% block jsonld %}
+<script type="application/ld+json">{{ {"@context":"https://schema.org","@type":"CollectionPage","name":title,"url":cfg.site_url ~ path,"inLanguage":"pt-BR","isPartOf":{"@type":"WebSite","name":cfg.name,"url":cfg.site_url},"mainEntity":{"@type":"ItemList","itemListElement":ld_items}}|jsonld|safe }}</script>
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+  <nav class="sources" aria-label="Filtrar por fonte">
+    <h2 class="side-title">Fontes</h2>
+    <ul>
+      <li><a href="/" {% if not active and path == "/" %}aria-current="page"{% endif %}>Todas</a></li>
+      {% for s in news_sources %}
+      <li><a href="/fonte/{{ s.id }}/" {% if active == s.id %}aria-current="page"{% endif %}>{{ s.name }} <span class="n">{{ counts.get(s.id, 0) }}</span></a></li>
+      {% endfor %}
+    </ul>
+  </nav>
+
+  <section class="feed" aria-labelledby="h1">
+    <header class="feed-head">
+      <h1 id="h1">{{ heading }}</h1>
+      <p class="sub">{{ subheading }} · atualizado em {{ updated_label }}</p>
+      {% if source is defined %}<p class="sub"><a href="{{ source.home }}" target="_blank" rel="noopener">Ir ao site de {{ source.name }} ↗</a></p>{% endif %}
+    </header>
+
+    {{ ad("topo", "ad-top") }}
+
+    <div class="searchbar">
+      <label for="q" class="sr">Buscar nas manchetes</label>
+      <input id="q" type="search" placeholder="Buscar nas manchetes desta página" autocomplete="off">
+      <p id="qcount" class="count" aria-live="polite">{{ total }} manchetes</p>
     </div>
-    <h1>Radar de Notícias</h1>
-    <p class="tagline">O dia em um só lugar. Resumos por assunto, sempre com link para a fonte.</p>
-    <nav class="tabs" role="tablist">
-      <button role="tab" data-tab="hoje" class="active">Edição do dia</button>
-      <button role="tab" data-tab="resumos">Resumos</button>
-      <button role="tab" data-tab="regua">Régua dos temas</button>
-      <button role="tab" data-tab="sobre">Como funciona</button>
-    </nav>
-  </header>
 
-  <main>
-    <section id="tab-hoje" class="panel active">
-      <div class="toolbar">
-        <label>Dia <select id="f-day"></select></label>
-        <label>Tema <select id="f-tema"><option value="">Todos</option></select></label>
-        <label>Fonte <select id="f-fonte"><option value="">Todas</option></select></label>
-        <label class="search">Buscar <input id="f-q" type="search" placeholder="palavra na manchete"></label>
-        <label class="check"><input id="f-multi" type="checkbox"> Só assuntos cobertos por 2+ fontes</label>
-      </div>
-      <p id="count" class="count"></p>
-      <div id="feed"></div>
+    <div id="list">
+    {% for a in articles %}
+      {{ item(a, show_source_link=(active is none)) }}
+      {% if loop.index in (8, 28) %}{{ ad("lista", "ad-feed") }}{% endif %}
+    {% else %}
+      <p class="empty">Ainda não há manchetes aqui. A coleta roda a cada 30 minutos.</p>
+    {% endfor %}
+    </div>
+
+    {% if path == "/" and total > articles|length %}
+    <p class="more">Mostrando as {{ articles|length }} mais recentes de {{ total }}. Para ver o restante, navegue por fonte ou pelo arquivo do dia.</p>
+    {% endif %}
+  </section>
+
+  <aside class="side" aria-label="Complementos">
+    <section class="box box-verify">
+      <h2 class="side-title">Recebeu um boato?</h2>
+      <p>Cole o texto ou link no nosso verificador e veja se agências de checagem já analisaram.</p>
+      <a class="btn btn-primary" href="/verificador/">Verificar agora</a>
     </section>
-
-    <section id="tab-resumos" class="panel">
-      <div id="resumos"></div>
-    </section>
-
-    <section id="tab-regua" class="panel">
-      <h2>Régua dos temas</h2>
-      <p class="muted">Quanto cada tema pesou na cobertura, dia a dia (número de matérias agrupadas). Quanto mais escuro, mais espaço o assunto ocupou. Um ponto marca dias em que o clima da cobertura foi de tensão.</p>
-      <div id="regua" class="regua-wrap"></div>
-    </section>
-
-    <section id="tab-sobre" class="panel prose">
-      <h2>Como funciona</h2>
-      <p>Todo dia o Radar baixa os feeds RSS de grandes veículos brasileiros. Guardamos só a manchete, o link e um trecho curto. O texto das matérias não é copiado: para ler, você clica e vai ao site da fonte.</p>
-      <p>Matérias sobre o mesmo fato são agrupadas por similaridade de texto. Cada grupo recebe um resumo curto, escrito por inteligência artificial com as próprias palavras do modelo, e é classificado por tema e por clima da cobertura (neutro, tenso ou positivo).</p>
-      <h3>Limites que você deve conhecer</h3>
-      <ul>
-        <li>Resumos de IA podem errar. Em caso de dúvida, confira a fonte pelos links.</li>
-        <li>O agrupamento é automático e às vezes junta ou separa assuntos de forma imperfeita.</li>
-        <li>"Clima da cobertura" é uma classificação automática do tom das matérias, não um julgamento sobre quem tem razão.</li>
-        <li>A régua mede volume de cobertura, não importância real do assunto.</li>
+    {% if checks %}
+    <section class="box">
+      <h2 class="side-title">Checagens recentes</h2>
+      <ul class="mini">
+        {% for c in checks %}
+        <li><a href="{{ c.url }}" target="_blank" rel="noopener">{{ c.title }}</a> <span class="src">{{ c.source_name }}</span></li>
+        {% endfor %}
       </ul>
     </section>
-  </main>
-
-  <footer>Radar de Notícias · projeto independente · os direitos das matérias pertencem aos respectivos veículos.</footer>
-
-  <script id="radar-data" type="application/json">{{ data_json|safe }}</script>
-  <script src="app.js"></script>
-</body>
-</html>
+    {% endif %}
+    {{ ad("lateral", "ad-side") }}
+    <section class="box">
+      <h2 class="side-title">Arquivo</h2>
+      <ul class="mini">
+        {% for d in day_links %}
+        <li><a href="/dia/{{ d.day }}/">{{ d.label }}</a></li>
+        {% endfor %}
+      </ul>
+    </section>
+  </aside>
+</div>
+{% endblock %}

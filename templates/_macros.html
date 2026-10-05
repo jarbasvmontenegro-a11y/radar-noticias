@@ -1,0 +1,27 @@
+{% macro ad(slot_key, cls="") %}
+{%- if cfg.adsense_client and cfg.adsense_slots.get(slot_key) -%}
+<aside class="ad {{ cls }}" aria-label="Publicidade">
+  <span class="ad-label">Publicidade</span>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="{{ cfg.adsense_client }}"
+       data-ad-slot="{{ cfg.adsense_slots[slot_key] }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+</aside>
+{%- endif -%}
+{% endmacro %}
+
+{% macro item(a, show_source_link=True) %}
+<article class="item" data-source="{{ a.source_id }}">
+  <div class="meta">
+    {% if show_source_link %}<a class="src" href="/fonte/{{ a.source_id }}/">{{ a.source_name }}</a>{% else %}<span class="src">{{ a.source_name }}</span>{% endif %}
+    <time datetime="{{ a.published }}">{{ a.time_label }}</time>
+  </div>
+  <h2 class="title"><a href="{{ a.url }}" target="_blank" rel="noopener">{{ a.title }}</a></h2>
+  {% if a.desc %}<p class="desc">{{ a.desc }}</p>{% endif %}
+  <div class="actions">
+    <a class="btn btn-read" href="{{ a.url }}" target="_blank" rel="noopener" aria-label="Ler na fonte: {{ a.title }}">Ler na fonte <span aria-hidden="true">↗</span></a>
+    {% if a.kind == "noticia" %}
+    <button type="button" class="btn btn-sum" data-url="{{ a.url }}" data-title="{{ a.title }}" data-source="{{ a.source_name }}" data-desc="{{ a.desc }}">Resumir com IA</button>
+    {% endif %}
+  </div>
+  <div class="sum" hidden aria-live="polite"></div>
+</article>
+{% endmacro %}
