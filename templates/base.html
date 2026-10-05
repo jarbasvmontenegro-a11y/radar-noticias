@@ -18,7 +18,8 @@
   <meta name="twitter:card" content="summary">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%238c1c13'/%3E%3Cpath d='M16 18h32v6H16zm0 11h32v6H16zm0 11h20v6H16z' fill='%23fff'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="/style.css">
-  <script>try{var s=localStorage.getItem("radar-size");if(s)document.documentElement.dataset.size=s}catch(e){}</script>
+  <meta name="built" content="{{ built_iso }}">
+  <script>document.documentElement.className+=" js";try{var s=localStorage.getItem("radar-size");if(s)document.documentElement.dataset.size=s}catch(e){}</script>
   {% block jsonld %}
   <script type="application/ld+json">{{ {"@context":"https://schema.org","@type":"WebSite","name":cfg.name,"url":cfg.site_url,"inLanguage":"pt-BR","description":cfg.tagline}|jsonld|safe }}</script>
   {% endblock %}
@@ -44,6 +45,8 @@
       <a href="/sobre/" {% if path == "/sobre/" %}aria-current="page"{% endif %}>Como funciona</a>
     </nav>
   </header>
+
+  <p id="stale" class="stale" role="status" hidden>A atualização automática está atrasada. As manchetes abaixo podem não ser as mais recentes.</p>
 
   <main id="conteudo">
     {% block content %}{% endblock %}

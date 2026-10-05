@@ -45,6 +45,7 @@ node --test tests/functions.test.mjs      # testes das funções (IA e rede simu
    - `LLM_API_KEY`: chave do DeepSeek (ou outro provedor compatível com OpenAI; ajuste `LLM_BASE_URL` e `LLM_MODEL`).
    - `FACTCHECK_API_KEY`: chave gratuita da *Google Fact Check Tools API* (Google Cloud Console).
    - Opcionais: `TURNSTILE_SECRET`, `IP_DAILY_LIMIT` (padrão 10), `DAILY_CAP` (padrão 1500), `IP_SALT`.
+   - Provedor de IA reserva (opcional, entra se o principal falhar): `LLM_FALLBACK_API_KEY`, `LLM_FALLBACK_BASE_URL`, `LLM_FALLBACK_MODEL`.
 4. **GitHub** (Settings → Secrets and variables → Actions):
    - Secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
    - Variables: `SITE_URL` (seu domínio), e depois `ADSENSE_CLIENT`, `TURNSTILE_SITEKEY`, `CONTACT_EMAIL`, `CF_PROJECT` se usar.
@@ -70,6 +71,34 @@ Repositório privado gasta minutos do Actions (2.000/mês no plano grátis, e o 
 4. A IA aponta **sinais de alerta** e o que conferir. **Nunca** diz se é verdadeiro ou falso.
 
 O veredito exibido ("falso", "enganoso", "verdadeiro", "misto") vem das avaliações das agências. Sem checagem, o resultado é "nenhuma agência checou ainda" e o site avisa que isso não significa que seja verdade. Não verifica imagens nem vídeos.
+
+## Robustez
+
+**Coleta**
+- Feeds buscados em paralelo, com timeout, limite de 5 MB e até 2 novas tentativas (só para erros passageiros, respeitando `Retry-After`).
+- XML não confiável: feeds que declaram entidades (ataque "billion laughs") são rejeitados; caracteres inválidos e `&` solto são tolerados.
+- Só entram links `http(s)`. Nada de `javascript:` ou `data:`. Títulos e descrições perdem caracteres de controle e de inversão de texto.
+- Duplicados são removidos por URL (sem parâmetros de rastreamento) e por título dentro da mesma fonte.
+- Escrita atômica. Se `articles.json` estiver corrompido, a coleta **para** (e guarda cópia) em vez de apagar o histórico. Se todas as fontes falharem, o histórico é mantido e o workflow avisa.
+- Cada fonte tem seu estado em `data/health.json` ("fora do ar desde..."), que só muda em transições, sem gerar commits à toa. A página "Como funciona" mostra isso.
+
+**Site**
+- O build é feito numa pasta temporária e só substitui o site atual se passar na verificação (`python -m radar verify`): arquivos obrigatórios, sitemap e JSON-LD válidos, `title`/`canonical`/`description` em todas as páginas, nenhum link perigoso.
+- JSON-LD escapa `<`, `>` e `&`, então dados de fontes nunca "fecham" a tag `<script>`.
+- Registros quebrados são ignorados em vez de derrubar o build. Sem dados ainda, o site sai vazio, mas válido.
+- Funciona sem JavaScript (a lista e os links são HTML). Aparece um aviso se a última atualização tiver mais de 6 horas.
+
+**Funções (resumo e verificador)**
+- Corpo do pedido limitado a 16 KB, `Content-Type` e origem conferidos, método errado devolve 405.
+- Leitura de páginas com limite de 600 KB e **redirecionamentos seguidos manualmente, validando cada salto** (nada de IP, `localhost`, porta estranha ou domínio fora da lista).
+- IA com uma nova tentativa em erro passageiro e, se configurado, provedor reserva. Se a IA falhar, **a cota do leitor é devolvida**.
+- "Não conseguimos consultar as agências" é um estado próprio (`indisponivel`), diferente de "nenhuma agência checou". Resultados em que a consulta falhou não vão para o cache.
+- Falhas de cache (KV) não derrubam a função. Logs estruturados, sem dados pessoais, nos logs do Cloudflare.
+
+**Monitoramento (GitHub Actions)**
+- Roda os testes antes de coletar e publicar, com `timeout` de 15 minutos.
+- Só guarda os dados no repositório depois que o site foi gerado e verificado. O envio tem 3 tentativas.
+- Resumo de saúde das fontes em cada execução, conferência de que o site respondeu após o deploy e **issue de alerta** automática quando algo falha (fechada sozinha quando volta ao normal).
 
 ## SEO e anúncios
 

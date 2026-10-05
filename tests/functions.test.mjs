@@ -2,7 +2,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { extractText, parseHttpUrl } from "../lib/api.js";
+import { extractText, parseHttpUrl, readLimitedText, resetHostsCache } from "../lib/api.js";
 import { aggregate, classifyRating, tokens } from "../lib/verify.js";
 import { onRequestPost as resumir } from "../functions/api/resumir.js";
 import { onRequestPost as verificar } from "../functions/api/verificar.js";
@@ -22,28 +22,35 @@ const ARTICLE_HTML = `<html><head><title>Titulo</title><meta property="og:descri
 <body><nav>menu</nav><article>${"<p>" + "Parágrafo longo com conteúdo da matéria sobre a votação no plenário. ".repeat(8) + "</p>".repeat(1)}
 ${"<p>" + "Outro parágrafo com mais informação relevante para o resumo do leitor. ".repeat(8) + "</p>"}</article><script>x()</script></body></html>`;
 
-function setup({ llm, factchecks = [], pageHtml = ARTICLE_HTML, pageStatus = 200 } = {}) {
-  const calls = { llm: 0, fact: 0, page: 0 };
+function setup({ llm, factchecks = [], factStatus = 200, pageHtml = ARTICLE_HTML, pageStatus = 200, page } = {}) {
+  const calls = { llm: 0, fact: 0, page: 0, urls: [] };
+  resetHostsCache();
   globalThis.fetch = async (input, init) => {
     const url = String(input instanceof Request ? input.url : input);
+    calls.urls.push(url);
     if (url.includes("/chat/completions")) {
       calls.llm++;
       const body = JSON.parse(init.body);
-      const content = llm ? llm(body, calls.llm) : "Resumo de teste da matéria.";
-      return new Response(JSON.stringify({ choices: [{ message: { content } }] }), { status: 200 });
+      const out = llm ? llm(body, calls.llm, url, init) : "Resumo de teste da matéria.";
+      if (out instanceof Response) return out;
+      return new Response(JSON.stringify({ choices: [{ message: { content: out } }] }), { status: 200 });
     }
     if (url.includes("factchecktools")) {
       calls.fact++;
+      if (factStatus !== 200) return new Response("erro", { status: factStatus });
       return new Response(JSON.stringify({ claims: factchecks }), { status: 200 });
     }
     if (url.includes("/data/search-index.json")) return new Response(JSON.stringify(SEARCH_INDEX), { status: 200 });
     if (url.includes("/data/allowed-hosts.json")) return new Response(JSON.stringify(["g1.globo.com", "folha.uol.com.br"]), { status: 200 });
     calls.page++;
+    if (page) return page(url, calls.page);
     return new Response(pageHtml, { status: pageStatus, headers: { "content-type": "text/html" } });
   };
   const env = { RADAR_KV: new FakeKV(), LLM_API_KEY: "k", FACTCHECK_API_KEY: "g", IP_DAILY_LIMIT: "3" };
   return { env, calls };
 }
+
+const quota = async (env) => [...env.RADAR_KV.m.entries()].filter(([k]) => k.startsWith("rl:")).map(([, v]) => Number(v));
 
 const req = (path, body, headers = {}) =>
   new Request("https://site.test" + path, { method: "POST", headers: { "Content-Type": "application/json", "CF-Connecting-IP": "1.2.3.4", ...headers }, body: JSON.stringify(body) });
@@ -200,4 +207,138 @@ test("verificar: se a IA cair, ainda devolve o resultado das agências", async (
   const d = await (await call(verificar, env, "/api/verificar", { texto: "Urnas eletrônicas aceitam voto duplo, diz o boato" })).json();
   assert.equal(d.veredito, "falso");
   assert.deepEqual(d.sinais, []);
+});
+
+
+// ---------- robustez ----------
+const llmDown = () => new Response("erro", { status: 500 });
+
+test("parseHttpUrl bloqueia IP em decimal e hexadecimal", () => {
+  assert.equal(parseHttpUrl("http://2130706433/"), null);
+  assert.equal(parseHttpUrl("http://0x7f000001/"), null);
+});
+
+test("readLimitedText corta respostas gigantes", async () => {
+  const big = new Response("a".repeat(5_000_000));
+  const txt = await readLimitedText(big, 1000);
+  assert.ok(txt.length <= 1000);
+});
+
+test("pedido: método errado, corpo grande e content-type errado são recusados", async () => {
+  const { env } = setup();
+  const { onRequest } = await import("../functions/api/resumir.js");
+  assert.equal((await onRequest()).status, 405);
+  const big = await call(resumir, env, "/api/resumir", { ...OK_BODY, desc: "x".repeat(20000) });
+  assert.equal(big.status, 413);
+  const wrong = await resumir({ request: new Request("https://site.test/api/resumir", { method: "POST", headers: { "Content-Type": "text/plain" }, body: "x" }), env });
+  assert.equal(wrong.status, 415);
+  const bad = await resumir({ request: new Request("https://site.test/api/resumir", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{quebrado" }), env });
+  assert.equal(bad.status, 400);
+});
+
+test("resumir: se a IA cai, devolve 502 e DEVOLVE a cota do leitor", async () => {
+  const { env } = setup({ llm: llmDown });
+  const r = await call(resumir, env, "/api/resumir", OK_BODY);
+  assert.equal(r.status, 502);
+  assert.deepEqual(await quota(env), [0]);
+});
+
+test("IA: erro passageiro tem uma nova tentativa antes de desistir", async () => {
+  const { env, calls } = setup({ llm: (b, n) => (n === 1 ? new Response("x", { status: 503 }) : "Resumo depois do retry.") });
+  const d = await (await call(resumir, env, "/api/resumir", OK_BODY)).json();
+  assert.equal(d.resumo, "Resumo depois do retry.");
+  assert.equal(calls.llm, 2);
+});
+
+test("IA: provedor reserva entra quando o principal recusa a chave", async () => {
+  const { env, calls } = setup({ llm: (b, n, url) => (url.includes("reserva.test") ? "Resumo do reserva." : new Response("no", { status: 401 })) });
+  Object.assign(env, { LLM_FALLBACK_API_KEY: "k2", LLM_FALLBACK_BASE_URL: "https://reserva.test/v1", LLM_FALLBACK_MODEL: "m2" });
+  const d = await (await call(resumir, env, "/api/resumir", OK_BODY)).json();
+  assert.equal(d.resumo, "Resumo do reserva.");
+  assert.equal(calls.llm, 2); // principal (401, sem retry) + reserva
+});
+
+test("redirecionamento para endereço interno é bloqueado e nunca é requisitado", async () => {
+  const { env, calls } = setup({
+    page: (url) => (url.includes("g1.globo.com")
+      ? new Response(null, { status: 302, headers: { location: "http://169.254.169.254/latest/meta-data" } })
+      : new Response("segredo", { status: 200, headers: { "content-type": "text/html" } })),
+  });
+  const r = await call(resumir, env, "/api/resumir", OK_BODY);
+  const d = await r.json();
+  assert.equal(r.status, 200);
+  assert.equal(d.base, "titulo"); // não leu a página, resumiu só título e descrição
+  assert.ok(!calls.urls.some((u) => u.includes("169.254")));
+});
+
+test("redirecionamento para outro domínio não monitorado também é bloqueado", async () => {
+  const { env, calls } = setup({
+    page: (url) => (url.includes("g1.globo.com")
+      ? new Response(null, { status: 301, headers: { location: "https://site-qualquer.com/x" } })
+      : new Response("x", { status: 200, headers: { "content-type": "text/html" } })),
+  });
+  await call(resumir, env, "/api/resumir", OK_BODY);
+  assert.ok(!calls.urls.some((u) => u.includes("site-qualquer.com")));
+});
+
+test("verificar: agência fora do ar vira 'indisponivel' (não 'ninguém checou') e não vai para o cache", async () => {
+  const { env, calls } = setup({ llm: llmVerify, factStatus: 500 });
+  const body = { texto: "Urnas eletrônicas aceitam voto duplo, diz mensagem" };
+  const d = await (await call(verificar, env, "/api/verificar", body)).json();
+  assert.equal(d.veredito, "indisponivel");
+  const before = calls.llm;
+  await call(verificar, env, "/api/verificar", body);
+  assert.ok(calls.llm > before); // não veio do cache
+});
+
+test("verificar: sem chave das agências também vira 'indisponivel'", async () => {
+  const { env } = setup({ llm: llmVerify });
+  delete env.FACTCHECK_API_KEY;
+  const d = await (await call(verificar, env, "/api/verificar", { texto: "Urnas eletrônicas aceitam voto duplo, diz mensagem" })).json();
+  assert.equal(d.veredito, "indisponivel");
+});
+
+test("verificar: se tudo falha, 502 e a cota volta", async () => {
+  const { env } = setup({ llm: llmDown, factStatus: 500 });
+  const r = await call(verificar, env, "/api/verificar", { texto: "Texto qualquer sem nenhum assunto conhecido aqui" });
+  assert.equal(r.status, 502);
+  assert.deepEqual(await quota(env), [0]);
+});
+
+test("verificar: link que não abre devolve a cota", async () => {
+  const { env } = setup({ llm: llmVerify, page: () => new Response("nao", { status: 404 }) });
+  const r = await call(verificar, env, "/api/verificar", { texto: "https://exemplo-noticia.com/materia-que-sumiu" });
+  assert.equal(r.status, 400);
+  assert.deepEqual(await quota(env), [0]);
+});
+
+test("verificar: link para endereço interno via redirecionamento é bloqueado", async () => {
+  const { env, calls } = setup({
+    llm: llmVerify,
+    page: (url) => (url.includes("exemplo-noticia.com")
+      ? new Response(null, { status: 302, headers: { location: "http://localhost:8080/admin" } })
+      : new Response("x", { status: 200, headers: { "content-type": "text/html" } })),
+  });
+  const r = await call(verificar, env, "/api/verificar", { texto: "https://exemplo-noticia.com/materia" });
+  assert.equal(r.status, 400);
+  assert.ok(!calls.urls.some((u) => u.includes("localhost")));
+});
+
+test("verificar: nunca devolve link de agência que não seja http(s)", async () => {
+  const { env } = setup({
+    llm: llmVerify,
+    factchecks: [{ text: "Urnas eletrônicas aceitam voto duplo", claimReview: [{ publisher: { name: "X" }, title: "Urnas voto duplo", url: "javascript:alert(1)", textualRating: "Falso" }] }],
+  });
+  const d = await (await call(verificar, env, "/api/verificar", { texto: "Urnas eletrônicas aceitam voto duplo, compartilhe" })).json();
+  assert.equal(d.checagens.length, 0);
+  assert.equal(d.veredito, "sem_checagem");
+});
+
+test("cache com falha no KV não derruba a função", async () => {
+  const { env } = setup();
+  const kv = env.RADAR_KV;
+  const origPut = kv.put.bind(kv);
+  kv.put = async (k, v, o) => { if (k.startsWith("sum:")) throw new Error("kv fora"); return origPut(k, v, o); };
+  const r = await call(resumir, env, "/api/resumir", OK_BODY);
+  assert.equal(r.status, 200);
 });

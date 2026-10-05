@@ -13,6 +13,13 @@
     return n;
   }
 
+  // ---- aviso se a atualização automática parou ---------------------------------------
+  try {
+    var built = document.querySelector('meta[name="built"]');
+    var banner = $("#stale");
+    if (built && banner && Date.now() - new Date(built.content).getTime() > 6 * 3600 * 1000) banner.hidden = false;
+  } catch (e) { /* aviso é opcional */ }
+
   // ---- tamanho da letra ---------------------------------------------------------
   var sizes = ["0", "1", "2", "3"]; // 1 = padrão
   function curSize() { var s = document.documentElement.dataset.size; return sizes.indexOf(s) >= 0 ? sizes.indexOf(s) : 1; }
@@ -80,15 +87,29 @@
   }
 
   function post(url, body) {
+    var ctrl = typeof AbortController === "function" ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 50000) : null;
     return getToken().then(function (token) {
       body.token = token;
-      return fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      return fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal: ctrl ? ctrl.signal : undefined });
+    }, function () {
+      throw new Error("Não conseguimos confirmar que você é uma pessoa. Recarregue a página e tente de novo.");
     }).then(function (r) {
-      return r.json().catch(function () { return {}; }).then(function (data) {
-        if (!r.ok) { var e = new Error(data.erro || "Não foi possível concluir agora."); e.status = r.status; throw e; }
+      return r.text().then(function (txt) {
+        var data = {};
+        try { data = JSON.parse(txt); } catch (e) { /* resposta que não é JSON (erro do servidor) */ }
+        if (!r.ok) {
+          var msg = data.erro || (r.status === 429 ? "Muitos pedidos. Tente de novo mais tarde." : r.status >= 500 ? "O serviço está indisponível agora. Tente de novo em instantes." : "Não foi possível concluir agora.");
+          var e = new Error(msg); e.status = r.status; throw e;
+        }
+        if (!data || typeof data !== "object") throw new Error("Resposta inesperada do servidor. Tente de novo.");
         return data;
       });
-    });
+    }).catch(function (e) {
+      if (e && e.name === "AbortError") throw new Error("Demorou demais para responder. Tente de novo.");
+      if (e instanceof TypeError) throw new Error("Sem conexão com o servidor. Verifique sua internet e tente de novo.");
+      throw e;
+    }).then(function (d) { if (timer) clearTimeout(timer); return d; }, function (e) { if (timer) clearTimeout(timer); throw e; });
   }
 
   // ---- resumo sob demanda -----------------------------------------------------------
@@ -118,13 +139,14 @@
   if (form) {
     var ta = $("#vtext"), cnt = $("#vcount"), res = $("#vresult"), btnV = $("#vbtn");
     ta.addEventListener("input", function () { cnt.textContent = ta.value.length; });
-    var label = { falso: "Checagens apontam: falso", enganoso: "Checagens apontam: enganoso", verdadeiro: "Checagens apontam: verdadeiro", misto: "Checagem com conclusão mista", sem_checagem: "Nenhuma agência checou ainda" };
+    var label = { falso: "Checagens apontam: falso", enganoso: "Checagens apontam: enganoso", verdadeiro: "Checagens apontam: verdadeiro", misto: "Checagem com conclusão mista", sem_checagem: "Nenhuma agência checou ainda", indisponivel: "Checagem indisponível agora" };
     var intro = {
       falso: "Agências de checagem classificaram como falso conteúdo muito parecido com o que você enviou. Confira abaixo se tratam do mesmo assunto antes de compartilhar.",
       enganoso: "Agências de checagem apontaram como enganoso ou sem contexto conteúdo muito parecido com o que você enviou. Confira abaixo se tratam do mesmo assunto.",
       verdadeiro: "Agências de checagem confirmaram conteúdo muito parecido com o que você enviou. Veja os detalhes e a fonte original abaixo.",
       misto: "As avaliações encontradas não são unânimes ou têm ressalvas. Leia as checagens completas.",
-      sem_checagem: "Não encontramos checagem sobre isso. Isso não significa que seja verdade: desconfie e procure a fonte original."
+      sem_checagem: "Não encontramos checagem sobre isso. Isso não significa que seja verdade: desconfie e procure a fonte original.",
+      indisponivel: "Não conseguimos consultar as agências de checagem agora. Isso não quer dizer que ninguém checou: tente de novo mais tarde e, enquanto isso, confira os sinais de alerta e as notícias abaixo."
     };
     function section(title, list, render) {
       if (!list || !list.length) return null;
@@ -142,7 +164,7 @@
       post("/api/verificar", { texto: text }).then(function (d) {
         res.textContent = "";
         var v = d.veredito || "sem_checagem";
-        var cls = v === "sem_checagem" ? "v-sem" : "v-" + v;
+        var cls = (v === "sem_checagem" || v === "indisponivel") ? "v-sem" : "v-" + v;
         res.appendChild(el("div", { class: "verdict " + cls }, [
           el("span", { class: "badge", text: label[v] || label.sem_checagem }),
           el("h2", { text: d.afirmacao ? "Sobre: " + d.afirmacao : "Resultado" }),

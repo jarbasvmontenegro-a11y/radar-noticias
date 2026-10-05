@@ -1,4 +1,5 @@
 """Testes do coletor (sem rede). Rode com:  python -m unittest discover -s tests -v"""
+import json
 import os
 import sys
 import tempfile
@@ -6,9 +7,10 @@ import unittest
 from datetime import datetime, timedelta, timezone
 from email.utils import format_datetime
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-os.environ["RADAR_DATA"] = tempfile.mkdtemp()
+os.environ.setdefault("RADAR_DATA", tempfile.mkdtemp())
 
 from radar import collect as c  # noqa: E402
 
@@ -21,16 +23,31 @@ def rss(items):
     return f'<?xml version="1.0"?><rss version="2.0"><channel>{body}</channel></rss>'.encode()
 
 
-class CollectTests(unittest.TestCase):
-    def test_parse_rss_limpa_html_e_corta_descricao(self):
-        now = datetime.now(timezone.utc)
+class Base(unittest.TestCase):
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        p = mock.patch.object(c, "DATA", self.tmp)
+        p.start()
+        self.addCleanup(p.stop)
+
+    def run_collect(self, sources, fetch):
+        with mock.patch.object(c, "load_sources", lambda *a, **k: sources), mock.patch.object(c, "fetch_feed", fetch):
+            return c.collect(7, 40)
+
+    @staticmethod
+    def src(i="t"):
+        return {"id": i, "name": i.upper(), "kind": "noticia", "url": f"https://x.com/{i}"}
+
+
+class ParseTests(unittest.TestCase):
+    def test_rss_limpa_html_e_corta_descricao(self):
         long_desc = "<p>" + "palavra " * 100 + "</p>"
-        items = c.parse_feed(rss([("Título &amp; mais", "https://x.com/a?utm_source=zap", long_desc, now)]))
+        items = c.parse_feed(rss([("Título &amp; mais", "https://x.com/a?utm_source=zap", long_desc, datetime.now(timezone.utc))]))
         self.assertEqual(items[0]["title"], "Título & mais")
         self.assertLessEqual(len(items[0]["desc"]), c.MAX_DESC + 1)
         self.assertNotIn("<p>", items[0]["desc"])
 
-    def test_parse_atom(self):
+    def test_atom(self):
         atom = (b'<feed xmlns="http://www.w3.org/2005/Atom"><entry><title>T</title><link rel="alternate" href="https://x.com/b"/>'
                 b"<summary>Resumo</summary><updated>2026-10-04T15:00:00Z</updated></entry></feed>")
         items = c.parse_feed(atom)
@@ -42,44 +59,134 @@ class CollectTests(unittest.TestCase):
         self.assertEqual(items[0]["desc"], "")
 
     def test_url_canonica_ignora_rastreamento(self):
-        a = c.canonical_url("https://X.com/p?id=1&utm_source=a&fbclid=z#topo")
-        b = c.canonical_url("https://x.com/p?id=1")
-        self.assertEqual(a, b)
+        self.assertEqual(c.canonical_url("https://X.com/p?id=1&utm_source=a&fbclid=z#topo"), c.canonical_url("https://x.com/p?id=1"))
         self.assertEqual(c.article_id("https://x.com/p?id=1&utm_medium=m"), c.article_id("https://x.com/p?id=1"))
 
-    def test_collect_deduplica_e_respeita_janela(self):
+    def test_so_aceita_links_http_https(self):
+        for bad in ["javascript:alert(1)", "data:text/html,x", "vbscript:x", "ftp://x.com/a", "//x.com/a", "https://u:p@x.com/a",
+                    "https://x.com/a b", "", "https://" + "a" * 2100 + ".com"]:
+            self.assertEqual(c.safe_url(bad), "", bad)
+        self.assertEqual(c.safe_url("https://x.com/a?b=1"), "https://x.com/a?b=1")
+
+    def test_item_com_link_perigoso_vira_url_vazia(self):
+        items = c.parse_feed(rss([("Título", "javascript:alert(1)", "d", datetime.now(timezone.utc))]))
+        self.assertEqual(items[0]["url"], "")
+
+    def test_rejeita_xml_com_entidades(self):
+        evil = b'<?xml version="1.0"?><!DOCTYPE r [<!ENTITY a "aaaa"><!ENTITY b "&a;&a;&a;">]><rss><channel><item><title>&b;</title></item></channel></rss>'
+        with self.assertRaises(ValueError):
+            c.parse_feed(evil)
+
+    def test_tolera_e_comercial_solto_e_caracteres_invalidos(self):
+        raw = b'<?xml version="1.0"?><rss><channel><item><title>Saude & Educacao\x0b</title><link>https://x.com/a</link></item></channel></rss>'
+        self.assertEqual(c.parse_feed(raw)[0]["title"], "Saude & Educacao")
+
+    def test_limpa_caracteres_de_controle_e_bidi(self):
+        self.assertEqual(c.clean("a‮b\x07c"), "abc")
+
+
+class CollectTests(Base):
+    def test_deduplica_por_url_e_por_titulo_e_respeita_janela(self):
         now = datetime.now(timezone.utc)
         feed = rss([
             ("Nova", "https://x.com/nova", "d", now - timedelta(hours=1)),
             ("Antiga", "https://x.com/antiga", "d", now - timedelta(days=30)),
             ("Nova repetida", "https://x.com/nova?utm_source=x", "d", now - timedelta(hours=1)),
+            ("NOVA!", "https://x.com/outra-url", "d", now - timedelta(hours=2)),  # mesmo título, URL diferente
         ])
-        c.load_sources = lambda *a, **k: [{"id": "t", "name": "Teste", "kind": "noticia", "url": "https://x.com/feed"}]
-        c.fetch_feed = lambda src: c.parse_feed(feed)
-        c.time.sleep = lambda s: None
-        r1 = c.collect(7, 40)
-        r2 = c.collect(7, 40)
+        fetch = lambda s: c.parse_feed(feed)
+        r1 = self.run_collect([self.src()], fetch)
+        r2 = self.run_collect([self.src()], fetch)
         self.assertEqual(r1["novas"], 1)
         self.assertEqual(r2["novas"], 0)
         self.assertEqual(r1["total"], 1)
 
     def test_feed_quebrado_nao_derruba_os_outros(self):
-        now = datetime.now(timezone.utc)
-        good = c.parse_feed(rss([("Boa", "https://y.com/boa", "d", now)]))
+        good = c.parse_feed(rss([("Boa", "https://y.com/boa", "d", datetime.now(timezone.utc))]))
 
         def fetch(src):
             if src["id"] == "ruim":
                 raise RuntimeError("fora do ar")
             return good
 
-        c.load_sources = lambda *a, **k: [
-            {"id": "ruim", "name": "Ruim", "kind": "noticia", "url": "u1"},
-            {"id": "bom", "name": "Bom", "kind": "noticia", "url": "u2"},
-        ]
-        c.fetch_feed = fetch
-        r = c.collect(7, 40)
-        self.assertEqual(r["fontes"], 2)
-        self.assertEqual(r["fontes_ok"], 1)
+        r = self.run_collect([self.src("ruim"), self.src("bom")], fetch)
+        self.assertEqual((r["fontes"], r["fontes_ok"], r["fora_do_ar"]), (2, 1, ["ruim"]))
+
+    def test_link_perigoso_nunca_entra_no_arquivo(self):
+        feed = rss([("Ruim", "javascript:alert(1)", "d", datetime.now(timezone.utc)), ("Boa", "https://x.com/ok", "d", datetime.now(timezone.utc))])
+        self.run_collect([self.src()], lambda s: c.parse_feed(feed))
+        arts = json.loads((self.tmp / "articles.json").read_text())["articles"]
+        self.assertEqual([a["title"] for a in arts], ["Boa"])
+
+    def test_se_todos_os_feeds_falham_o_historico_e_mantido(self):
+        feed = rss([("Guardada", "https://x.com/g", "d", datetime.now(timezone.utc))])
+        self.run_collect([self.src()], lambda s: c.parse_feed(feed))
+
+        def down(src):
+            raise RuntimeError("rede caiu")
+
+        r = self.run_collect([self.src()], down)
+        self.assertEqual(r["fontes_ok"], 0)
+        self.assertEqual(r["total"], 1)  # nada foi perdido
+
+    def test_arquivo_corrompido_nao_e_sobrescrito(self):
+        (self.tmp / "articles.json").write_text("{quebrado", encoding="utf-8")
+        with self.assertRaises(c.StoreCorrupted):
+            self.run_collect([self.src()], lambda s: [])
+        self.assertTrue((self.tmp / "articles.corrompido.json").exists())
+
+    def test_escrita_atomica_nao_deixa_arquivo_temporario(self):
+        self.run_collect([self.src()], lambda s: [])
+        self.assertEqual(list(self.tmp.glob("*.tmp")), [])
+
+    def test_saude_so_muda_em_transicao(self):
+        down = lambda s: (_ for _ in ()).throw(RuntimeError("x"))
+        up = lambda s: []
+        self.run_collect([self.src()], down)
+        h1 = json.loads((self.tmp / "health.json").read_text())["t"]["down_since"]
+        self.assertTrue(h1)
+        mtime = (self.tmp / "health.json").stat().st_mtime_ns
+        self.run_collect([self.src()], down)  # continua fora do ar: arquivo não muda
+        self.assertEqual((self.tmp / "health.json").stat().st_mtime_ns, mtime)
+        self.assertEqual(json.loads((self.tmp / "health.json").read_text())["t"]["down_since"], h1)
+        self.run_collect([self.src()], up)  # voltou
+        self.assertEqual(json.loads((self.tmp / "health.json").read_text())["t"]["down_since"], "")
+
+    def test_teto_de_artigos(self):
+        now = datetime.now(timezone.utc)
+        feed = rss([(f"Titulo numero {i}", f"https://x.com/{i}", "d", now - timedelta(minutes=i)) for i in range(30)])
+        with mock.patch.object(c, "MAX_ARTICLES", 10):
+            r = self.run_collect([self.src()], lambda s: c.parse_feed(feed))
+        self.assertEqual(r["total"], 10)
+
+
+class DownloadTests(unittest.TestCase):
+    def test_nao_repete_em_erro_definitivo_mas_repete_em_erro_passageiro(self):
+        import requests
+
+        class Resp:
+            def __init__(self, code):
+                self.status_code, self.headers = code, {}
+            def __enter__(self): return self
+            def __exit__(self, *a): return False
+            def raise_for_status(self):
+                if self.status_code >= 400:
+                    raise requests.HTTPError(f"HTTP {self.status_code}")
+            def iter_content(self, n): yield b"<rss/>"
+
+        calls = []
+
+        def fake_get(url, **kw):
+            calls.append(url)
+            return Resp(404 if "404" in url else (503 if len(calls) == 1 else 200))
+
+        with mock.patch.object(c.requests, "get", fake_get), mock.patch.object(c.time, "sleep", lambda s: None):
+            with self.assertRaises(requests.HTTPError):
+                c._download("https://x.com/404")
+            self.assertEqual(len(calls), 1)
+            calls.clear()
+            self.assertEqual(c._download("https://x.com/ok"), b"<rss/>")
+            self.assertEqual(len(calls), 2)
 
 
 if __name__ == "__main__":

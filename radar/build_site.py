@@ -5,7 +5,9 @@ O JavaScript só melhora a experiência (busca, tamanho da letra, resumo e verif
 """
 import json
 import os
+import re
 import shutil
+import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -14,7 +16,7 @@ from zoneinfo import ZoneInfo
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from .collect import DATA, ROOT, load_json, load_sources
+from .collect import DATA, ROOT, load_json, load_sources, safe_url
 
 TZ = ZoneInfo("America/Sao_Paulo")
 MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro",
@@ -33,13 +35,62 @@ def weekday_date(d: datetime) -> str:
 def prepare(articles: list[dict], sources: dict, now: datetime) -> list[dict]:
     out = []
     for a in articles:
-        pub = datetime.fromisoformat(a["published"]).astimezone(TZ)
-        src = sources.get(a["source"], {"name": a["source"], "id": a["source"]})
+        try:
+            if not safe_url(a.get("url", "")) or not a.get("title"):
+                continue  # nunca renderiza link que não seja http(s)
+            pub = datetime.fromisoformat(a["published"]).astimezone(TZ)
+        except (KeyError, ValueError, TypeError):
+            continue  # registro quebrado não derruba o site inteiro
+        src = sources.get(a.get("source"), {"name": a.get("source", "?"), "id": a.get("source", "?")})
         same_day = pub.date() == now.date()
         out.append({**a, "source_name": src["name"], "source_id": src["id"], "dt": pub,
                     "day": pub.strftime("%Y-%m-%d"),
                     "time_label": pub.strftime("%H:%M") if same_day else pub.strftime("%d/%m %H:%M")})
     return out
+
+
+class BuildError(RuntimeError):
+    pass
+
+
+_LD = re.compile(r'<script type="application/ld\+json">(.*?)</script>', re.S)
+_BAD_HREF = re.compile(r'<a\b[^>]*\bhref="\s*(?:javascript|data|vbscript):', re.I)  # só links; o favicon usa data:
+
+
+def verify_site(path: Path, min_items: int = 0) -> list[str]:
+    """Confere o site gerado antes de publicar. Devolve a lista de problemas (vazia = ok)."""
+    problems: list[str] = []
+    required = ["index.html", "404.html", "sitemap.xml", "robots.txt", "verificador/index.html", "sobre/index.html",
+                "privacidade/index.html", "data/search-index.json", "data/allowed-hosts.json", "style.css", "app.js"]
+    for f in required:
+        if not (path / f).is_file():
+            problems.append(f"arquivo ausente: {f}")
+    if problems:
+        return problems
+    try:
+        ET.parse(path / "sitemap.xml")
+    except ET.ParseError as exc:
+        problems.append(f"sitemap.xml inválido: {exc}")
+    for f in ("data/search-index.json", "data/allowed-hosts.json"):
+        try:
+            json.loads((path / f).read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            problems.append(f"{f} inválido: {exc}")
+    for page in path.rglob("*.html"):
+        rel, text = page.relative_to(path), page.read_text(encoding="utf-8")
+        if "<title>" not in text or 'rel="canonical"' not in text or 'name="description"' not in text:
+            problems.append(f"{rel}: falta title, canonical ou description")
+        if _BAD_HREF.search(text):
+            problems.append(f"{rel}: link com esquema perigoso")
+        for m in _LD.finditer(text):
+            try:
+                json.loads(m.group(1))
+            except json.JSONDecodeError as exc:
+                problems.append(f"{rel}: JSON-LD inválido ({exc})")
+    n = (path / "index.html").read_text(encoding="utf-8").count('class="item"')
+    if n < min_items:
+        problems.append(f"home com {n} itens; esperado pelo menos {min_items}")
+    return problems
 
 
 def build(out_dir: str = "site") -> str:
@@ -53,19 +104,23 @@ def build(out_dir: str = "site") -> str:
     sources = {s["id"]: s for s in all_sources}
     store = load_json(DATA / "articles.json", {"updated": None, "articles": []})
     status = load_json(DATA / "status.json", {})
+    health = load_json(DATA / "health.json", {})
     now = datetime.now(TZ)
 
     items = prepare(store["articles"], sources, now)
     news = [a for a in items if a["kind"] == "noticia"]
     checks = [a for a in items if a["kind"] == "checagem"]
 
-    out = ROOT / out_dir
+    final = ROOT / out_dir
+    out = final.with_name(final.name + ".new")  # monta numa pasta temporária; só troca se passar na verificação
     if out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True)
 
     env = Environment(loader=FileSystemLoader(ROOT / "templates"), autoescape=select_autoescape(["html", "xml"]))
-    env.filters["jsonld"] = lambda v: json.dumps(v, ensure_ascii=False).replace("</", "<\\/")
+    # JSON dentro de <script>: escapa < > & e separadores de linha para nunca "fechar" a tag
+    env.filters["jsonld"] = lambda v: (json.dumps(v, ensure_ascii=False).replace("<", "\\u003c").replace(">", "\\u003e")
+                                       .replace("&", "\\u0026").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029"))
 
     news_sources = [s for s in all_sources if s["kind"] == "noticia"]
     check_sources = [s for s in all_sources if s["kind"] == "checagem"]
@@ -81,6 +136,7 @@ def build(out_dir: str = "site") -> str:
         "cfg": cfg, "news_sources": news_sources, "check_sources": check_sources, "counts": counts,
         "now": now, "today_long": long_date(now), "weekday_long": weekday_date(now),
         "updated_label": now.strftime("%d/%m/%Y às %H:%M"), "checks": checks[:6],
+        "built_iso": datetime.now(timezone.utc).isoformat(timespec="seconds"), "health": health,
     }
     pages: list[tuple[str, str | None]] = []  # (caminho, lastmod) para o sitemap
 
@@ -172,4 +228,10 @@ def build(out_dir: str = "site") -> str:
 
     for f in (ROOT / "templates" / "static").iterdir():
         shutil.copy(f, out / f.name)
-    return str(out / "index.html")
+    problems = verify_site(out, min_items=min(len(news), page_size))
+    if problems:
+        raise BuildError("site gerado não passou na verificação:\n  - " + "\n  - ".join(problems))
+    if final.exists():
+        shutil.rmtree(final)
+    os.replace(out, final)
+    return str(final / "index.html")

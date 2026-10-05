@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: radar
@@ -15,6 +16,7 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     env:
       HAS_CLOUDFLARE: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
     steps:
@@ -25,35 +27,52 @@ jobs:
           python-version: "3.12"
           cache: pip
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
       - run: pip install -r requirements.txt
 
-      # Coleta é só RSS: sem IA e sem custo.
+      # Código quebrado nunca chega ao ar: testes antes de qualquer coleta ou publicação.
+      - name: Testes
+        run: |
+          python -m unittest discover -s tests
+          node --test tests/functions.test.mjs
+
+      # Coleta é só RSS: sem IA e sem custo. Falha (e avisa) se nenhuma fonte responder.
       - name: Coletar notícias
         run: python -m radar collect
 
       - name: Houve novidade?
         id: changes
         run: |
-          git add -f data/articles.json
+          git add -f data/articles.json data/health.json
           if git diff --staged --quiet; then echo "changed=false" >> "$GITHUB_OUTPUT"; else echo "changed=true" >> "$GITHUB_OUTPUT"; fi
 
-      - name: Guardar dados no repositório
-        if: steps.changes.outputs.changed == 'true'
-        run: |
-          git config user.name "radar-bot"
-          git config user.email "radar-bot@users.noreply.github.com"
-          git commit -m "dados: $(date -u +%FT%TZ)"
-          git pull --rebase --autostash
-          git push
-
-      - name: Gerar o site
+      - name: Gerar e verificar o site
         if: steps.changes.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
         env:
           SITE_URL: ${{ vars.SITE_URL }}
           ADSENSE_CLIENT: ${{ vars.ADSENSE_CLIENT }}
           TURNSTILE_SITEKEY: ${{ vars.TURNSTILE_SITEKEY }}
           CONTACT_EMAIL: ${{ vars.CONTACT_EMAIL }}
-        run: python -m radar build
+        run: |
+          python -m radar build
+          python -m radar verify
+
+      # Só guarda os dados depois que o site foi gerado e verificado com sucesso.
+      - name: Guardar dados no repositório
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "radar-bot"
+          git config user.email "radar-bot@users.noreply.github.com"
+          git commit -m "dados: $(date -u +%FT%TZ)"
+          for i in 1 2 3; do
+            git pull --rebase --autostash && git push && exit 0
+            sleep $((i * 5))
+          done
+          echo "não foi possível enviar os dados" >&2
+          exit 1
 
       - name: Publicar no Cloudflare Pages
         if: env.HAS_CLOUDFLARE == 'true' && (steps.changes.outputs.changed == 'true' || github.event_name == 'workflow_dispatch')
@@ -62,3 +81,30 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy site --project-name=${{ vars.CF_PROJECT || 'radar-noticias' }} --branch=main
+
+      - name: Conferir se o site respondeu
+        if: env.HAS_CLOUDFLARE == 'true' && vars.SITE_URL != '' && (steps.changes.outputs.changed == 'true' || github.event_name == 'workflow_dispatch')
+        run: |
+          sleep 10
+          curl -fsS --retry 4 --retry-delay 10 --max-time 20 "${{ vars.SITE_URL }}/" | grep -q "<title>"
+
+      # Alerta: abre uma issue (uma só) quando algo falha e fecha quando volta a funcionar.
+      - name: Abrir alerta se falhou
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$(gh issue list --label monitoramento --state open --json number --jq '.[0].number')" ]; then
+            gh label create monitoramento --color B60205 --description "Falha no monitoramento" 2>/dev/null || true
+            gh issue create --title "Falha no monitoramento de notícias" --label monitoramento \
+              --body "O workflow falhou: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          fi
+
+      - name: Fechar alerta se voltou ao normal
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for n in $(gh issue list --label monitoramento --state open --json number --jq '.[].number'); do
+            gh issue close "$n" --comment "Voltou a funcionar: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          done
