@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Radar de Notícias</title>
+  <meta name="description" content="As principais notícias do dia, agrupadas por assunto, com resumos neutros e um termômetro dos temas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-top">
+      <span id="today-label"></span>
+      <span>Atualizado em {{ generated }}</span>
+    </div>
+    <h1>Radar de Notícias</h1>
+    <p class="tagline">O dia em um só lugar. Resumos por assunto, sempre com link para a fonte.</p>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="hoje" class="active">Edição do dia</button>
+      <button role="tab" data-tab="resumos">Resumos</button>
+      <button role="tab" data-tab="regua">Régua dos temas</button>
+      <button role="tab" data-tab="sobre">Como funciona</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="tab-hoje" class="panel active">
+      <div class="toolbar">
+        <label>Dia <select id="f-day"></select></label>
+        <label>Tema <select id="f-tema"><option value="">Todos</option></select></label>
+        <label>Fonte <select id="f-fonte"><option value="">Todas</option></select></label>
+        <label class="search">Buscar <input id="f-q" type="search" placeholder="palavra na manchete"></label>
+        <label class="check"><input id="f-multi" type="checkbox"> Só assuntos cobertos por 2+ fontes</label>
+      </div>
+      <p id="count" class="count"></p>
+      <div id="feed"></div>
+    </section>
+
+    <section id="tab-resumos" class="panel">
+      <div id="resumos"></div>
+    </section>
+
+    <section id="tab-regua" class="panel">
+      <h2>Régua dos temas</h2>
+      <p class="muted">Quanto cada tema pesou na cobertura, dia a dia (número de matérias agrupadas). Quanto mais escuro, mais espaço o assunto ocupou. Um ponto marca dias em que o clima da cobertura foi de tensão.</p>
+      <div id="regua" class="regua-wrap"></div>
+    </section>
+
+    <section id="tab-sobre" class="panel prose">
+      <h2>Como funciona</h2>
+      <p>Todo dia o Radar baixa os feeds RSS de grandes veículos brasileiros. Guardamos só a manchete, o link e um trecho curto. O texto das matérias não é copiado: para ler, você clica e vai ao site da fonte.</p>
+      <p>Matérias sobre o mesmo fato são agrupadas por similaridade de texto. Cada grupo recebe um resumo curto, escrito por inteligência artificial com as próprias palavras do modelo, e é classificado por tema e por clima da cobertura (neutro, tenso ou positivo).</p>
+      <h3>Limites que você deve conhecer</h3>
+      <ul>
+        <li>Resumos de IA podem errar. Em caso de dúvida, confira a fonte pelos links.</li>
+        <li>O agrupamento é automático e às vezes junta ou separa assuntos de forma imperfeita.</li>
+        <li>"Clima da cobertura" é uma classificação automática do tom das matérias, não um julgamento sobre quem tem razão.</li>
+        <li>A régua mede volume de cobertura, não importância real do assunto.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>Radar de Notícias · projeto independente · os direitos das matérias pertencem aos respectivos veículos.</footer>
+
+  <script id="radar-data" type="application/json">{{ data_json|safe }}</script>
+  <script src="app.js"></script>
+</body>
+</html>

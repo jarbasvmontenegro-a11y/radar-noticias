@@ -1,0 +1,33 @@
+{
+  "_nota": "Só RSS: manchete, link e trecho curto. Não copiamos o texto das matérias. Confirme cada URL com `python -m radar check-feeds`; feeds mudam de endereço com frequência.",
+  "sources": [
+    {"id": "g1-politica", "name": "g1", "section": "politica", "url": "https://g1.globo.com/rss/g1/politica/"},
+    {"id": "g1-economia", "name": "g1", "section": "economia", "url": "https://g1.globo.com/rss/g1/economia/"},
+    {"id": "g1-brasil", "name": "g1", "section": "geral", "url": "https://g1.globo.com/rss/g1/brasil/"},
+    {"id": "folha-poder", "name": "Folha de S.Paulo", "section": "politica", "url": "https://feeds.folha.uol.com.br/poder/rss091.xml"},
+    {"id": "folha-mercado", "name": "Folha de S.Paulo", "section": "economia", "url": "https://feeds.folha.uol.com.br/mercado/rss091.xml"},
+    {"id": "uol-noticias", "name": "UOL", "section": "geral", "url": "https://rss.uol.com.br/feed/noticias.xml"},
+    {"id": "cnn-politica", "name": "CNN Brasil", "section": "politica", "url": "https://www.cnnbrasil.com.br/politica/feed/"},
+    {"id": "cnn-economia", "name": "CNN Brasil", "section": "economia", "url": "https://www.cnnbrasil.com.br/economia/feed/"},
+    {"id": "agenciabrasil-politica", "name": "Agência Brasil", "section": "politica", "url": "https://agenciabrasil.ebc.com.br/rss/politica/feed.xml"},
+    {"id": "agenciabrasil-economia", "name": "Agência Brasil", "section": "economia", "url": "https://agenciabrasil.ebc.com.br/rss/economia/feed.xml"},
+    {"id": "poder360", "name": "Poder360", "section": "politica", "url": "https://www.poder360.com.br/feed/"},
+    {"id": "gazeta-republica", "name": "Gazeta do Povo", "section": "politica", "url": "https://www.gazetadopovo.com.br/feed/rss/republica.xml"},
+    {"id": "cartacapital", "name": "CartaCapital", "section": "politica", "url": "https://www.cartacapital.com.br/feed/"},
+    {"id": "metropoles", "name": "Metrópoles", "section": "politica", "url": "https://www.metropoles.com/feed"},
+    {"id": "bbc-brasil", "name": "BBC News Brasil", "section": "geral", "url": "https://feeds.bbci.co.uk/portuguese/rss.xml"},
+    {"id": "dw-brasil", "name": "DW Brasil", "section": "internacional", "url": "https://rss.dw.com/xml/rss-br-all"}
+  ],
+  "temas": [
+    "Congresso",
+    "Governo federal",
+    "Judiciário",
+    "Eleições",
+    "Economia",
+    "Segurança",
+    "Política externa",
+    "Saúde e educação",
+    "Meio ambiente",
+    "Outros"
+  ]
+}
