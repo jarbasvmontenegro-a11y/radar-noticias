@@ -1,0 +1,78 @@
+{
+ "agencia-brasil": {
+  "down_since": "",
+  "last_ok": "2026-10-05"
+ },
+ "agencia-camara": {
+  "down_since": "",
+  "last_ok": "2026-10-05"
+ },
+ "agencia-senado": {
+  "down_since": "",
+  "last_ok": "2026-10-05"
+ },
+ "aos-fatos": {
+  "down_since": "",
+  "last_ok": "2026-10-05"
+ },
+ "bbc-brasil": {
+  "down_since": "",
+  "last_ok": "2026-10-05"
+ },
+ "cartacapital": {
+  "down_since": "",
+  "last_ok": "2026-10-05"
+ },
+ "cnn-brasil": {
+  "down_since": "2026-10-05 03:00",
+  "last_ok": ""
+ },
+ "comprova": {
+  "down_since": "",
+  "last_ok": "2026-10-05"
+ },
+ "correio-braziliense": {
+  "down_since": "2026-10-05 03:00",
+  "last_ok": ""
+ },
+ "estadao": {
+  "down_since": "",
+  "last_ok": "2026-10-05"
+ },
+ "estadao-verifica": {
+  "down_since": "",
+  "last_ok": "2026-10-05"
+ },
+ "folha": {
+  "down_since": "",
+  "last_ok": "2026-10-05"
+ },
+ "g1": {
+  "down_since": "",
+  "last_ok": "2026-10-05"
+ },
+ "gazeta-do-povo": {
+  "down_since": "",
+  "last_ok": "2026-10-05"
+ },
+ "lupa": {
+  "down_since": "",
+  "last_ok": "2026-10-05"
+ },
+ "o-globo": {
+  "down_since": "",
+  "last_ok": "2026-10-05"
+ },
+ "poder360": {
+  "down_since": "",
+  "last_ok": "2026-10-05"
+ },
+ "uol": {
+  "down_since": "2026-10-05 03:00",
+  "last_ok": ""
+ },
+ "valor": {
+  "down_since": "2026-10-05 03:00",
+  "last_ok": ""
+ }
+}
