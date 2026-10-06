@@ -1,0 +1,8 @@
+{
+  "_nota": "Manchetes de modelo, repetidas às centenas (uma por município, por exemplo), que inundariam a lista. Expressões regulares sem diferenciar maiúsculas; valem para todas as fontes.",
+  "titulos": [
+    "^resultado das elei[çc][õo]es \\d{4} em .+\\([A-Z]{2}\\)",
+    "^v[íi]deos?:",
+    "^(veja|confira) (os )?resultados? (das elei[çc][õo]es )?(em|no|na) .+\\([A-Z]{2}\\)"
+  ]
+}

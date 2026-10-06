@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       tarefa:
-        description: "Qual diagnóstico rodar: feeds, apis, fontes, extracao ou tudo"
+        description: "Qual diagnóstico rodar: feeds, apis, fontes, extracao, coleta ou tudo"
         default: "tudo"
 
 permissions:
@@ -40,6 +40,11 @@ jobs:
         if: inputs.tarefa == 'fontes' || inputs.tarefa == 'tudo'
         continue-on-error: true
         run: python scripts/preparar_fontes.py diag/fonts
+
+      - name: Ensaio de coleta (filtros e fontes)
+        if: inputs.tarefa == 'coleta' || inputs.tarefa == 'tudo'
+        continue-on-error: true
+        run: python scripts/diagnostico_coleta.py diag
 
       - uses: actions/setup-node@v4
         if: inputs.tarefa == 'extracao' || inputs.tarefa == 'tudo'

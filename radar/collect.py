@@ -17,6 +17,7 @@ import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
+from functools import lru_cache
 from pathlib import Path
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
@@ -241,24 +242,67 @@ def _download(url: str) -> bytes:
     raise last
 
 
+def source_urls(source: dict) -> list[str]:
+    return list(source.get("urls") or ([source["url"]] if source.get("url") else []))
+
+
+def merge_entries(groups: list[list[dict]]) -> list[dict]:
+    """Junta entradas de feed e sitemap do mesmo veículo: sem repetir link; a versão com descrição vence."""
+    merged: dict[str, dict] = {}
+    for entries in groups:
+        for e in entries:
+            key = canonical_url(e["url"]) if e["url"] else "t|" + e["title"]
+            cur = merged.get(key)
+            if cur is None:
+                merged[key] = dict(e)
+                continue
+            if e["desc"] and not cur["desc"]:
+                cur["desc"] = e["desc"]
+            if not cur["published"]:
+                cur["published"] = e["published"]
+    return list(merged.values())
+
+
 def fetch_feed(source: dict) -> list[dict]:
-    return parse_entries(_download(source["url"]))
+    """Baixa o endereço da fonte (ou todos, quando há feed e sitemap). Só falha se NENHUM endereço responder."""
+    groups, errors = [], []
+    for url in source_urls(source):
+        try:
+            groups.append(parse_entries(_download(url)))
+        except Exception as exc:  # noqa: BLE001 (um endereço fora do ar não derruba os outros da mesma fonte)
+            errors.append(f"{type(exc).__name__}: {str(exc)[:100]}")
+    if not groups:
+        raise RuntimeError("; ".join(errors) or "fonte sem endereço")
+    return merge_entries(groups)
 
 
 # ---------------------------------------------------------------- filtros por fonte
+@lru_cache(maxsize=1)
+def _noise():
+    """Manchetes de modelo repetidas aos montes (uma por município, por exemplo): não ajudam o leitor e inundam a lista."""
+    cfg = load_json(ROOT / "config" / "ruido.json", {})
+    pats = [re.compile(p, re.I) for p in cfg.get("titulos", [])]
+    return pats
+
+
 def keep_entry(src: dict, e: dict) -> bool:
-    """Feeds gerais trazem de tudo (esporte, polícia...). Cada fonte pode pedir: "include"/"exclude" (trechos da URL)
-    e "politica": true (só manchetes de política, por palavras-chave)."""
-    url = e["url"]
-    inc, exc = src.get("include") or [], src.get("exclude") or []
-    if inc and not any(x in url for x in inc):
+    """Feeds gerais trazem de tudo (esporte, polícia...). Cada fonte pode pedir:
+    "include": trechos de URL que já indicam política (seção);
+    "politica": true  -> o que não casar com "include" só entra se a manchete tiver cara de política (palavras-chave);
+    "exclude": trechos de URL a descartar.
+    Sem "include" nem "politica", tudo entra. Manchetes de modelo (config/ruido.json) são sempre descartadas."""
+    url, title = e["url"], e["title"]
+    if any(p.search(title) for p in _noise()):
         return False
-    if any(x in url for x in exc):
+    if any(x in url for x in src.get("exclude") or []):
         return False
+    inc = src.get("include") or []
+    if inc and any(x in url for x in inc):
+        return True
     if src.get("politica"):
         from .relevance import is_political
-        return is_political(f"{e['title']} {e['desc']}")
-    return True
+        return is_political(f"{title} {e['desc']}")
+    return not inc
 
 
 def _newest_first(entries: list[dict]) -> list[dict]:
@@ -274,7 +318,7 @@ def _fetch_all(sources: list[dict]) -> dict:
         except Exception as exc:  # um feed quebrado não derruba os outros
             return src["id"], [], f"{type(exc).__name__}: {str(exc)[:140]}"
 
-    with ThreadPoolExecutor(max_workers=6) as pool:
+    with ThreadPoolExecutor(max_workers=16) as pool:
         return {sid: (entries, err) for sid, entries, err in pool.map(one, sources)}
 
 
