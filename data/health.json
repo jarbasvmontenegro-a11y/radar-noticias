@@ -1,4 +1,20 @@
 {
+ "a-gazeta-ac": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "a-gazeta-es": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "a-tarde": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "ac24horas": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
  "agencia-brasil": {
   "down_since": "",
   "last_ok": "2026-10-06"
@@ -15,7 +31,35 @@
   "down_since": "",
   "last_ok": "2026-10-06"
  },
+ "apublica": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "bahia-noticias": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
  "bbc-brasil": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "bem-parana": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "boatos": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "brasil-de-fato": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "brasil247": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "campo-grande-news": {
   "down_since": "",
   "last_ok": "2026-10-06"
  },
@@ -23,15 +67,47 @@
   "down_since": "",
   "last_ok": "2026-10-06"
  },
+ "cidade-verde": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "clickpb": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
  "cnn-brasil": {
-  "down_since": "2026-10-05 03:00",
-  "last_ok": ""
+  "down_since": "",
+  "last_ok": "2026-10-06"
  },
  "comprova": {
   "down_since": "",
   "last_ok": "2026-10-06"
  },
+ "conjur": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "correio-24h": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
  "correio-braziliense": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "diario-do-nordeste": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "diario-do-para": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "e-farsas": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "em-tempo": {
   "down_since": "",
   "last_ok": "2026-10-06"
  },
@@ -43,7 +119,31 @@
   "down_since": "",
   "last_ok": "2026-10-06"
  },
+ "estado-de-minas": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "exame": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "fato-ou-fake": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
  "folha": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "folha-pe": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "folha-vitoria": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "folhabv": {
   "down_since": "",
   "last_ok": "2026-10-06"
  },
@@ -51,7 +151,155 @@
   "down_since": "",
   "last_ok": "2026-10-06"
  },
+ "g1-ac": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-al": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-am": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-ap": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-ba": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-ce": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-df": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-es": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-go": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-ma": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-mg": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-ms": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-mt": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-pa": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-pb": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-pe": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-pi": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-pr": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-rj": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-rn": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-ro": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-rr": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-rs": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-sc": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-se": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-sp": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "g1-to": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
  "gazeta-do-povo": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "gazetaweb": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "imirante": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "infomoney": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "infonet": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "intercept": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "istoe": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "jornal-da-paraiba": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "jornal-opcao": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "jota": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "jovem-pan": {
   "down_since": "",
   "last_ok": "2026-10-06"
  },
@@ -59,7 +307,67 @@
   "down_since": "",
   "last_ok": "2026-10-06"
  },
+ "mais-goias": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "metropoles": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "nd-mais": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "nexo": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "nsc": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "o-dia": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
  "o-globo": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "o-imparcial": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "o-liberal": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "o-povo": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "o-tempo": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "oeste": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "paraiba-online": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "pgr": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "piaui": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "plural": {
   "down_since": "",
   "last_ok": "2026-10-06"
  },
@@ -67,12 +375,44 @@
   "down_since": "",
   "last_ok": "2026-10-06"
  },
+ "r7": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "selesnafes": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "stf": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "tcu": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "tnh1": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "tribuna-do-norte": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "tribuna-pr": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
  "uol": {
-  "down_since": "2026-10-05 03:00",
-  "last_ok": ""
+  "down_since": "",
+  "last_ok": "2026-10-06"
  },
  "valor": {
-  "down_since": "2026-10-05 03:00",
-  "last_ok": ""
+  "down_since": "",
+  "last_ok": "2026-10-06"
+ },
+ "veja": {
+  "down_since": "",
+  "last_ok": "2026-10-06"
  }
 }
