@@ -15,11 +15,11 @@ GitHub Actions (a cada 30 min)                         Cloudflare Pages
 
 | Peça | Onde | Observação |
 |---|---|---|
-| Fontes | `config/sources.json` | 15 veículos de política + 4 agências de checagem |
+| Fontes | `config/sources.json` | 100+ fontes: nacionais, oficiais, checagem e regionais (todos os g1 estaduais e veículos locais), cada uma com feed e/ou sitemap |
 | Coleta | `radar/collect.py` | só título, descrição de até 260 caracteres e link |
-| Site | `radar/build_site.py`, `templates/` | HTML puro, sem framework, fontes do sistema (rápido) |
+| Site | `radar/build_site.py`, `templates/` | HTML puro, sem framework, fontes próprias (Newsreader e Atkinson Hyperlegible, licença OFL); páginas por fonte, tema, dia e estado (`radar/geo.py` marca os estados citados), listas paginadas |
 | Resumo | `functions/api/resumir.js` | lê a matéria no servidor, resume, guarda cache por 24 h |
-| Verificador | `functions/api/verificar.js`, `lib/verify.js` | veredito vem **só** de agências de checagem |
+| Verificador | `functions/api/verificar.js`, `lib/*.js` | "é falso/verdadeiro" só vem de agência; sem agência o Radar dá uma avaliação própria, identificada, com motivos |
 | Configuração | `config/site.json` | nome, anúncios, Turnstile, janela de dias |
 
 ## Rodar localmente
@@ -53,15 +53,15 @@ node --test tests/functions.test.mjs tests/share.test.mjs      # testes das fun�
 
 Repositório privado gasta minutos do Actions (2.000/mês no plano grátis, e o intervalo de 30 min usa quase tudo). Em repositório público é ilimitado.
 
-## Controle de custo da IA
+## Controle de custo da IA e segurança
 
 - Busca de notícias nunca chama IA.
-- Resumo e verificador só rodam por clique, com **cache de 24 h** (o mesmo link ou texto não é processado duas vezes).
-- **Limite por IP** (10/dia por função) e **teto diário global** (1.500). Se o teto estourar, a função para de responder.
-- Sem KV ou sem chave configurados, as funções se recusam a rodar.
-- O resumo só aceita links dos domínios monitorados.
-- Recomendado: ativar o **Cloudflare Turnstile** (grátis) e uma regra de *Rate Limiting* no painel do Cloudflare para `/api/*`.
-- Estimativa: cada resumo usa cerca de 2 mil tokens de entrada e 150 de saída. Com modelos baratos, 1.000 resumos custam centavos.
+- Resumo e verificador só rodam por clique, com **cache de 24 h**.
+- As APIs só respondem ao próprio site (cabeçalho `Origin` obrigatório). Isso barra uso casual, mas **um script pode forjar o `Origin`**: a proteção real é o **Cloudflare Turnstile**, que ainda precisa ser ligado (passo a passo em `docs/SEGURANCA.md`).
+- Sem Turnstile: 5 usos por IP por dia e teto global de 300. Com Turnstile: 10 por IP e 1.500. Se o contador (KV) falhar, a IA não é chamada.
+- O resumo só aceita links dos domínios monitorados e valida cada redirecionamento (anti-SSRF).
+- Cabeçalhos de segurança (CSP por hash, HSTS, COOP/CORP) são gerados no build.
+- `scripts/pentest_site.mjs` ataca o site no ar (workflow "Segurança e Turnstile", `acao = atacar`) e gera o relatório por padrão OWASP/ASVS/CWE.
 
 ## Verificador de fake news: o que faz e o que não faz
 
