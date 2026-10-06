@@ -95,9 +95,13 @@ class BuildTests(unittest.TestCase):
         b.build(self.out)
         home = (b.ROOT / self.out / "index.html").read_text(encoding="utf-8")
         self.assertIn("https://wa.me/?text=", home)
-        self.assertIn("Como cada veículo contou", home)
-        self.assertIn("Também em", home)
+        self.assertIn("Assuntos em alta", home)
+        self.assertIn("Mais 2 manchetes sobre o mesmo assunto", home)  # as três manchetes parecidas viram uma entrada
         self.assertIn("Enviar no WhatsApp", home)
+        assuntos = (b.ROOT / self.out / "assuntos" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("Como cada veículo contou", assuntos)
+        self.assertIn("reforma tributária", assuntos.lower())
+        self.assertIn('id="aq"', assuntos)
 
     def test_paginas_por_estado_e_lista_de_estados(self):
         self.write([article(1, title="Governador do Ceará anuncia obras em Fortaleza"), article(2, title="Senado aprova projeto de lei")])
@@ -206,12 +210,16 @@ class BuildTests(unittest.TestCase):
         b.build(self.out)
         home = (b.ROOT / self.out / "index.html").read_text(encoding="utf-8")
         self.assertIn("Assunto da IA 0", home)
-        self.assertIn("agrupados por IA", home)
-        self.assertIn("Também em alta", home)
+        self.assertIn("Agrupados por IA", home)
+        assuntos = (b.ROOT / self.out / "assuntos" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("Assunto da IA 2", assuntos)
+        self.assertIn("agrupados por IA", assuntos)
+        # o agrupamento da IA também esconde repetições nas listas: 4 manchetes de cada assunto viram uma entrada
+        self.assertGreaterEqual(home.count("sobre o mesmo assunto"), 3)
         # sem arquivo: volta ao agrupamento por palavras e não promete IA
         (self.tmp / "destaques_ia.json").unlink()
         b.build(self.out)
-        self.assertNotIn("agrupados por IA", (b.ROOT / self.out / "index.html").read_text(encoding="utf-8"))
+        self.assertNotIn("Agrupados por IA", (b.ROOT / self.out / "index.html").read_text(encoding="utf-8"))
 
     def test_mensagem_do_zap_tem_descricao_e_link_no_fim(self):
         a = {"source_name": "Poder360", "title": "Título", "url": "https://p.com/x", "kind": "noticia",
@@ -306,14 +314,12 @@ class DestaquesIATests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             self.ia.chamar_ia("https://site.exemplo.org", "t", ["1|G1|x"], post=lambda u, **k: R(401))
 
-    def test_candidatos_so_levam_manchetes_de_assuntos_com_varios_veiculos(self):
-        t = ["Senado aprova projeto da reforma tributária em votação apertada", "Senado aprova reforma tributária após votação apertada",
-             "Reforma tributária aprovada no Senado em votação apertada"]
-        arts = [{"id": f"a{i}", "title": x, "source": s, "source_name": s, "dt": self.now - timedelta(minutes=i)} for i, (x, s) in enumerate(zip(t, ["g1", "folha", "uol"]))]
-        arts.append({"id": "solta", "title": "Assunto totalmente isolado sobre outra coisa", "source": "g1", "source_name": "g1", "dt": self.now})
+    def test_candidatos_sao_as_manchetes_recentes_numeradas(self):
+        mk = lambda i, h: {"id": f"a{i}", "title": f"Título {i} | com barra", "source": f"s{i}", "source_name": f"S{i}", "dt": self.now - timedelta(hours=h)}
+        arts = [mk(1, 1), mk(2, 5), mk(3, 31)]  # a terceira é velha demais
         cands = self.ia.candidatos(arts, self.now)
-        self.assertEqual({a["id"] for a in cands}, {"a0", "a1", "a2"})
+        self.assertEqual([a["id"] for a in cands], ["a1", "a2"])
         linhas, por_num = self.ia.numerar(cands)
-        self.assertTrue(linhas[0].startswith("1|") and len(por_num) == 3)
+        self.assertTrue(linhas[0].startswith("1|S1|") and len(por_num) == 2)
         self.assertEqual(linhas[0].count("|"), 2)  # barra no título não quebra o formato
 

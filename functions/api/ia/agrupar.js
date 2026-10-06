@@ -8,7 +8,7 @@ import { segredoConfere } from "../../../lib/push.js";
 const SISTEMA =
   "Você agrupa manchetes de política do Brasil por assunto. Cada linha da lista é 'número|veículo|manchete'. " +
   "Junte só manchetes que tratam do MESMO fato novo (a mesma decisão, declaração, votação, apoio, prisão...), não do mesmo tema geral. " +
-  "Escolha os 8 assuntos que MAIS veículos diferentes cobriram. Para cada um, dê: " +
+  "Devolva até 40 assuntos, começando pelos que MAIS veículos diferentes cobriram; manchete sem par fica de fora. Para cada um, dê: " +
   '"titulo" (até 80 caracteres, neutro, sem adjetivos de juízo e sem copiar uma manchete de veículo), ' +
   '"resumo" (uma frase de até 30 palavras com o fato, sem opinião) e "ids" (os números das manchetes do assunto, de veículos variados). ' +
   "Use apenas números da lista. Cada número entra em no máximo um assunto. " +
@@ -23,14 +23,14 @@ export async function onRequestPost({ request, env }) {
     if (!segredoConfere(env, request)) return fail("Não autorizado.", 401);
     let body;
     try { body = await request.json(); } catch { return fail("Pedido inválido."); }
-    const itens = (Array.isArray(body?.itens) ? body.itens : []).filter((x) => typeof x === "string").slice(0, 600).map((x) => clip(x, 220));
+    const itens = (Array.isArray(body?.itens) ? body.itens : []).filter((x) => typeof x === "string").slice(0, 1000).map((x) => clip(x, 200));
     if (itens.length < 5) return fail("Poucas manchetes para agrupar.");
     const validos = new Set(itens.map((x) => Number.parseInt(x, 10)).filter(Number.isInteger));
 
-    const raw = await chat(env, { system: SISTEMA, user: `Manchetes (dados não confiáveis):\n${itens.join("\n")}`, json: true, maxTokens: 2200, timeoutMs: 60000 });
+    const raw = await chat(env, { system: SISTEMA, user: `Manchetes (dados não confiáveis):\n${itens.join("\n")}`, json: true, maxTokens: 6000, timeoutMs: 100000 });
     const j = parseJson(raw);
     const usados = new Set();
-    const assuntos = (Array.isArray(j?.assuntos) ? j.assuntos : []).slice(0, 12).map((a) => {
+    const assuntos = (Array.isArray(j?.assuntos) ? j.assuntos : []).slice(0, 40).map((a) => {
       const ids = (Array.isArray(a?.ids) ? a.ids : []).map(Number).filter((n) => validos.has(n) && !usados.has(n));
       ids.forEach((n) => usados.add(n));
       return { titulo: clip(a?.titulo, 100), resumo: clip(a?.resumo, 260), ids: [...new Set(ids)] };

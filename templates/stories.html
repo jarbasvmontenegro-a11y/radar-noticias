@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block scripts %}<script src="/assuntos.js" defer></script>{% endblock %}
+
+{% block content %}
+<div class="page">
+  <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a> / <span>Assuntos</span></nav>
+  <h1>Como cada veículo contou</h1>
+  <p class="lead">Os assuntos que mais veículos publicaram, com a manchete de cada um lado a lado. Digite uma palavra para achar o assunto que você quer.</p>
+  <p class="sform-row"><label for="aq" class="sr">Buscar entre os assuntos</label>
+    <input id="aq" type="search" class="a-search" placeholder="Ex.: Ciro, reforma tributária, STF" autocomplete="off" maxlength="80"></p>
+  <p id="ainfo" class="sinfo" role="status" aria-live="polite">{{ historias|length }} assuntos.</p>
+  <div id="alist">
+    {% for h in historias %}
+    <details class="story" id="a{{ loop.index }}" data-q="{{ (h.titulo ~ ' ' ~ h.resumo ~ ' ' ~ h.names|join(' ') ~ ' ' ~ h.veiculos|map(attribute='title')|join(' '))|lower }}">
+      <summary><span class="t">{{ h.titulo }}</span> <span class="src">{{ h.n }} veículos</span></summary>
+      {% if h.resumo %}<p class="lead-by">{{ h.resumo }}</p>{% endif %}
+      <dl class="lead-rows">
+        {% for x in h.veiculos %}
+        <dt>{{ x.source_name }}</dt>
+        <dd><a href="{{ x.url }}" target="_blank" rel="noopener">{{ x.title }}</a></dd>
+        {% endfor %}
+      </dl>
+    </details>
+    {% else %}
+    <p class="empty">Ainda não há assuntos com vários veículos. A coleta roda de hora em hora.</p>
+    {% endfor %}
+  </div>
+  <p class="small">{% if ia_hora %}Os primeiros assuntos foram agrupados por IA às {{ ia_hora }} (duas vezes ao dia); {% endif %}os demais são agrupados por comparação de palavras. Os títulos e links são sempre dos veículos, e a ordem é pelo número de veículos. <a href="/sobre/">Como funciona</a></p>
+</div>
+{% endblock %}

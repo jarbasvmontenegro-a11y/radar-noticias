@@ -29,25 +29,19 @@ def arquivo():
     return _c.DATA / "destaques_ia.json"
 
 
-def candidatos(news: list[dict], now: datetime, max_grupos: int = 40, max_itens: int = 450) -> list[dict]:
-    """Manchetes que valem mandar para a IA: as que já aparecem em algum agrupamento por palavras (2+ veículos).
-    Manchete isolada não pode ser um dos assuntos mais falados, então não gasta espaço (nem dinheiro)."""
+def candidatos(news: list[dict], now: datetime, max_itens: int = 900) -> list[dict]:
+    """Manchetes das últimas 30 horas (nacionais e regionais), as mais recentes primeiro. A IA lê todas porque o agrupamento por
+    palavras erra justamente com redações diferentes do mesmo fato (e é isso que ela corrige)."""
     recentes = [a for a in news if (now - a["dt"]).total_seconds() < 30 * 3600]
-    itens, vistos = [], set()
-    for g in cluster(recentes)[:max_grupos]:
-        for a in g:
-            if a["id"] not in vistos:
-                vistos.add(a["id"])
-                itens.append(a)
-    itens.sort(key=lambda a: a["dt"], reverse=True)
-    return itens[:max_itens]
+    recentes.sort(key=lambda a: a["dt"], reverse=True)
+    return recentes[:max_itens]
 
 
 def numerar(cands: list[dict]) -> tuple[list[str], dict[int, dict]]:
     por_num, linhas = {}, []
     for i, a in enumerate(cands, 1):
         por_num[i] = a
-        titulo = re.sub(r"[|\r\n]+", " ", a["title"]).strip()[:150]
+        titulo = re.sub(r"[|\r\n]+", " ", a["title"]).strip()[:120]
         linhas.append(f"{i}|{a['source_name']}|{titulo}")
     return linhas, por_num
 
@@ -85,7 +79,7 @@ def segredo(token: str) -> str:
 
 
 def chamar_ia(site_url: str, token: str, linhas: list[str], post=requests.post) -> dict:
-    r = post(site_url.rstrip("/") + "/api/ia/agrupar", json={"itens": linhas}, timeout=(10, 100),
+    r = post(site_url.rstrip("/") + "/api/ia/agrupar", json={"itens": linhas}, timeout=(10, 130),
              headers={"Authorization": f"Bearer {segredo(token)}", "Content-Type": "application/json"})
     if r.status_code != 200:
         raise RuntimeError(f"HTTP {r.status_code}")
@@ -120,7 +114,7 @@ def gerar(force: bool = False, post=requests.post) -> int:
     sources = {s["id"]: s for s in _c.load_sources()}
     store = _c.load_json(_c.DATA / "articles.json", {"articles": []})
     items = prepare(store["articles"], sources, now)
-    news = [a for a in items if a["kind"] == "noticia" and sources.get(a["source"], {}).get("grupo", "nacional") != "regional"]
+    news = [a for a in items if a["kind"] == "noticia"]
     cands = candidatos(news, now)
     if len(cands) < 10:
         print("destaques-ia: poucas manchetes; mantendo o que existe.")
@@ -141,7 +135,7 @@ def gerar(force: bool = False, post=requests.post) -> int:
     return 0
 
 
-def aplicar(dados: dict | None, por_id: dict[str, dict], agora: datetime) -> list[dict] | None:
+def aplicar(dados: dict | None, por_id: dict[str, dict], agora: datetime, limite: int = TOPO, max_veiculos: int = 6) -> list[dict] | None:
     """Transforma o arquivo em destaques para a home. None = usar o agrupamento por palavras."""
     if not dados or not dados.get("assuntos"):
         return None
@@ -162,11 +156,10 @@ def aplicar(dados: dict | None, por_id: dict[str, dict], agora: datetime) -> lis
             if a["source"] not in vistos:
                 vistos.add(a["source"])
                 por_veiculo.append(a)
-        out.append({"lead": arts[0], "n": len(nomes), "names": nomes, "veiculos": por_veiculo[:6],
+        out.append({"lead": arts[0], "ids": [a["id"] for a in arts], "n": len(nomes), "names": nomes, "veiculos": por_veiculo[:max_veiculos],
                     "titulo": s["titulo"], "resumo": s.get("resumo", ""), "ia": True})
     out.sort(key=lambda h: (-h["n"], -h["lead"]["dt"].timestamp()))
-    out = out[:TOPO]
-    return out if len(out) >= 3 else None
+    return out[:limite] if len(out) >= 3 else None
 
 
 if __name__ == "__main__":

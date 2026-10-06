@@ -50,3 +50,38 @@ def topic_of(a: dict, topics: list[dict]) -> list[str]:
     text = fold(f"{a.get('title', '')} {a.get('desc', '')}")
     # casa o INÍCIO de palavra ("ministro" pega "ministros", mas "eua" não pega "continuação")
     return [t["id"] for t in topics if any(re.search(r"\b" + re.escape(fold(k).strip()), text) for k in t["keywords"])]
+
+
+def story_groups(items: list[dict], thr: float = 0.5, min_shared: int = 3, window_h: int = 36, lookback: int = 700) -> dict[str, int]:
+    """Número do "assunto" de cada manchete (chave = id), para esconder repetições nas listas.
+    Mais rigoroso que `cluster`: palavras raras pesam mais (o nome de um político pesa menos que "anulação"), exigem-se
+    ao menos `min_shared` palavras em comum e só se junta manchete publicada até `window_h` horas depois da outra.
+    Errar para menos: duas manchetes do mesmo fato podem ficar separadas, mas assuntos diferentes não devem se juntar."""
+    import math
+    from collections import Counter
+    from datetime import timedelta
+    ordered = sorted(items, key=lambda a: a["dt"], reverse=True)
+    tk = {a["id"]: tokens(a["title"]) for a in ordered}
+    df = Counter(w for t in tk.values() for w in t)
+    n = max(len(ordered), 2)
+    wt = {w: math.log(n / c) for w, c in df.items()}
+    groups: list[list] = []  # [tokens, ids, dt do mais recente]
+    out: dict[str, int] = {}
+    for a in ordered:
+        t = tk[a["id"]]
+        placed = False
+        if len(t) >= min_shared:
+            for gi in range(len(groups) - 1, max(-1, len(groups) - 1 - lookback), -1):
+                g = groups[gi]
+                if g[2] - a["dt"] > timedelta(hours=window_h):
+                    break
+                inter = t & g[0]
+                if len(inter) >= min_shared and sum(wt[w] for w in inter) >= thr * min(sum(wt[w] for w in t), sum(wt[w] for w in g[0])):
+                    g[0] |= t
+                    out[a["id"]] = gi
+                    placed = True
+                    break
+        if not placed:
+            groups.append([set(t), [a["id"]], a["dt"]])
+            out[a["id"]] = len(groups) - 1
+    return out

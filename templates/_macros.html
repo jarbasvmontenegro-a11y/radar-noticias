@@ -18,7 +18,11 @@
     </p>
     <h3 class="title"><a href="{{ a.url }}" target="_blank" rel="noopener">{{ a.title }}</a></h3>
     {% if a.desc %}<p class="desc">{{ a.desc }}</p>{% endif %}
-    {% if a.also %}<p class="also">Também em {{ a.also|join(", ") }}</p>{% endif %}
+    {% if a.mais %}
+    <details class="mais"><summary>Mais {{ a.mais|length }} {{ "manchete" if a.mais|length == 1 else "manchetes" }} sobre o mesmo assunto</summary>
+      <ul>{% for m in a.mais %}<li><a href="{{ m.url }}" target="_blank" rel="noopener">{{ m.title }}</a> <span class="src">{{ m.source_name }}, {{ m.hm }}</span></li>{% endfor %}</ul>
+    </details>
+    {% elif a.also %}<p class="also">Também em {{ a.also|join(", ") }}</p>{% endif %}
     <p class="actions">
       {% if a.kind == "noticia" %}<button type="button" class="lnk btn-sum" data-url="{{ a.url }}" data-title="{{ a.title }}" data-source="{{ a.source_name }}" data-desc="{{ a.desc }}">Resumir com IA</button>{% endif %}
       <a class="lnk" href="{{ a.url }}" target="_blank" rel="noopener" aria-label="Ler na fonte: {{ a.title }}">Ler na fonte</a>

@@ -23,7 +23,7 @@ from . import geo
 from . import destaques as destaques_mod
 from . import destaques_ia as ia_mod
 from . import pessoas as pessoas_mod
-from .cluster import cluster, topic_of
+from .cluster import cluster, story_groups, topic_of
 from .collect import DATA, ROOT, load_json, load_sources, safe_url
 
 TZ = ZoneInfo("America/Sao_Paulo")
@@ -100,7 +100,7 @@ def verify_site(path: Path, min_items: int = 0) -> list[str]:
     """Confere o site gerado antes de publicar. Devolve a lista de problemas (vazia = ok)."""
     problems: list[str] = []
     required = ["index.html", "404.html", "sitemap.xml", "robots.txt", "verificador/index.html", "sobre/index.html",
-                "privacidade/index.html", "notificacoes/index.html", "pessoas/index.html", "busca/index.html", "estados/index.html", "fontes/index.html", "data/search-index.json", "data/allowed-hosts.json", "data/municipios.json", "data/destaques.json", "style.css", "app.js", "share.js", "push.js", "busca.js", "sw.js",
+                "privacidade/index.html", "notificacoes/index.html", "pessoas/index.html", "busca/index.html", "assuntos/index.html", "estados/index.html", "fontes/index.html", "data/search-index.json", "data/allowed-hosts.json", "data/municipios.json", "data/destaques.json", "style.css", "app.js", "share.js", "push.js", "busca.js", "assuntos.js", "sw.js",
                 "manifest.webmanifest"]
     for f in required:
         if not (path / f).is_file():
@@ -187,6 +187,9 @@ def build(out_dir: str = "site") -> str:
         a["also"] = []
         a["pessoas_t"] = pessoas_mod.detect(a["title"])  # citadas no título
         a["pessoas"] = pessoas_mod.detect(f"{a['title']} {a.get('desc', '')}")  # no título ou na descrição
+    gids = story_groups(all_news)  # mesmo assunto = mesmo número; as listas escondem as repetições
+    for a in all_news:
+        a["gid"] = gids.get(a["id"])
     recent = [a for a in news if (now - a["dt"]).total_seconds() < 36 * 3600]
     groups = cluster(recent)
     for g in groups:
@@ -202,8 +205,28 @@ def build(out_dir: str = "site") -> str:
                 por_veiculo.append(x)
         highlights.append({"lead": g[0], "n": len(names), "names": names, "veiculos": por_veiculo[:6]})
     # assuntos do topo agrupados por IA (arquivo gerado 2x ao dia); sem arquivo válido, vale o agrupamento por palavras
-    ia = ia_mod.aplicar(load_json(DATA / "destaques_ia.json", None), {a["id"]: a for a in news}, datetime.now(timezone.utc))
+    ia_dados = load_json(DATA / "destaques_ia.json", None)
+    por_id = {a["id"]: a for a in all_news}
+    ia = ia_mod.aplicar(ia_dados, por_id, datetime.now(timezone.utc))
     ia_hora = ""
+    # página "Assuntos": todos os assuntos com vários veículos (os da IA primeiro), cada um com a manchete de cada veículo
+    historias = []
+    ia_todos = ia_mod.aplicar(ia_dados, por_id, datetime.now(timezone.utc), limite=40, max_veiculos=12) or []
+    usados = set()
+    for k, h in enumerate(ia_todos):
+        historias.append({**h, "ia": True})
+        usados |= set(h["ids"])
+        for aid in h["ids"]:  # o agrupamento da IA vale também para esconder repetições nas listas
+            por_id[aid]["gid"] = 1_000_000 + k
+    for g in groups[:40]:
+        if usados & {x["id"] for x in g} or ia_todos and len(historias) >= 40:
+            continue
+        por_v, vistos = [], set()
+        for x in g:
+            if x["source"] not in vistos:
+                vistos.add(x["source"])
+                por_v.append(x)
+        historias.append({"lead": g[0], "titulo": g[0]["title"], "resumo": "", "n": len(vistos), "names": sorted({x["source_name"] for x in g}), "veiculos": por_v[:12], "ia": False})
     if ia:
         highlights = ia
         gerado = load_json(DATA / "destaques_ia.json", {}).get("gerado", "")
@@ -277,13 +300,31 @@ def build(out_dir: str = "site") -> str:
     # --- listas paginadas ---------------------------------------------------------------
     page_size = cfg["page_size"]
 
-    def listing(base: str, arts: list[dict], max_pages: int = 15, **kw) -> None:
+    def colapsar(arts: list[dict]) -> list[dict]:
+        """Uma entrada por assunto: as manchetes repetidas (mesmo assunto) viram "mais N" sob a mais recente."""
+        lideres: dict[int, dict] = {}
+        out = []
+        for a in arts:
+            g = a.get("gid")
+            if g is None:
+                out.append(a)
+            elif g in lideres:
+                lideres[g]["mais"].append(a)
+            else:
+                lideres[g] = dict(a, mais=[])
+                out.append(lideres[g])
+        return out
+
+    def listing(base: str, arts: list[dict], max_pages: int = 15, agrupar: bool = True, **kw) -> None:
         """Página 1 em `base` e as seguintes em `base`pagina/N/ (noindex: o que vale para busca é a página 1)."""
+        total_manchetes = len(arts)
+        if agrupar:
+            arts = colapsar(arts)
         pages_n = max(1, min(max_pages, math.ceil(len(arts) / page_size)))
         title, desc = kw.pop("title"), kw.pop("description")
         for n in range(1, pages_n + 1):
             path = base if n == 1 else f"{base}pagina/{n}/"
-            render(path, "index.html", path=path, base=base, articles=arts[(n - 1) * page_size:n * page_size], total=len(arts),
+            render(path, "index.html", path=path, base=base, articles=arts[(n - 1) * page_size:n * page_size], total=total_manchetes, assuntos=len(arts),
                    page=n, pages=pages_n, noindex=n > 1, title=title if n == 1 else f"{title} (página {n})", description=desc, **kw)
 
     listing("/", news, active=None, highlights=highlights,
@@ -327,7 +368,7 @@ def build(out_dir: str = "site") -> str:
     # --- por fonte ----------------------------------------------------------------------
     for s in all_sources:
         lst = [a for a in items if a["source"] == s["id"]]
-        listing(f"/fonte/{s['id']}/", lst, max_pages=3, active=s["id"], source=s,
+        listing(f"/fonte/{s['id']}/", lst, max_pages=3, agrupar=False, active=s["id"], source=s,
                 title=f"{s['name']}: últimas notícias de política | {cfg['name']}",
                 description=f"Últimas manchetes de {s['name']} sobre política, reunidas pelo {cfg['name']}, com link para ler na fonte.",
                 heading=f"{s['name']}", subheading="Últimas manchetes de política")
@@ -371,6 +412,10 @@ def build(out_dir: str = "site") -> str:
     pages.append(("/notificacoes/", None))
     render("/busca/", "search.html", path="/busca/", noindex=True, title=f"Buscar nas manchetes | {cfg['name']}",
            description="Busque nas manchetes de política guardadas pelo Radar de Notícias.", pessoas_todas=pessoas_info)
+    render("/assuntos/", "stories.html", path="/assuntos/", title=f"Como cada veículo contou o mesmo assunto | {cfg['name']}",
+           description="Os assuntos mais noticiados de política, com a manchete de cada veículo lado a lado, e busca para achar o assunto que você quer.",
+           historias=historias)
+    pages.append(("/assuntos/", last))
     render("/sobre/", "about.html", path="/sobre/", title=f"Sobre e metodologia | {cfg['name']}",
            description="Como o Radar de Notícias funciona: quais fontes usa, como coleta, o que a IA faz e o que não faz.",
            status=status)
@@ -477,7 +522,7 @@ def build(out_dir: str = "site") -> str:
             shutil.copytree(f, out / f.name)
         else:
             shutil.copy(f, out / f.name)
-    problems = verify_site(out, min_items=min(len(news), page_size))
+    problems = verify_site(out, min_items=min(len(colapsar(news)), page_size))
     if problems:
         raise BuildError("site gerado não passou na verificação:\n  - " + "\n  - ".join(problems))
     if final.exists():

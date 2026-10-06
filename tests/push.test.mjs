@@ -323,6 +323,7 @@ test("agrupar: exige segredo, filtra números inventados e assuntos pequenos", a
     assert.equal(r.status, 200);
     const j = await r.json();
     assert.equal(j.assuntos.length, 1);
+    assert.match(corpo.messages[0].content, /até 40 assuntos/);
     assert.deepEqual(j.assuntos[0].ids, [1, 2, 3]);
     assert.match(corpo.messages[0].content, /NÃO CONFIÁVEIS/);
     assert.match(corpo.messages[1].content, /1\|Veículo 0\|Manchete 0/);
