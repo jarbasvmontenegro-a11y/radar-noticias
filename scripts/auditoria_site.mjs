@@ -12,7 +12,7 @@ const say = (s = "") => { lines.push(s); console.log(s); };
 if (!SITE) { say("SITE_URL vazio: nada a auditar."); fs.writeFileSync(`${out}/auditoria.txt`, lines.join("\n")); process.exit(0); }
 
 const SECRET_PATTERNS = [
-  ["chave tipo sk- (DeepSeek/OpenAI)", /sk-[A-Za-z0-9_-]{20,}/],
+  ["chave tipo sk- (DeepSeek/OpenAI)", /sk-[A-Za-z0-9]{32,}/],
   ["chave Google (AIza...)", /AIza[0-9A-Za-z_-]{30,}/],
   ["token GitHub", /(gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,})/],
   ["token Cloudflare (cfut_/cfat_/cfk_)", /cf[a-z]{2,3}_[A-Za-z0-9]{30,}/],

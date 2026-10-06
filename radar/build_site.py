@@ -3,12 +3,14 @@
 Tudo que importa para SEO (títulos, descrições, links) já vem no HTML, sem depender de JavaScript.
 O JavaScript só melhora a experiência (busca, tamanho da letra, resumo e verificador sob demanda).
 """
+import base64
+import hashlib
 import json
 import os
 import re
 import shutil
 import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import quote, urlsplit
 from xml.sax.saxutils import escape
@@ -308,16 +310,55 @@ def build(out_dir: str = "site") -> str:
         json.dumps(sorted(h.removeprefix("www.") for h in hosts if h)), encoding="utf-8")
 
     # cabeçalhos do Cloudflare Pages: segurança + cache
+    # CSP: scripts só do próprio site; o único script inline (tema) entra por hash, calculado sobre o HTML gerado.
+    hashes = set()
+    for page in out.rglob("*.html"):
+        for m in re.finditer(r"<script(?![^>]*\b(?:src|type)=)[^>]*>(.*?)</script>", page.read_text(encoding="utf-8"), re.S):
+            hashes.add("'sha256-" + base64.b64encode(hashlib.sha256(m.group(1).encode("utf-8")).digest()).decode() + "'")
+    script_src = ["'self'", "https://challenges.cloudflare.com", *sorted(hashes)]
+    extra_connect, extra_img, extra_frame = [], [], []
+    if cfg.get("adsense_client"):
+        script_src += ["https://pagead2.googlesyndication.com", "https://*.googlesyndication.com"]
+        extra_connect += ["https://*.google.com", "https://*.doubleclick.net", "https://*.googlesyndication.com"]
+        extra_img += ["https:"]
+        extra_frame += ["https://*.googlesyndication.com", "https://*.doubleclick.net", "https://*.google.com"]
+    if cfg.get("cloudflare_analytics_token"):
+        script_src.append("https://static.cloudflareinsights.com")
+        extra_connect.append("https://cloudflareinsights.com")
+    csp = "; ".join([
+        "default-src 'self'",
+        "script-src " + " ".join(script_src),
+        "style-src 'self' 'unsafe-inline'",
+        "img-src " + " ".join(["'self'", "data:", *extra_img]),
+        "font-src 'self'",
+        "connect-src " + " ".join(["'self'", *extra_connect]),
+        "frame-src " + " ".join(["https://challenges.cloudflare.com", *extra_frame]),
+        "object-src 'none'", "base-uri 'self'", "form-action 'self'", "frame-ancestors 'self'", "upgrade-insecure-requests",
+    ])
     (out / "_headers").write_text(
         "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n"
-        "  X-Frame-Options: SAMEORIGIN\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n"
+        "  X-Frame-Options: SAMEORIGIN\n  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()\n"
+        "  Strict-Transport-Security: max-age=31536000; includeSubDomains\n"
+        "  Cross-Origin-Opener-Policy: same-origin\n  Cross-Origin-Resource-Policy: same-origin\n"
+        f"  Content-Security-Policy: {csp}\n"
         "/*.css\n  Cache-Control: public, max-age=86400\n/*.js\n  Cache-Control: public, max-age=86400\n"
+        "/fonts/*\n  Cache-Control: public, max-age=31536000, immutable\n"
         "/manifest.webmanifest\n  Content-Type: application/manifest+json\n"
         "/\n  Cache-Control: public, max-age=300, s-maxage=300\n/fonte/*\n  Cache-Control: public, max-age=300, s-maxage=300\n"
         "/data/*\n  Cache-Control: public, max-age=300\n", encoding="utf-8")
 
+    if cfg.get("contact_email"):  # RFC 9116: só publica se houver um contato configurado
+        (out / ".well-known").mkdir(exist_ok=True)
+        expira = (datetime.now(timezone.utc) + timedelta(days=330)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        (out / ".well-known" / "security.txt").write_text(
+            f"Contact: mailto:{cfg['contact_email']}\nExpires: {expira}\nPreferred-Languages: pt, en\nCanonical: {cfg['site_url']}/.well-known/security.txt\n",
+            encoding="utf-8")
+
     for f in (ROOT / "templates" / "static").iterdir():
-        shutil.copy(f, out / f.name)
+        if f.is_dir():
+            shutil.copytree(f, out / f.name)
+        else:
+            shutil.copy(f, out / f.name)
     problems = verify_site(out, min_items=min(len(news), page_size))
     if problems:
         raise BuildError("site gerado não passou na verificação:\n  - " + "\n  - ".join(problems))

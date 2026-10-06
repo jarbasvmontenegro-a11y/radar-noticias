@@ -69,7 +69,7 @@ if (acao === "configurar") {
   console.log(`::add-mask::${secret}`);
 
   // grava o segredo SÓ no projeto do Pages (wrangler mexe apenas nessa variável; as outras ficam como estão)
-  const w = spawnSync("npx", ["--yes", "wrangler@latest", "pages", "secret", "put", "TURNSTILE_SECRET", "--project-name", CF_PROJECT],
+  const w = spawnSync("npx", ["--yes", "wrangler@4", "pages", "secret", "put", "TURNSTILE_SECRET", "--project-name", CF_PROJECT],
     { input: secret, encoding: "utf8", env: { ...process.env, CLOUDFLARE_API_TOKEN: CF_TOKEN, CLOUDFLARE_ACCOUNT_ID: CF_ACCOUNT }, timeout: 120000 });
   const wout = `${w.stdout || ""}${w.stderr || ""}`.split(secret).join("***").replace(CF_TOKEN, "***").slice(-600);
   say(`wrangler pages secret put -> código ${w.status}\n${wout}`);

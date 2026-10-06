@@ -4,6 +4,8 @@
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
 
+  // só http/https vira link: nada de javascript: ou data: vindo de resposta de API
+  function safeUrl(u) { return typeof u === "string" && /^https?:\/\//i.test(u) ? u : "#"; }
   function el(tag, attrs, kids) {
     var n = document.createElement(tag);
     Object.keys(attrs || {}).forEach(function (k) {
@@ -138,7 +140,7 @@
             var ul = el("ul", { class: "sum-others" });
             d.outros.forEach(function (o) {
               if (!/^https?:\/\//i.test(o.url || "")) return;
-              ul.appendChild(el("li", {}, [el("a", { href: o.url, target: "_blank", rel: "noopener noreferrer", text: o.titulo }), el("span", { class: "src", text: " " + o.fonte })]));
+              ul.appendChild(el("li", {}, [el("a", { href: safeUrl(o.url), target: "_blank", rel: "noopener noreferrer", text: o.titulo }), el("span", { class: "src", text: " " + o.fonte })]));
             });
             if (ul.childNodes.length) { out.appendChild(el("span", { class: "sum-h", text: "Como outros veículos noticiaram" })); out.appendChild(ul); }
           }
@@ -169,7 +171,7 @@
       return el("section", { class: "vsec" }, [el("h3", { text: title }), el("ul", {}, list.map(render))]);
     }
     function add(n) { if (n) res.appendChild(n); }
-    function link(a) { return el("a", { href: a.url, target: "_blank", rel: "noopener noreferrer", text: a.titulo || a.url }); }
+    function link(a) { return el("a", { href: safeUrl(a.url), target: "_blank", rel: "noopener noreferrer", text: a.titulo || a.url }); }
 
     // texto recebido ao "compartilhar" do WhatsApp para o site instalado, ou link com ?texto=
     try {

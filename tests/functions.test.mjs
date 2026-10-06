@@ -943,3 +943,10 @@ test("proteção: se o contador (KV) falhar, a IA NÃO é chamada (falha segura)
   assert.equal(r.status, 503);
   assert.equal(calls.llm, 0);
 });
+
+test("proteção: rajada em paralelo (corrida no KV) não passa do limite por IP", async () => {
+  const { env } = setup();
+  delete env.IP_DAILY_LIMIT;
+  const rs = await Promise.all(Array.from({ length: 30 }, (_, i) => call(resumir, env, "/api/resumir", { ...OK_BODY, url: OK_BODY.url + "?p=" + i })));
+  assert.equal(rs.filter((r) => r.status === 200).length, 5);
+});
