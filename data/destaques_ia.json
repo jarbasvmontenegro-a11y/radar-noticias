@@ -1,9 +1,9 @@
 {
- "gerado": "2026-10-06T23:27:04+00:00",
+ "gerado": "2026-10-06T23:29:51+00:00",
  "assuntos": [
   {
    "titulo": "Gilmar Mendes arquiva investigação contra vice de Flávio Bolsonaro",
-   "resumo": "Ministro Gilmar Mendes arquivou pedido de investigação por suspeita de estupro contra Alfredo Gaspar, vice de Flávio Bolsonaro, após parecer da PGR.",
+   "resumo": "Gilmar Mendes arquivou pedido de investigação por suspeita de estupro contra Alfredo Gaspar, vice de Flávio Bolsonaro, após parecer da PGR.",
    "ids": [
     "ddc715b721e4",
     "fba99fc7c271",
@@ -21,85 +21,26 @@
     "b49647dd8b12",
     "847cb994ddad",
     "9482555a47ce",
-    "a491b0bcf494"
+    "a491b0bcf494",
+    "faba0a46dcf5"
    ]
   },
   {
    "titulo": "Rogério Marinho passa mal e é hospitalizado em Brasília",
-   "resumo": "Coordenador da campanha de Flávio Bolsonaro, Rogério Marinho foi levado a hospital em Brasília após passar mal durante retorno de agenda em Goiânia.",
+   "resumo": "Coordenador da campanha de Flávio Bolsonaro, Rogério Marinho foi levado a hospital em Brasília após passar mal durante agenda política.",
    "ids": [
     "dc4b2c8d0e6c",
     "02882917fcb5",
     "2c052ec37708",
     "177cbe842f08",
     "1feacd78bdb9",
-    "4f52deb38a11",
+    "2729a599513e",
     "4f706bc55c5c"
    ]
   },
   {
-   "titulo": "Lula diz que votação da escala 6x1 no Senado mostrará 'quem é quem'",
-   "resumo": "Lula afirmou que a votação da PEC do fim da escala 6x1 no Senado será um teste e que 'as máscaras vão cair', criticando Flávio Bolsonaro.",
-   "ids": [
-    "55193f429b4c",
-    "538e75302b99",
-    "d08c81a1a07a",
-    "de105e057234",
-    "01875da1e83b",
-    "b858105881a1",
-    "70bd4438babb",
-    "1f1c590b798f",
-    "80b73ecb89e8",
-    "d8c5b9399578",
-    "1e2582488111"
-   ]
-  },
-  {
-   "titulo": "Alcolumbre anuncia votação da PEC da escala 6x1 na próxima semana",
-   "resumo": "Presidente do Senado, Davi Alcolumbre, sinalizou que a PEC do fim da escala 6x1 será votada na próxima semana, sem atropelos.",
-   "ids": [
-    "7ac4486c7509",
-    "00def0f598fb",
-    "e6ff2acf0372",
-    "09e8aee95b8f",
-    "d3b7e6b13068",
-    "dd6e91aeba8d",
-    "9fb73fb07605",
-    "1ed2b6509d30",
-    "8ab8c4bd7dce",
-    "072c8948402d",
-    "2bb8ba066dc7",
-    "28dedb4aff1c",
-    "14720f35174c",
-    "98f6a9f1acc9",
-    "c33c8f1c5a96",
-    "5ebf67f3e5c1",
-    "c937f5f17fd4"
-   ]
-  },
-  {
-   "titulo": "Flávio Bolsonaro diz que usará maioria no Congresso para mudar a Constituição",
-   "resumo": "Flávio Bolsonaro afirmou que, se eleito, usará maiorias no Senado e na Câmara para alterar a Constituição e 'redemocratizar o país'.",
-   "ids": [
-    "d6078d0ceb79",
-    "f21c60063461",
-    "9d110935203b",
-    "c5b4d6863fd3",
-    "9194fc7bc007",
-    "45dbcacafc0e",
-    "298a6a9ad00b",
-    "b9e22100e9e7",
-    "198bc7090814",
-    "4c1d3d939691",
-    "9f582203fe9e",
-    "61f912b54f59",
-    "d056b6aa6eb2",
-    "14fce392e6b8"
-   ]
-  },
-  {
-   "titulo": "PGR dá parecer favorável à visita de Flávio a Bolsonaro na prisão",
-   "resumo": "A PGR manifestou-se favoravelmente ao pedido para que Flávio Bolsonaro possa visitar Jair Bolsonaro na prisão domiciliar, antes do fim da restrição.",
+   "titulo": "PGR dá parecer favorável a visitas de Flávio a Bolsonaro",
+   "resumo": "A PGR manifestou-se favoravelmente ao pedido para que Flávio Bolsonaro possa visitar Jair Bolsonaro na prisão domiciliar.",
    "ids": [
     "0e5d80ddaae3",
     "96dbd7f10dfb",
@@ -124,43 +65,480 @@
     "20b08cdcd255",
     "a83077c13b28",
     "75edda7b62c6",
-    "c589f9a806f9"
+    "c589f9a806f9",
+    "966a6e7ad5dd",
+    "414582e845de"
+   ]
+  },
+  {
+   "titulo": "Lula critica PL e diz que votação da escala 6x1 mostrará 'quem é quem'",
+   "resumo": "Lula afirmou que a votação da PEC do fim da escala 6x1 no Senado será um teste para o PL e que 'as máscaras vão cair'.",
+   "ids": [
+    "55193f429b4c",
+    "cfa32f4953e6",
+    "538e75302b99",
+    "d08c81a1a07a",
+    "de105e057234",
+    "01875da1e83b",
+    "b858105881a1",
+    "70bd4438babb",
+    "1f1c590b798f",
+    "80b73ecb89e8",
+    "d8c5b9399578",
+    "1e2582488111",
+    "ac4f26a2cb72",
+    "3f59db401163",
+    "f7a065a35c56",
+    "d73df06479a4",
+    "f08642bf1385"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro diz que usará maioria no Congresso para mudar a Constituição",
+   "resumo": "Flávio Bolsonaro declarou que, se eleito, usará a maioria no Senado e na Câmara para alterar a Constituição.",
+   "ids": [
+    "d6078d0ceb79",
+    "f21c60063461",
+    "9d110935203b",
+    "c5b4d6863fd3",
+    "9194fc7bc007",
+    "45dbcacafc0e",
+    "298a6a9ad00b",
+    "b9e22100e9e7",
+    "198bc7090814",
+    "4c1d3d939691",
+    "9f582203fe9e",
+    "d056b6aa6eb2",
+    "14fce392e6b8",
+    "892b3edecb51",
+    "7ca5d302e609"
    ]
   },
   {
    "titulo": "PP e União Brasil anunciam apoio a Flávio Bolsonaro no segundo turno",
-   "resumo": "As siglas PP e União Brasil formalizaram apoio à candidatura de Flávio Bolsonaro no segundo turno das eleições presidenciais.",
+   "resumo": "As siglas PP e União Brasil formalizaram apoio à candidatura de Flávio Bolsonaro no segundo turno da eleição presidencial.",
    "ids": [
     "6a4c1f24575b",
     "e0d2e04c6da2",
     "e6f1f7955596",
-    "9aba54203e21",
     "6cbf5bd0438b",
     "3c99e7b2ff5b",
     "11d198f03531",
     "22c10fd73bca",
     "27a0355a1853",
     "1da377a6c0c2",
+    "a864450fe944",
     "e27c859245f8",
     "0c8ac836c48a",
-    "8eac2648657e"
+    "8eac2648657e",
+    "9a802e021f31",
+    "f2cebaeee8d5",
+    "805d26eb595e",
+    "89312db75958",
+    "eaff36f0694e",
+    "36a7cdf15aad"
+   ]
+  },
+  {
+   "titulo": "Ciro Gomes contesta derrota no Ceará e diz ter sido 'roubado'",
+   "resumo": "Ciro Gomes não reconheceu a derrota para Elmano de Freitas no Ceará, afirmou ter sido roubado e disse que contestará o resultado na Justiça.",
+   "ids": [
+    "e745f9c8619f",
+    "e5202800854c",
+    "900e455a6c4a",
+    "bf3165122e89",
+    "99c9e6a3b531",
+    "d6a74db8f262",
+    "13591c9bcfa1",
+    "9335bccea198",
+    "5788a9d26e59",
+    "afefa874256a",
+    "a31e9880fe3d",
+    "880bd15d851c",
+    "f27ae85234d6",
+    "a51c33ff4dd0"
+   ]
+  },
+  {
+   "titulo": "Alcolumbre anuncia votação da PEC do fim da escala 6x1",
+   "resumo": "O presidente do Senado, Davi Alcolumbre, sinalizou que a PEC que acaba com a escala 6x1 será votada na próxima semana.",
+   "ids": [
+    "7ac4486c7509",
+    "00def0f598fb",
+    "e6ff2acf0372",
+    "09e8aee95b8f",
+    "d3b7e6b13068",
+    "dd6e91aeba8d",
+    "9fb73fb07605",
+    "1ed2b6509d30",
+    "8ab8c4bd7dce",
+    "072c8948402d",
+    "2bb8ba066dc7",
+    "28dedb4aff1c",
+    "14720f35174c",
+    "98f6a9f1acc9",
+    "c33c8f1c5a96",
+    "5ebf67f3e5c1",
+    "c937f5f17fd4",
+    "1ba58ae4c039",
+    "2263a8a1a220",
+    "8ec6f16073f9",
+    "df2b5ec618e5",
+    "b54e8eb4d608",
+    "cb304d377e9c",
+    "b4474904e7a3",
+    "f63222f78bb1",
+    "03d1135e73ef",
+    "cb6f0969a23a",
+    "2ce60d7e5e01",
+    "8087e9a2173a",
+    "4c659c76040e",
+    "12934f0656a4",
+    "d34ccc72b8c6",
+    "6634b742f617"
    ]
   },
   {
    "titulo": "Caiado declara apoio a Flávio Bolsonaro no segundo turno",
-   "resumo": "O governador de Goiás, Ronaldo Caiado, anunciou apoio à candidatura de Flávio Bolsonaro no segundo turno e prometeu mobilização em tempo integral.",
+   "resumo": "O governador de Goiás, Ronaldo Caiado, anunciou apoio à candidatura de Flávio Bolsonaro no segundo turno.",
    "ids": [
     "5525a808270f",
     "019bcfc6173d",
     "f02f27c7565f",
     "5c1f6e580c62",
     "dcf25f4dd13e",
+    "d7f78e114c83",
     "8ad520131661",
+    "9e8ba679044d",
     "d3b655bca23f",
     "c969f5d3746d",
     "7cfcbfb5f18e",
     "00cd8cc54d50",
-    "95ebb9682410"
+    "95ebb9682410",
+    "b7a47976507b",
+    "d9926102b186",
+    "a7c466768e53",
+    "2547abf2a2ac",
+    "eb3c63168c68",
+    "ff6a48f7332b",
+    "1811b18fb42a",
+    "c3f7e782db7f",
+    "a3ff3f4a5923",
+    "0700319b1214",
+    "6d1dc7892c5e",
+    "c2192ea9b334",
+    "6f7874c87deb",
+    "8654ce473fcf",
+    "f648699d9a3a",
+    "bb31832f4967",
+    "63f3724631f7",
+    "b4e85f8aa0c9"
+   ]
+  },
+  {
+   "titulo": "Debate entre Lula e Flávio Bolsonaro é marcado para 18 de outubro",
+   "resumo": "O primeiro debate do segundo turno entre Lula e Flávio Bolsonaro foi remarcado para 18 de outubro por pool de veículos.",
+   "ids": [
+    "92211584f8c6",
+    "d1e86d04c3d1",
+    "8a63432823a2",
+    "166b8fc13077",
+    "e5c2a6c385b5",
+    "482d5fb5d294",
+    "de5451073b06",
+    "7a9352e0d699",
+    "ca7ae0f78ad1",
+    "dc2a304ef47f",
+    "030202ef0c26",
+    "0ac6885bf735",
+    "143893a3fc70",
+    "38bb7d44c98e",
+    "5c06fb57e562",
+    "19c29d58210b",
+    "9b72768294cd",
+    "09dacfbdd7a6",
+    "5d4afe089a7d",
+    "e12b69445b7f",
+    "d1428939cbc8"
+   ]
+  },
+  {
+   "titulo": "Eleitores relatam registro de falta no TSE mesmo após votar",
+   "resumo": "Eleitores relataram que o site do TSE registrou ausência na votação mesmo após terem votado; o tribunal atribuiu a falha ao processamento de dados.",
+   "ids": [
+    "97035517ebcf",
+    "9c126341d416",
+    "a8098613e24a",
+    "f05c31e63ee6",
+    "dc6d87c9fff8",
+    "9a72078b674e",
+    "3bf421f3f120",
+    "c9e9fb18f167",
+    "1bfc7f911e8c",
+    "3a0cb4121e49",
+    "ced5ba22dd9b",
+    "f8c3c621c01a",
+    "cddbafbbebd6",
+    "55db2e62070c",
+    "de93fd4fbe0e",
+    "f7f34295e0c5",
+    "27c7c7544d32",
+    "f4320bfac204",
+    "007798735747",
+    "5b39cd2b1b83",
+    "269829defbdc"
+   ]
+  },
+  {
+   "titulo": "TSE desmente alegação de fraude na apuração dos votos",
+   "resumo": "O TSE negou alegações de fraude na apuração do primeiro turno e explicou a interrupção na divulgação dos resultados.",
+   "ids": [
+    "0d9ee7cb34b7",
+    "12c69baf540e",
+    "dbb864ff99d0",
+    "5337a51d98c4",
+    "39a38aaa356d"
+   ]
+  },
+  {
+   "titulo": "Paes pede ao TSE que mantenha votos de Garotinho no cálculo do segundo turno",
+   "resumo": "Eduardo Paes solicitou ao TSE que rejeite a desistência de Garotinho e mantenha os votos no cálculo do segundo turno no Rio.",
+   "ids": [
+    "0b709d5fb1bb",
+    "e9f30060e7a3",
+    "639ddb685ba7",
+    "f4b889aefd8c",
+    "0cce215f001d",
+    "232dfffe082d",
+    "ed80460e6914",
+    "640a4422170b",
+    "b623d27c7b37",
+    "ae78d0a22809",
+    "8b1c3b18ef94",
+    "51032c384873",
+    "6aecf0fbf2c3",
+    "5b47c2ff1dd7",
+    "5b2274814e52"
+   ]
+  },
+  {
+   "titulo": "Lula articula campanha do segundo turno com governadores e aliados",
+   "resumo": "Lula reuniu governadores e aliados para definir estratégias da campanha do segundo turno, incluindo ampliação da coordenação.",
+   "ids": [
+    "dff5a18e5524",
+    "fdb9ec96d1c7",
+    "af78045771f1",
+    "48e495cf7fe1",
+    "640142fa8dfe",
+    "981e80088b79",
+    "63c5a00f3793",
+    "f4376d6942c1",
+    "ea8ddc27c147",
+    "3faba00189de",
+    "977df0870257",
+    "3c1fe2d7b1e3",
+    "30dc7f972715",
+    "714fdbfbc4ac",
+    "8ba3d446d147",
+    "150dc19cb128",
+    "ab8de03744fb",
+    "271f8b1695b9",
+    "2e905e873854",
+    "8607f3534d8d",
+    "2271460bde14",
+    "37cd12369107",
+    "63ca05cb4c5c",
+    "f4bff11f2cae",
+    "15b75382e2d4",
+    "521e912356a3",
+    "5670af0635e8",
+    "75528ba2fc85"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro nega que Jair Bolsonaro disputará eleição em 2030",
+   "resumo": "Flávio Bolsonaro negou discussão sobre Jair Bolsonaro disputar a Presidência em 2030 e afirmou que apoiará PEC contra reeleição.",
+   "ids": [
+    "a38c95d21d77",
+    "f5b7cbb9cb86",
+    "c307526b0102",
+    "81d6f2d0fbce"
+   ]
+  },
+  {
+   "titulo": "Governo bloqueia mais de 13 mil sites ilegais de bets",
+   "resumo": "O Ministério da Fazenda informou que mais de 13 mil sites ilegais de apostas foram bloqueados desde a proibição.",
+   "ids": [
+    "cdfaf64b6f1a",
+    "6eeb35a6591f",
+    "0cb05faed06d",
+    "b805beb43a12",
+    "4d63ea2ce4ef",
+    "ef3b4f3a7a88",
+    "033ea4aad06f",
+    "c6a8068cf534"
+   ]
+  },
+  {
+   "titulo": "OEA aponta interferência externa e desinformação na eleição brasileira",
+   "resumo": "A OEA manifestou preocupação com desinformação e interferência externa na eleição brasileira, enquanto o TSE descartou interferência.",
+   "ids": [
+    "00ff8a7b51d9",
+    "5d1bacc7f30c",
+    "f00e46b1f993",
+    "af833f4b190e",
+    "e6620335a7c9",
+    "893fb914588e",
+    "d61dcd956f2a"
+   ]
+  },
+  {
+   "titulo": "Moraes arquiva inquérito contra Do Val, Allan dos Santos e Oswaldo Eustáquio",
+   "resumo": "O ministro Alexandre de Moraes arquivou inquérito contra Marcos do Val, Allan dos Santos e Oswaldo Eustáquio por ataques à PF.",
+   "ids": [
+    "ccb847ef1886",
+    "52cd229ecea3",
+    "3acf95f4df04",
+    "6dbffffdca71",
+    "2972e06fad02",
+    "f1771e5a54bf",
+    "ebae10947343"
+   ]
+  },
+  {
+   "titulo": "Brasileiro que se passou por agente do ICE é liberado após fiança nos EUA",
+   "resumo": "O brasileiro preso nos EUA por se passar por agente do ICE em local de votação foi liberado após pagamento de fiança.",
+   "ids": [
+    "6fee56c988d6",
+    "ea77fece63c2",
+    "1823e84f5617"
+   ]
+  },
+  {
+   "titulo": "Leany Lemos toma posse como senadora",
+   "resumo": "Leany Lemos tomou posse no Senado para assumir a vaga deixada por Leila do Vôlei.",
+   "ids": [
+    "aa4116180801",
+    "2fa31e5add2b"
+   ]
+  },
+  {
+   "titulo": "Leila do Vôlei pede licença médica do Senado",
+   "resumo": "A senadora Leila do Vôlei solicitou licença médica e não retornará ao mandato.",
+   "ids": [
+    "3ddb711befba",
+    "3ed631af5b07",
+    "a77c1c1f8c1e"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro defende jornada flexível e chama PEC da 6x1 de oportunista",
+   "resumo": "Flávio Bolsonaro classificou como oportunista a discussão do fim da escala 6x1 e defendeu flexibilização da jornada de trabalho.",
+   "ids": [
+    "65e925efd417",
+    "62689d8c285b"
+   ]
+  },
+  {
+   "titulo": "Jaques Wagner cobra posição de Flávio sobre PEC da escala 6x1",
+   "resumo": "O senador Jaques Wagner afirmou que Flávio Bolsonaro terá que se posicionar sobre a PEC que acaba com a escala 6x1.",
+   "ids": [
+    "07da3304d987",
+    "d8f231c19753",
+    "f7c8e2f4f15f",
+    "1b302d011f6d",
+    "66734c58a15f",
+    "9dd5dbcba3ac",
+    "68d3f9d4f1e2"
+   ]
+  },
+  {
+   "titulo": "Tarcísio de Freitas articula apoio do Republicanos a Flávio Bolsonaro",
+   "resumo": "O governador Tarcísio de Freitas reuniu Flávio Bolsonaro e Marcos Pereira para encaminhar apoio do Republicanos.",
+   "ids": [
+    "48296897554f",
+    "90b802e90907",
+    "7203d7e066c2"
+   ]
+  },
+  {
+   "titulo": "Bancada ruralista anuncia apoio a Flávio Bolsonaro",
+   "resumo": "A bancada ruralista declarou apoio à candidatura de Flávio Bolsonaro no segundo turno.",
+   "ids": [
+    "9aba54203e21",
+    "6411b95db0df"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro promete penas mais duras e castração química",
+   "resumo": "Flávio Bolsonaro prometeu reduzir a maioridade penal, aumentar penas e adotar castração química para crimes graves.",
+   "ids": [
+    "4d4d867dad84",
+    "e0c22cdfbac7",
+    "528c692e4b98",
+    "5073d653a9f2"
+   ]
+  },
+  {
+   "titulo": "Edinho Silva diz que Lula avalia mudar indicação de ministros do STF",
+   "resumo": "Edinho Silva afirmou que Lula considera mudar a legislação para retirar do presidente a indicação de ministros do STF.",
+   "ids": [
+    "32f1f9f22cd6",
+    "3958a54d7678"
+   ]
+  },
+  {
+   "titulo": "Rogério Marinho diz que não haverá espírito de vingança contra STF",
+   "resumo": "Após encontro com Fachin, Rogério Marinho afirmou que não haverá espírito de vingança contra ministros do STF.",
+   "ids": [
+    "7f59304c9c54",
+    "a19acb2d72e3",
+    "9fa12cc7cc21",
+    "6d00173e186e",
+    "ff100780c45a",
+    "fc4434d8d215"
+   ]
+  },
+  {
+   "titulo": "Lula diz que Leandro Grass tem informações sobre BRB",
+   "resumo": "Lula afirmou que Leandro Grass, candidato no DF, possui informações importantes sobre o BRB.",
+   "ids": [
+    "f1a5183f2992",
+    "f5df343df0ed",
+    "aea891bfb37d"
+   ]
+  },
+  {
+   "titulo": "Dólar cai abaixo de R$ 5 após resultado eleitoral",
+   "resumo": "O dólar fechou abaixo de R$ 5 pela primeira vez desde maio, influenciado pelo cenário eleitoral e externo.",
+   "ids": [
+    "f38587d6413e",
+    "37be9085d094",
+    "c383fdb2db11",
+    "37cf43368f4b",
+    "e145a1672350",
+    "a7fa6172268b"
+   ]
+  },
+  {
+   "titulo": "Ibovespa recua após rali eleitoral",
+   "resumo": "O Ibovespa registrou queda após o rali eleitoral do primeiro turno, com realização de lucros.",
+   "ids": [
+    "ec7af0f0d596",
+    "18c260241edb",
+    "f29b1ca0989a",
+    "ca95f8ad6c7e",
+    "d7b1e27851cb",
+    "cbb7375d962b"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro recebe apoio de Celina Leão",
+   "resumo": "A governadora em exercício do DF, Celina Leão, confirmou apoio a Flávio Bolsonaro no segundo turno.",
+   "ids": [
+    "03a9e5b73d93",
+    "26f7a57aa057",
+    "9db7e28077bc"
    ]
   }
  ]
