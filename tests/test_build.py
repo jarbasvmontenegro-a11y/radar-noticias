@@ -196,6 +196,23 @@ class BuildTests(unittest.TestCase):
         self.assertIn("/busca.js", busca)
         self.assertIn('action="/busca/"', home)
 
+    def test_home_usa_assuntos_da_ia_quando_ha_arquivo_valido(self):
+        fontes = ["g1", "oglobo", "folha", "uol"]
+        arts = [article(i + 1, url=f"https://{s}.com/{i}", source=s, title=f"Manchete {i} {s}") for i, s in enumerate(fontes * 3)]
+        self.write(arts)
+        ids = [a["id"] for a in arts]
+        assuntos = [{"titulo": f"Assunto da IA {k}", "resumo": f"Resumo {k}.", "ids": ids[k * 4:(k + 1) * 4]} for k in range(3)]
+        (self.tmp / "destaques_ia.json").write_text(json.dumps({"gerado": datetime.now(timezone.utc).isoformat(), "assuntos": assuntos}), encoding="utf-8")
+        b.build(self.out)
+        home = (b.ROOT / self.out / "index.html").read_text(encoding="utf-8")
+        self.assertIn("Assunto da IA 0", home)
+        self.assertIn("agrupados por IA", home)
+        self.assertIn("Também em alta", home)
+        # sem arquivo: volta ao agrupamento por palavras e não promete IA
+        (self.tmp / "destaques_ia.json").unlink()
+        b.build(self.out)
+        self.assertNotIn("agrupados por IA", (b.ROOT / self.out / "index.html").read_text(encoding="utf-8"))
+
     def test_mensagem_do_zap_tem_descricao_e_link_no_fim(self):
         a = {"source_name": "Poder360", "title": "Título", "url": "https://p.com/x", "kind": "noticia",
              "desc": "Partido decidiu não apoiar candidatos no 1º turno. Leia no Poder360."}
@@ -218,3 +235,85 @@ class BuildTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class DestaquesIATests(unittest.TestCase):
+    def setUp(self):
+        from radar import destaques_ia as ia
+        self.ia = ia
+        self.now = datetime.now(timezone.utc)
+        mk = lambda i, src: {"id": f"id{i}", "title": f"Manchete {i}", "source": src, "source_name": src.upper(), "dt": self.now - timedelta(minutes=i)}
+        self.arts = [mk(1, "g1"), mk(2, "folha"), mk(3, "oglobo"), mk(4, "g1"), mk(5, "uol"), mk(6, "estadao")]
+        self.por_num = {i + 1: a for i, a in enumerate(self.arts)}
+        self.por_id = {a["id"]: a for a in self.arts}
+
+    def test_validar_descarta_numero_inventado_repetido_e_assunto_de_um_so_veiculo(self):
+        resp = {"assuntos": [
+            {"titulo": "Assunto A", "resumo": "Fato A https://x.com", "ids": [1, 2, 3, 99]},
+            {"titulo": "Assunto B", "resumo": "", "ids": [3, 4]},          # 3 já usado: sobra só o 4 (g1) -> um veículo só
+            {"titulo": "Assunto C", "resumo": "ok", "ids": [5, 6]},
+            {"titulo": "", "resumo": "sem título", "ids": [1, 2]},
+            "lixo", {"titulo": "X", "ids": "não é lista"}]}
+        out = self.ia.validar(resp, self.por_num)
+        self.assertEqual([s["titulo"] for s in out], ["Assunto A", "Assunto C"])
+        self.assertEqual(out[0]["ids"], ["id1", "id2", "id3"])
+        self.assertNotIn("http", out[0]["resumo"])
+        self.assertEqual(self.ia.validar(None, self.por_num), [])
+        self.assertEqual(self.ia.validar({"assuntos": "x"}, self.por_num), [])
+
+    def test_aplicar_ordena_por_veiculos_e_cai_para_palavras_quando_velho_ou_pouco(self):
+        dados = {"gerado": self.now.isoformat(), "assuntos": [
+            {"titulo": "Pequeno", "resumo": "", "ids": ["id1", "id2"]},
+            {"titulo": "Grande", "resumo": "r", "ids": ["id3", "id5", "id6", "id4"]},
+            {"titulo": "Médio", "resumo": "", "ids": ["id1", "id5", "id2"]},
+            {"titulo": "Fantasma", "resumo": "", "ids": ["nao-existe", "tambem-nao"]}]}
+        r = self.ia.aplicar(dados, self.por_id, self.now)
+        self.assertEqual([h["titulo"] for h in r], ["Grande", "Médio", "Pequeno"])
+        self.assertEqual(r[0]["n"], 4)
+        self.assertTrue(all(h["ia"] for h in r))
+        self.assertEqual(r[0]["lead"]["id"], "id3")  # o mais recente do grupo
+        velho = {**dados, "gerado": (self.now - timedelta(hours=40)).isoformat()}
+        self.assertIsNone(self.ia.aplicar(velho, self.por_id, self.now))
+        self.assertIsNone(self.ia.aplicar({**dados, "assuntos": dados["assuntos"][:2]}, self.por_id, self.now))
+        self.assertIsNone(self.ia.aplicar(None, self.por_id, self.now))
+        self.assertIsNone(self.ia.aplicar({"gerado": "lixo", "assuntos": dados["assuntos"]}, self.por_id, self.now))
+
+    def test_so_gera_duas_vezes_por_dia_dentro_do_horario(self):
+        utc = lambda h, d=6: datetime(2026, 10, d, h, 7, tzinfo=timezone.utc)  # Brasília = UTC-3
+        antigo = {"gerado": utc(11, 5).isoformat()}
+        self.assertTrue(self.ia.precisa_gerar(utc(11), None))                       # 08h07 e sem arquivo
+        self.assertTrue(self.ia.precisa_gerar(utc(11), antigo))                     # 08h07, arquivo de ontem
+        self.assertFalse(self.ia.precisa_gerar(utc(12), {"gerado": utc(11).isoformat()}))   # 09h07, gerado há 1 h
+        self.assertFalse(self.ia.precisa_gerar(utc(19), {"gerado": utc(11).isoformat()}))   # 16h07, 8 h depois
+        self.assertTrue(self.ia.precisa_gerar(utc(20), {"gerado": utc(11).isoformat()}))    # 17h07, 9 h depois
+        self.assertFalse(self.ia.precisa_gerar(utc(3), antigo))                     # 00h07: fora do horário
+        self.assertFalse(self.ia.precisa_gerar(utc(1, 7), None))                    # 22h07 de Brasília
+
+    def test_chamada_a_ia_usa_segredo_derivado_e_falha_com_erro_http(self):
+        visto = {}
+
+        class R:
+            def __init__(self, code): self.status_code = code
+            def json(self): return {"assuntos": []}
+
+        def post_ok(url, **k):
+            visto.update(url=url, auth=k["headers"]["Authorization"], itens=k["json"]["itens"])
+            return R(200)
+        self.ia.chamar_ia("https://site.exemplo.org/", "token-cf", ["1|G1|x"], post=post_ok)
+        self.assertEqual(visto["url"], "https://site.exemplo.org/api/ia/agrupar")
+        self.assertEqual(visto["auth"], "Bearer " + self.ia.segredo("token-cf"))
+        self.assertEqual(len(self.ia.segredo("token-cf")), 64)
+        with self.assertRaises(RuntimeError):
+            self.ia.chamar_ia("https://site.exemplo.org", "t", ["1|G1|x"], post=lambda u, **k: R(401))
+
+    def test_candidatos_so_levam_manchetes_de_assuntos_com_varios_veiculos(self):
+        t = ["Senado aprova projeto da reforma tributária em votação apertada", "Senado aprova reforma tributária após votação apertada",
+             "Reforma tributária aprovada no Senado em votação apertada"]
+        arts = [{"id": f"a{i}", "title": x, "source": s, "source_name": s, "dt": self.now - timedelta(minutes=i)} for i, (x, s) in enumerate(zip(t, ["g1", "folha", "uol"]))]
+        arts.append({"id": "solta", "title": "Assunto totalmente isolado sobre outra coisa", "source": "g1", "source_name": "g1", "dt": self.now})
+        cands = self.ia.candidatos(arts, self.now)
+        self.assertEqual({a["id"] for a in cands}, {"a0", "a1", "a2"})
+        linhas, por_num = self.ia.numerar(cands)
+        self.assertTrue(linhas[0].startswith("1|") and len(por_num) == 3)
+        self.assertEqual(linhas[0].count("|"), 2)  # barra no título não quebra o formato
+

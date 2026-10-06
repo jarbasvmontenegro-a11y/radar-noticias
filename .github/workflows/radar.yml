@@ -43,10 +43,22 @@ jobs:
       - name: Coletar notícias
         run: python -m radar collect
 
+      # Assuntos do topo agrupados por IA: roda só duas vezes ao dia (8h e por volta das 17h, Brasília). Se falhar, o site usa o
+      # agrupamento por palavras. Em execução manual, atualiza na hora.
+      - name: Assuntos do topo por IA
+        if: env.HAS_CLOUDFLARE == 'true' && vars.SITE_URL != ''
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          SITE_URL: ${{ vars.SITE_URL }}
+          RADAR_FORCAR_IA: ${{ github.event_name == 'workflow_dispatch' && '1' || '0' }}
+        run: python -m radar destaques-ia
+
       - name: Houve novidade?
         id: changes
         run: |
           git add -f data/articles.json data/health.json
+          if [ -f data/destaques_ia.json ]; then git add -f data/destaques_ia.json; fi
           if git diff --staged --quiet; then echo "changed=false" >> "$GITHUB_OUTPUT"; else echo "changed=true" >> "$GITHUB_OUTPUT"; fi
 
       - name: Gerar e verificar o site
@@ -70,10 +82,13 @@ jobs:
           for i in 1 2 3; do
             git push && exit 0
             # outra execução guardou dados antes: descarta o commit local, refaz a coleta em cima dos dados mais novos
+            cp data/destaques_ia.json /tmp/destaques_ia.json 2>/dev/null || true
             git fetch -q origin main
             git reset -q --hard origin/main
             python -m radar collect
+            cp /tmp/destaques_ia.json data/destaques_ia.json 2>/dev/null || true
             git add -f data/articles.json data/health.json
+            if [ -f data/destaques_ia.json ]; then git add -f data/destaques_ia.json; fi
             git diff --staged --quiet && exit 0
             git commit -qm "dados: $(date -u +%FT%TZ)"
             sleep $((i * 5))

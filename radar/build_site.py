@@ -21,6 +21,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from . import geo
 from . import destaques as destaques_mod
+from . import destaques_ia as ia_mod
 from . import pessoas as pessoas_mod
 from .cluster import cluster, topic_of
 from .collect import DATA, ROOT, load_json, load_sources, safe_url
@@ -200,6 +201,13 @@ def build(out_dir: str = "site") -> str:
                 vistos.add(x["source"])
                 por_veiculo.append(x)
         highlights.append({"lead": g[0], "n": len(names), "names": names, "veiculos": por_veiculo[:6]})
+    # assuntos do topo agrupados por IA (arquivo gerado 2x ao dia); sem arquivo válido, vale o agrupamento por palavras
+    ia = ia_mod.aplicar(load_json(DATA / "destaques_ia.json", None), {a["id"]: a for a in news}, datetime.now(timezone.utc))
+    ia_hora = ""
+    if ia:
+        highlights = ia
+        gerado = load_json(DATA / "destaques_ia.json", {}).get("gerado", "")
+        ia_hora = datetime.fromisoformat(gerado).astimezone(TZ).strftime("%H:%M")
     for a in items:
         a["wa"] = wa_link(share_text(a, cfg))
 
@@ -250,7 +258,7 @@ def build(out_dir: str = "site") -> str:
         "now": now, "today_long": long_date(now), "weekday_long": weekday_date(now),
         "updated_label": now.strftime("%d/%m/%Y às %H:%M"), "checks": checks[:6],
         "built_iso": datetime.now(timezone.utc).isoformat(timespec="seconds"), "health": health,
-        "highlights": [], "topics": topics, "active_topic": None,
+        "highlights": [], "ia_hora": ia_hora, "topics": topics, "active_topic": None,
         "topic_links": [{"id": t["id"], "name": t["name"], "n": sum(1 for a in news if t["id"] in a["topics"])} for t in topics],
     }
     pages: list[tuple[str, str | None]] = []  # (caminho, lastmod) para o sitemap

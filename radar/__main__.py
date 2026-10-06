@@ -2,6 +2,7 @@
 
   check-feeds   testa cada feed RSS
   collect       baixa as notícias novas (sem IA) e atualiza data/
+  destaques-ia  agrupa por IA os assuntos mais falados (2x ao dia) e grava data/destaques_ia.json
   build         gera o site em site/ (só substitui o anterior se passar na verificação)
   verify        confere o site já gerado (HTML, JSON-LD, sitemap, links perigosos)
   update        collect + build (o que o monitoramento roda de hora em hora)
@@ -32,7 +33,7 @@ def write_summary(stats: dict) -> None:
 
 def main() -> int:
     p = argparse.ArgumentParser(prog="radar", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("command", choices=["check-feeds", "collect", "build", "verify", "update", "demo", "discover"])
+    p.add_argument("command", choices=["check-feeds", "collect", "build", "verify", "update", "demo", "discover", "destaques-ia"])
     p.add_argument("--out", default="probe.json")
     p.add_argument("--md", default="probe.md")
     args = p.parse_args()
@@ -73,6 +74,9 @@ def main() -> int:
         except BuildError as exc:
             print("ERRO:", exc, file=sys.stderr)
             return 1
+    elif args.command == "destaques-ia":
+        from .destaques_ia import gerar
+        return gerar(force=os.environ.get("RADAR_FORCAR_IA") == "1")
     elif args.command == "verify":
         from .build_site import verify_site
         problems = verify_site(ROOT / "site")

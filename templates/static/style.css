@@ -326,3 +326,11 @@ table.status th[scope="row"] { font-weight: 700; }
 .sform select { font: 400 1rem var(--sans); padding: 8px 10px; min-height: 42px; border: 1px solid var(--ink); border-radius: 4px; background: var(--paper); color: var(--ink); }
 .sinfo { font: 400 1rem var(--sans); color: var(--muted); margin: 8px 0 14px; }
 .gs-out .gs-all { color: var(--accent); font: 700 .95rem var(--sans); }
+
+/* assuntos agrupados por IA */
+.lead-more-ia details { border-top: 1px solid var(--rule); padding: 2px 0; }
+.lead-more-ia summary { cursor: pointer; padding: 10px 0; font: 700 1.1rem/1.3 var(--serif); list-style-position: outside; }
+.lead-more-ia summary .src { font: 400 .9rem var(--sans); color: var(--muted); margin-left: 8px; }
+.lead-more-ia details[open] summary { color: var(--accent); }
+.lead-more-ia .lead-by { margin: 0 0 8px; }
+.ia-note { margin-top: 10px; }

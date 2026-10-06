@@ -21,8 +21,13 @@
     {% if path == "/" and highlights %}
     {% set h0 = highlights[0] %}
     <section class="lead-story" aria-labelledby="lead-h">
+      {% if h0.ia %}
+      <h2 id="lead-h">{{ h0.titulo }}</h2>
+      <p class="lead-by">{% if h0.resumo %}{{ h0.resumo }} {% endif %}Coberto por {{ h0.n }} veículos.</p>
+      {% else %}
       <h2 id="lead-h"><a href="{{ h0.lead.url }}" target="_blank" rel="noopener">{{ h0.lead.title }}</a></h2>
       <p class="lead-by">Assunto coberto por {{ h0.n }} veículos.</p>
+      {% endif %}
       <h3 class="lead-how">Como cada veículo contou</h3>
       <dl class="lead-rows">
         {% for x in h0.veiculos %}
@@ -32,12 +37,30 @@
       </dl>
       {% if highlights|length > 1 %}
       <h3 class="lead-more-h">Também em alta</h3>
+      {% if h0.ia %}
+      <div class="lead-more-ia">
+        {% for h in highlights[1:] %}
+        <details>
+          <summary><span class="t">{{ h.titulo }}</span> <span class="src">{{ h.n }} veículos</span></summary>
+          {% if h.resumo %}<p class="lead-by">{{ h.resumo }}</p>{% endif %}
+          <dl class="lead-rows">
+            {% for x in h.veiculos %}
+            <dt>{{ x.source_name }}</dt>
+            <dd><a href="{{ x.url }}" target="_blank" rel="noopener">{{ x.title }}</a></dd>
+            {% endfor %}
+          </dl>
+        </details>
+        {% endfor %}
+      </div>
+      {% else %}
       <ul class="lead-more">
         {% for h in highlights[1:] %}
         <li><a href="{{ h.lead.url }}" target="_blank" rel="noopener">{{ h.lead.title }}</a> <span class="src">{{ h.n }} veículos: {{ h.names|join(", ") }}</span></li>
         {% endfor %}
       </ul>
       {% endif %}
+      {% endif %}
+      {% if h0.ia and ia_hora %}<p class="small ia-note">Assuntos agrupados por IA às {{ ia_hora }}, atualizados duas vezes ao dia. A IA só reúne as manchetes e dá nome ao assunto; os títulos e links são dos veículos, e a ordem é pelo número de veículos. <a href="/sobre/">Como funciona</a></p>{% endif %}
     </section>
     {% endif %}
 

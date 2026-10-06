@@ -296,3 +296,35 @@ test("rodar avisa claramente quando o segredo não confere", async () => {
   const fetchFn = async (url, init) => lista(ctx(kv, new URL(url).pathname, { headers: init.headers }));
   await assert.rejects(rodar({ base: ORIGEM, segredo: "x".repeat(64), destaques: [], fetchFn, log: () => {} }), /PUSH_SECRET/);
 });
+
+// ---------- agrupamento por IA (rota protegida) ----------
+import { onRequestPost as agrupar } from "../functions/api/ia/agrupar.js";
+
+test("agrupar: exige segredo, filtra números inventados e assuntos pequenos", async () => {
+  const kv = new FakeKV();
+  const itens = Array.from({ length: 8 }, (_, i) => `${i + 1}|Veículo ${i}|Manchete ${i}`);
+  const mk = (headers) => ({ env: { RADAR_KV: kv, PUSH_SECRET: SEG, LLM_API_KEY: "k" }, request: new Request(ORIGEM + "/api/ia/agrupar", { method: "POST", headers: { "Content-Type": "application/json", ...headers }, body: JSON.stringify({ itens }) }) });
+  assert.equal((await agrupar(mk({}))).status, 401);
+  assert.equal((await agrupar(mk({ Authorization: "Bearer errado" }))).status, 401);
+
+  const real = globalThis.fetch;
+  let corpo;
+  globalThis.fetch = async (url, init) => {
+    corpo = JSON.parse(init.body);
+    const content = JSON.stringify({ assuntos: [
+      { titulo: "Assunto bom", resumo: "Fato.", ids: [1, 2, 3, 99] },
+      { titulo: "Repete número", resumo: "x", ids: [3, 4] },            // 3 já usado: sobra 1 -> descartado
+      { titulo: "Pequeno", resumo: "x", ids: [5] },
+      { titulo: "", resumo: "x", ids: [6, 7] }] });
+    return new Response(JSON.stringify({ choices: [{ message: { content } }] }), { status: 200 });
+  };
+  try {
+    const r = await agrupar(mk({ Authorization: `Bearer ${SEG}` }));
+    assert.equal(r.status, 200);
+    const j = await r.json();
+    assert.equal(j.assuntos.length, 1);
+    assert.deepEqual(j.assuntos[0].ids, [1, 2, 3]);
+    assert.match(corpo.messages[0].content, /NÃO CONFIÁVEIS/);
+    assert.match(corpo.messages[1].content, /1\|Veículo 0\|Manchete 0/);
+  } finally { globalThis.fetch = real; }
+});
