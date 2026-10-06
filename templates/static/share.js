@@ -36,9 +36,40 @@
     indisponivel: ""
   };
 
+  // Avaliação PRÓPRIA do Radar (quando nenhuma agência checou): nunca vira "é falso" seco, sempre "provavelmente" + motivos.
+  var RADAR_HEAD = {
+    provavelmente_falso: "⚠️ *Cuidado: isso provavelmente é FALSO.*",
+    suspeito: "⚠️ *Calma, antes de repassar:* isso tem cara de boato e nenhuma fonte confirma.",
+    provavelmente_verdadeiro: "✅ *Isso parece verdadeiro:* foi noticiado por veículos confiáveis.",
+    nao_confirmado: "*Calma, antes de repassar:* não encontramos fonte que confirme nem desminta."
+  };
+  var RADAR_TAIL = {
+    provavelmente_falso: "Por favor, confira antes de repassar.",
+    suspeito: "Por favor, confira antes de repassar.",
+    provavelmente_verdadeiro: "",
+    nao_confirmado: ""
+  };
+
+  function radarMessage(d, o) {
+    var nivel = d.radar && RADAR_HEAD[d.radar.nivel] ? d.radar.nivel : "nao_confirmado";
+    var lines = [RADAR_HEAD[nivel]];
+    var claim = clean(d.afirmacao, 160);
+    if (claim) lines.push("", "Sobre: “" + claim + "”");
+    var motivos = ((d.radar && d.radar.motivos) || []).filter(function (m) { return !/^Nenhuma agência|^Não conseguimos consultar/.test(m); }).slice(0, 2);
+    if (motivos.length) { lines.push(""); motivos.forEach(function (m) { lines.push("• " + clean(m, 150)); }); }
+    if (nivel === "provavelmente_verdadeiro") {
+      var news = (d.noticias || []).filter(function (n) { return n && n.relacao === "confirma" && safeUrl(n.url); }).slice(0, 2);
+      if (news.length) { lines.push(""); news.forEach(function (n) { lines.push("• " + (clean(n.fonte, 40) || "Veículo") + ":", safeUrl(n.url)); }); }
+    }
+    lines.push("", "_Avaliação do Radar de Notícias, não é checagem de agência._");
+    if (RADAR_TAIL[nivel]) lines.push(RADAR_TAIL[nivel]);
+    return cap(lines.join("\n") + footer(o));
+  }
+
   /** d = resposta de /api/verificar. Devolve o texto da mensagem. */
   function verdictMessage(d, o) {
     d = d || {};
+    if (d.resultado && d.resultado.origem === "radar") return radarMessage(d, o);
     var v = HEAD[d.veredito] ? d.veredito : "sem_checagem";
     var lines = [HEAD[v]];
     var claim = clean(d.afirmacao, 160);

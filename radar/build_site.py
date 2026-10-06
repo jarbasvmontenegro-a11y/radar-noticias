@@ -95,7 +95,7 @@ def verify_site(path: Path, min_items: int = 0) -> list[str]:
     """Confere o site gerado antes de publicar. Devolve a lista de problemas (vazia = ok)."""
     problems: list[str] = []
     required = ["index.html", "404.html", "sitemap.xml", "robots.txt", "verificador/index.html", "sobre/index.html",
-                "privacidade/index.html", "data/search-index.json", "data/allowed-hosts.json", "style.css", "app.js", "share.js",
+                "privacidade/index.html", "data/search-index.json", "data/allowed-hosts.json", "data/municipios.json", "style.css", "app.js", "share.js",
                 "manifest.webmanifest"]
     for f in required:
         if not (path / f).is_file():
@@ -143,7 +143,10 @@ def build(out_dir: str = "site") -> str:
     now = datetime.now(TZ)
 
     items = prepare(store["articles"], sources, now)
-    news = [a for a in items if a["kind"] == "noticia"]
+    for a in items:
+        a["grupo"] = sources.get(a["source"], {}).get("grupo", "nacional")
+    all_news = [a for a in items if a["kind"] == "noticia"]
+    news = [a for a in all_news if a["grupo"] != "regional"]  # home, temas e arquivo: escopo nacional
     checks = [a for a in items if a["kind"] == "checagem"]
 
     # temas e assuntos cobertos por vários veículos: comparação de palavras, sem IA
@@ -174,7 +177,7 @@ def build(out_dir: str = "site") -> str:
     env.filters["jsonld"] = lambda v: (json.dumps(v, ensure_ascii=False).replace("<", "\\u003c").replace(">", "\\u003e")
                                        .replace("&", "\\u0026").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029"))
 
-    news_sources = [s for s in all_sources if s["kind"] == "noticia"]
+    news_sources = [s for s in all_sources if s["kind"] == "noticia" and s.get("grupo") != "regional"]  # menus: sem os regionais
     check_sources = [s for s in all_sources if s["kind"] == "checagem"]
     counts = {}
     for a in items:
@@ -285,9 +288,20 @@ def build(out_dir: str = "site") -> str:
     }, ensure_ascii=False), encoding="utf-8")
     (out / "icon.svg").write_text(MANIFEST_ICON, encoding="utf-8")
 
-    # índice leve usado pelo verificador (títulos recentes de fontes confiáveis)
-    index = [{"t": a["title"], "s": a["source_name"], "u": a["url"], "p": a["published"][:16]} for a in items[:1500]]
+    # índice usado pelo verificador e pelo resumo (títulos recentes; "c" = agência de checagem, "o" = fonte oficial,
+    # "d" = descrição curta, só nas mais recentes para não pesar)
+    index = []
+    for i, a in enumerate(items[:2500]):
+        e = {"t": a["title"], "s": a["source_name"], "u": a["url"], "p": a["published"][:16]}
+        if a["kind"] == "checagem":
+            e["c"] = 1
+        if a["grupo"] == "oficial":
+            e["o"] = 1
+        if i < 1200 and a.get("desc"):
+            e["d"] = short_desc(a["desc"], 110)
+        index.append(e)
     (out / "data").mkdir()
+    shutil.copy(ROOT / "config" / "municipios.json", out / "data" / "municipios.json")  # lista do IBGE, usada pelo verificador
     (out / "data" / "search-index.json").write_text(json.dumps(index, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     hosts = {urlsplit(s["home"]).hostname for s in all_sources} | {urlsplit(a["url"]).hostname for a in items}
     (out / "data" / "allowed-hosts.json").write_text(

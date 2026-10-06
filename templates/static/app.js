@@ -132,9 +132,19 @@
       post("/api/resumir", { url: btn.dataset.url, title: btn.dataset.title, source: btn.dataset.source, desc: btn.dataset.desc })
         .then(function (d) {
           out.textContent = "";
-          out.appendChild(el("span", { text: d.resumo }));
-          out.appendChild(el("span", { class: "note", text: (d.base === "titulo" ? "Resumo feito só com título e descrição (matéria de acesso restrito ou indisponível). " : "") + "Resumo gerado por IA, pode conter erros. Confirme na fonte." }));
-          btn.dataset.done = "1"; btn.textContent = "Ocultar resumo";
+          if (d.resumo) out.appendChild(el("span", { class: "sum-text", text: d.resumo }));
+          if (d.contexto) out.appendChild(el("span", { class: "sum-ctx", text: d.contexto }));
+          if (d.outros && d.outros.length) {
+            var ul = el("ul", { class: "sum-others" });
+            d.outros.forEach(function (o) {
+              if (!/^https?:\/\//i.test(o.url || "")) return;
+              ul.appendChild(el("li", {}, [el("a", { href: o.url, target: "_blank", rel: "noopener noreferrer", text: o.titulo }), el("span", { class: "src", text: " " + o.fonte })]));
+            });
+            if (ul.childNodes.length) { out.appendChild(el("span", { class: "sum-h", text: "Como outros veículos noticiaram" })); out.appendChild(ul); }
+          }
+          var tail = (d.aviso ? d.aviso + " " : "") + (d.resumo ? "Resumo gerado por IA, pode conter erros. Confirme na fonte." : "");
+          if (tail) out.appendChild(el("span", { class: "note", text: tail }));
+          btn.dataset.done = "1"; btn.textContent = d.resumo ? "Ocultar resumo" : "Fechar";
         })
         .catch(function (e) {
           out.className = "sum error"; out.textContent = e.message;
@@ -149,15 +159,11 @@
   if (form) {
     var ta = $("#vtext"), cnt = $("#vcount"), res = $("#vresult"), btnV = $("#vbtn");
     ta.addEventListener("input", function () { cnt.textContent = ta.value.length; });
-    var label = { falso: "Checagens apontam: falso", enganoso: "Checagens apontam: enganoso", verdadeiro: "Checagens apontam: verdadeiro", misto: "Checagem com conclusão mista", sem_checagem: "Nenhuma agência checou ainda", indisponivel: "Checagem indisponível agora" };
-    var intro = {
-      falso: "Agências de checagem classificaram como falso conteúdo muito parecido com o que você enviou. Confira abaixo se tratam do mesmo assunto antes de compartilhar.",
-      enganoso: "Agências de checagem apontaram como enganoso ou sem contexto conteúdo muito parecido com o que você enviou. Confira abaixo se tratam do mesmo assunto.",
-      verdadeiro: "Agências de checagem confirmaram conteúdo muito parecido com o que você enviou. Veja os detalhes e a fonte original abaixo.",
-      misto: "As avaliações encontradas não são unânimes ou têm ressalvas. Leia as checagens completas.",
-      sem_checagem: "Não encontramos checagem sobre isso. Isso não significa que seja verdade: desconfie e procure a fonte original.",
-      indisponivel: "Não conseguimos consultar as agências de checagem agora. Isso não quer dizer que ninguém checou: tente de novo mais tarde e, enquanto isso, confira os sinais de alerta e as notícias abaixo."
+    var origem = {
+      agencia: "Conclusão de agência de checagem",
+      radar: "Avaliação do Radar. Não é checagem de agência: é uma estimativa a partir das evidências abaixo."
     };
+    var confianca = { alta: "confiança alta", media: "confiança média", baixa: "confiança baixa" };
     function section(title, list, render) {
       if (!list || !list.length) return null;
       return el("section", { class: "vsec" }, [el("h3", { text: title }), el("ul", {}, list.map(render))]);
@@ -193,11 +199,11 @@
       var R = window.RadarShare;
       if (!R) return null;
       var opts = { siteUrl: document.body.dataset.siteUrl, siteName: document.body.dataset.siteName };
-      var refute = d.veredito === "falso" || d.veredito === "enganoso";
+      var tom = d.resultado && d.resultado.tom, refute = tom === "falso" || tom === "enganoso" || d.veredito === "falso" || d.veredito === "enganoso";
       var box = el("section", { class: "sharebox" });
       box.appendChild(el("h3", { text: refute ? "Responder no WhatsApp com a checagem" : "Compartilhar no WhatsApp" }));
       box.appendChild(el("p", { text: refute
-        ? "Mensagem pronta, com a conclusão e o link da agência. Você pode editar antes de enviar."
+        ? "Mensagem pronta, com a conclusão e os motivos. Você pode editar antes de enviar."
         : "Mensagem pronta. Você pode editar antes de enviar." }));
       var area = el("textarea", { rows: "10", "aria-label": "Mensagem pronta para compartilhar" });
       area.value = R.verdictMessage(d, opts);
@@ -228,23 +234,26 @@
       res.hidden = false; res.textContent = "Consultando agências de checagem e fontes confiáveis…";
       post("/api/verificar", { texto: text }).then(function (d) {
         res.textContent = "";
-        var v = d.veredito || "sem_checagem";
-        var cls = (v === "sem_checagem" || v === "indisponivel") ? "v-sem" : "v-" + v;
-        res.appendChild(el("div", { class: "verdict " + cls }, [
-          el("span", { class: "badge", text: label[v] || label.sem_checagem }),
-          el("h2", { text: d.afirmacao ? "Sobre: " + d.afirmacao : "Resultado" }),
-          el("p", { text: intro[v] || intro.sem_checagem })
-        ]));
+        var r = d.resultado || { rotulo: "Não deu para confirmar", tom: "neutro", origem: "radar", confianca: "baixa", resumo: "" };
+        var head = el("div", { class: "result tone-" + r.tom }, [
+          el("p", { class: "result-label", text: r.rotulo }),
+          r.resumo ? el("p", { class: "result-why", text: r.resumo }) : null,
+          el("p", { class: "result-meta", text: (origem[r.origem] || origem.radar) + (r.origem === "radar" && confianca[r.confianca] ? " (" + confianca[r.confianca] + ")" : "") })
+        ]);
+        res.appendChild(head);
+        if (d.afirmacao) res.appendChild(el("p", { class: "claim" }, [el("span", { class: "claim-k", text: "Afirmação analisada" }), el("q", { text: d.afirmacao })]));
+        add(section("Por que o Radar concluiu isso", d.radar && d.radar.motivos, function (m) { return el("li", { text: m }); }));
         add(shareBox(d));
         add(section("Checagens encontradas", d.checagens, function (c) {
           return el("li", {}, [link(c), el("br"), el("span", { class: "src", text: c.agencia + (c.avaliacao ? " · avaliação: " + c.avaliacao : "") })]);
         }));
-        add(section("Notícias recentes de fontes monitoradas sobre o tema", d.noticias, function (n) {
-          return el("li", {}, [link(n), el("br"), el("span", { class: "src", text: n.fonte })]);
+        add(section("Notícias de fontes monitoradas sobre o tema", d.noticias, function (n) {
+          var rel = n.relacao === "confirma" ? "confirma" : n.relacao === "contradiz" ? "contradiz" : "";
+          return el("li", {}, [link(n), el("br"), el("span", { class: "src", text: n.fonte + (rel ? ": " + rel + " a afirmação" : "") })]);
         }));
-        add(section("Sinais de alerta no texto (análise de IA)", d.sinais, function (s) { return el("li", { text: s }); }));
+        add(section("Sinais de alerta no texto", d.sinais, function (s) { return el("li", { text: s }); }));
         add(section("O que você pode conferir", d.conferir, function (s) { return el("li", { text: s }); }));
-        res.appendChild(el("p", { class: "small", text: "A IA aponta sinais de alerta, mas não decide o que é verdadeiro ou falso. Essa conclusão vem apenas de agências de checagem." }));
+        res.appendChild(el("p", { class: "small", text: "\u201cÉ falso\u201d e \u201cÉ verdadeiro\u201d só aparecem quando uma agência de checagem concluiu isso. Sem agência, o Radar diz \u201cprovavelmente\u201d e mostra as evidências para você conferir." }));
       }).catch(function (e) {
         res.textContent = ""; res.appendChild(el("p", { class: "sum error", text: e.message }));
       }).then(function () { btnV.disabled = false; btnV.textContent = "Verificar"; });

@@ -81,3 +81,48 @@ test("waLink codifica quebras de linha e símbolos", () => {
   const l = R.waLink("a&b\nc");
   assert.equal(l, "https://wa.me/?text=a%26b%0Ac");
 });
+
+// ---- avaliação própria do Radar (sem agência) ----
+const radar = (nivel, extra = {}) => ({
+  veredito: "sem_checagem", afirmacao: "O prefeito de Serra do Cajueiro Seco desviou R$ 48 milhões",
+  resultado: { rotulo: "x", tom: "falso", origem: "radar", confianca: "alta", resumo: "r" },
+  radar: { nivel, motivos: ["Não existe município chamado “Serra do Cajueiro Seco” na lista oficial do IBGE.", "A mensagem diz que a mídia abafou o caso.", "Nenhuma agência de checagem analisou este boato ainda."] },
+  checagens: [chk], noticias: [], ...extra,
+});
+
+test("radar: 'provavelmente falso' diz provavelmente, cita motivos e avisa que não é checagem de agência", () => {
+  const m = R.verdictMessage(radar("provavelmente_falso"), O);
+  assert.match(m, /provavelmente é FALSO/);
+  assert.match(m, /IBGE/);
+  assert.match(m, /não é checagem de agência/);
+  assert.doesNotMatch(m, /Nenhuma agência de checagem analisou/); // "ninguém checou" não é motivo de falsidade
+  assert.doesNotMatch(m, /Lupa/);
+  assert.match(m, /https:\/\/exemplo\.org\/verificador\//);
+});
+
+test("radar: suspeito e não confirmado pedem calma e nunca dizem 'falso'", () => {
+  for (const n of ["suspeito", "nao_confirmado"]) {
+    const m = R.verdictMessage(radar(n), O);
+    assert.match(m, /antes de repassar/);
+    assert.doesNotMatch(m, /FALSO|CONFIRMADO/);
+  }
+});
+
+test("radar: 'provavelmente verdadeiro' lista até 2 matérias que confirmam, só links http(s)", () => {
+  const noticias = [
+    { titulo: "a", fonte: "g1", url: "https://g1.globo.com/a", relacao: "confirma" },
+    { titulo: "b", fonte: "Folha", url: "javascript:alert(1)", relacao: "confirma" },
+    { titulo: "c", fonte: "Poder360", url: "https://poder360.com.br/c", relacao: "relacionada" },
+    { titulo: "d", fonte: "Estadão", url: "https://estadao.com.br/d", relacao: "confirma" },
+  ];
+  const m = R.verdictMessage(radar("provavelmente_verdadeiro", { noticias }), O);
+  assert.match(m, /parece verdadeiro/);
+  assert.match(m, /g1globo|g1\.globo\.com\/a/);
+  assert.match(m, /estadao\.com\.br\/d/);
+  assert.doesNotMatch(m, /javascript:|poder360/);
+});
+
+test("quando a agência concluiu, a mensagem continua sendo a de desmentido da agência", () => {
+  const d = { veredito: "falso", afirmacao: "x", checagens: [chk], resultado: { origem: "agencia", rotulo: "É falso", tom: "falso" } };
+  assert.match(R.verdictMessage(d, O), /Lupa avaliou como: _Falso_/);
+});

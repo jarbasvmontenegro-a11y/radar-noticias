@@ -189,3 +189,20 @@ table.status th[scope="row"] { font-weight: 600; }
 }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 @media print { .masthead .tools, .sources, .side, .ad, .consent, .actions, .zap-band, .chips { display: none; } }
+
+/* resultado do verificador */
+.result { border: 2px solid var(--rule); border-radius: 8px; padding: 14px 16px; background: var(--paper); font-family: var(--sans); }
+.result-label { margin: 0 0 4px; font: 800 1.5rem/1.2 var(--serif); }
+.result-why { margin: 0 0 6px; font-size: 1rem; }
+.result-meta { margin: 0; color: var(--muted); font-size: .8rem; }
+.result.tone-falso { border-color: var(--bad); } .tone-falso .result-label { color: var(--bad); }
+.result.tone-enganoso, .result.tone-alerta { border-color: var(--warn); } .tone-enganoso .result-label, .tone-alerta .result-label { color: var(--warn); }
+.result.tone-verdadeiro { border-color: var(--ok); } .tone-verdadeiro .result-label { color: var(--ok); }
+.claim { margin: 12px 0 0; font: 400 .92rem var(--sans); color: var(--muted); }
+.claim-k { display: block; font-size: .78rem; }
+.claim q { font-style: italic; }
+.sum-ctx { display: block; margin-top: 8px; }
+.sum-h { display: block; margin-top: 10px; font-weight: 700; font-size: .85rem; }
+.sum-others { margin: 4px 0 0; padding-left: 1.1em; }
+.sum-others li { margin: 3px 0; font-size: .88rem; }
+.sum-others .src { color: var(--muted); font-size: .78rem; }
