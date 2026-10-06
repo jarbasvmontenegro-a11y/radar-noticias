@@ -50,15 +50,28 @@ def prepare(articles: list[dict], sources: dict, now: datetime) -> list[dict]:
     return out
 
 
+def short_desc(desc: str, limit: int = 220) -> str:
+    """Descrição curta para a mensagem: tira o "Leia no X." que os feeds acrescentam e corta em fim de frase ou palavra."""
+    d = re.sub(r"\s*Leia (?:mais )?(?:no|na|em|o texto no|a matéria no)\s+[^.]{1,40}\.?\s*$", "", (desc or "").strip()).strip()
+    if len(d) <= limit:
+        return d
+    cut = d[:limit]
+    dot = max(cut.rfind(". "), cut.rfind("! "), cut.rfind("? "))
+    return cut[:dot + 1] if dot >= 80 else cut.rsplit(" ", 1)[0].rstrip(",;:") + "…"
+
+
 def share_text(a: dict, cfg: dict) -> str:
     """Mensagem pronta para o WhatsApp (espelha RadarShare.newsMessage, em static/share.js).
-    Uma checagem publicada por agência é apresentada como checagem; notícia comum, como notícia. Nunca afirmamos que algo é falso."""
+    Sem emojis fora do alfabeto básico (alguns WhatsApp Web mostram "�"). O link vai por último, para a prévia do WhatsApp.
+    Uma checagem de agência é apresentada como checagem; notícia comum, como notícia. Nunca afirmamos que algo é falso."""
     src, title = a["source_name"], a["title"][:200]
+    desc = short_desc(a.get("desc", ""))
+    lines = [f"*{title}*"]
+    if desc:
+        lines += ["", desc]
     if a["kind"] == "checagem":
-        lines = [f"🔎 *Checagem do(a) {src}:*", title, a["url"], "", "Confira antes de repassar boatos. 🙏"]
-    else:
-        lines = [f"📰 *{src}:*", title, a["url"]]
-    lines += ["", f"Via {cfg['name']}: {cfg['site_url']}"]
+        lines += ["", f"Checagem publicada por {src}. Confira antes de repassar boatos."]
+    lines += ["", f"_{src} · via {cfg['name']}_", "Leia a matéria completa:", a["url"]]
     return "\n".join(lines)
 
 

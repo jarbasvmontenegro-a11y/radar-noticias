@@ -109,10 +109,21 @@ class BuildTests(unittest.TestCase):
         self.assertIn("/tema/congresso/", (site / "sitemap.xml").read_text(encoding="utf-8"))
         self.assertTrue((site / "share.js").is_file())
 
+    def test_mensagem_do_zap_tem_descricao_e_link_no_fim(self):
+        a = {"source_name": "Poder360", "title": "Título", "url": "https://p.com/x", "kind": "noticia",
+             "desc": "Partido decidiu não apoiar candidatos no 1º turno. Leia no Poder360."}
+        cfg = {"name": "Radar", "site_url": "https://x.org"}
+        txt = b.share_text(a, cfg)
+        self.assertTrue(txt.startswith("*Título*"))
+        self.assertIn("Partido decidiu", txt)
+        self.assertNotIn("Leia no Poder360", txt)
+        self.assertTrue(txt.endswith("https://p.com/x"))
+        self.assertFalse(any(ord(ch) > 0xFFFF for ch in txt))
+
     def test_mensagem_do_zap_de_checagem_nao_afirma_falso(self):
-        a = {"source_name": "Lupa", "title": "Título", "url": "https://lupa.news/x", "kind": "checagem"}
+        a = {"source_name": "Lupa", "title": "Título", "url": "https://lupa.news/x", "kind": "checagem", "desc": ""}
         txt = b.share_text(a, {"name": "Radar", "site_url": "https://x.org"})
-        self.assertIn("Checagem do(a) Lupa", txt)
+        self.assertIn("Checagem publicada por Lupa", txt)
         self.assertNotIn("FALSO", txt)
         self.assertTrue(b.wa_link(txt).startswith("https://wa.me/?text="))
         self.assertNotIn("\n", b.wa_link(txt))

@@ -24,12 +24,12 @@
     enganoso: "⚠️ *Cuidado: isso é ENGANOSO (falta contexto).*",
     verdadeiro: "✅ *Isso foi CONFIRMADO por agência de checagem.*",
     misto: "⚠️ *Atenção: a checagem sobre isso tem ressalvas.*",
-    sem_checagem: "🔎 *Calma, antes de repassar:* nenhuma agência de checagem analisou isso ainda. Vamos procurar a fonte original antes de acreditar.",
-    indisponivel: "🔎 *Calma, antes de repassar:* vamos conferir isso numa fonte confiável primeiro."
+    sem_checagem: "*Calma, antes de repassar:* nenhuma agência de checagem analisou isso ainda. Vamos procurar a fonte original antes de acreditar.",
+    indisponivel: "*Calma, antes de repassar:* vamos conferir isso numa fonte confiável primeiro."
   };
   var TAIL = {
-    falso: "Por favor, não repasse. 🙏",
-    enganoso: "Por favor, confira antes de repassar. 🙏",
+    falso: "Por favor, não repasse.",
+    enganoso: "Por favor, confira antes de repassar.",
     verdadeiro: "",
     misto: "Leia a checagem completa antes de repassar.",
     sem_checagem: "",
@@ -49,27 +49,35 @@
     checks.forEach(function (c) {
       var who = clean(c.agencia, 60) || "Agência de checagem";
       var rate = clean(c.avaliacao, 60);
-      lines.push("📌 " + who + (rate ? " avaliou como: _" + rate + "_" : " checou o assunto"), safeUrl(c.url));
+      lines.push("• " + who + (rate ? " avaliou como: _" + rate + "_" : " checou o assunto"), safeUrl(c.url));
     });
     if (TAIL[v]) lines.push("", TAIL[v]);
     return cap(lines.join("\n") + footer(o));
   }
 
   // ---- notícia comum ou checagem publicada por agência -> mensagem -------------------------------
-  /** a = {title, source, url, kind}. kind "checagem" = texto publicado por uma agência de checagem. */
+  function shortDesc(d, limit) {
+    limit = limit || 220;
+    d = clean(d, 600).replace(/\s*Leia (?:mais )?(?:no|na|em|o texto no|a matéria no)\s+[^.]{1,40}\.?\s*$/, "").trim();
+    if (d.length <= limit) return d;
+    var cut = d.slice(0, limit), dot = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("! "), cut.lastIndexOf("? "));
+    return dot >= 80 ? cut.slice(0, dot + 1) : cut.slice(0, cut.lastIndexOf(" ")).replace(/[,;:]$/, "") + "…";
+  }
+
+  /** a = {title, source, url, desc, kind}. Sem emojis fora do básico (alguns WhatsApp Web mostram "�"); o link vai por último. */
   function newsMessage(a, o) {
     a = a || {};
-    var title = clean(a.title, 200), src = clean(a.source, 60), url = safeUrl(a.url);
-    var head = a.kind === "checagem" ? "🔎 *Checagem" + (src ? " do(a) " + src : "") + ":*" : "📰 *" + (src || "Notícia") + ":*";
-    var lines = [head, title];
-    if (url) lines.push(url);
-    if (a.kind === "checagem") lines.push("", "Confira antes de repassar boatos. 🙏");
-    var site = trimSlash(o && o.siteUrl);
-    if (site) lines.push("", "Via " + (o.siteName || "Radar de Notícias") + ": " + site);
+    var title = clean(a.title, 200), src = clean(a.source, 60) || "Notícia", url = safeUrl(a.url), desc = shortDesc(a.desc);
+    var site = (o && o.siteName) || "Radar de Notícias";
+    var lines = ["*" + title + "*"];
+    if (desc) lines.push("", desc);
+    if (a.kind === "checagem") lines.push("", "Checagem publicada por " + src + ". Confira antes de repassar boatos.");
+    lines.push("", "_" + src + " · via " + site + "_");
+    if (url) lines.push("Leia a matéria completa:", url);
     return cap(lines.join("\n"));
   }
 
   function waLink(text) { return "https://wa.me/?text=" + encodeURIComponent(text); }
 
-  root.RadarShare = { verdictMessage: verdictMessage, newsMessage: newsMessage, waLink: waLink, clean: clean };
+  root.RadarShare = { verdictMessage: verdictMessage, newsMessage: newsMessage, shortDesc: shortDesc, waLink: waLink, clean: clean };
 })(typeof window !== "undefined" ? window : globalThis);

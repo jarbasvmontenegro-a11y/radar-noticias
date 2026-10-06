@@ -46,12 +46,35 @@ test("texto longo e caracteres de controle são tratados", () => {
   assert.doesNotMatch(m, /‮/);
 });
 
-test("notícia e checagem de agência", () => {
-  const n = R.newsMessage({ title: "Título", source: "G1", url: "https://g1.globo.com/a", kind: "noticia" }, O);
-  assert.match(n, /📰 \*G1:\*/);
+test("notícia: título, descrição curta, fonte e link por último", () => {
+  const n = R.newsMessage({ title: "Título", source: "G1", url: "https://g1.globo.com/a", kind: "noticia",
+    desc: "Partido decidiu não apoiar candidatos no 1º turno. Leia no Poder360." }, O);
+  assert.match(n, /^\*Título\*/);
+  assert.match(n, /Partido decidiu não apoiar candidatos no 1º turno\./);
+  assert.doesNotMatch(n, /Leia no Poder360/);
+  assert.ok(n.endsWith("https://g1.globo.com/a"), "o link deve ser a última linha");
   assert.doesNotMatch(n, /falso/i);
-  const c = R.newsMessage({ title: "É falso que…", source: "Lupa", url: "https://lupa.news/a", kind: "checagem" }, O);
-  assert.match(c, /Checagem do\(a\) Lupa/);
+  assert.doesNotMatch(n, /[\u{1F300}-\u{1FAFF}]/u, "sem emojis de 4 bytes (quebram em alguns WhatsApp Web)");
+});
+
+test("checagem de agência é apresentada como checagem", () => {
+  const c = R.newsMessage({ title: "É falso que…", source: "Lupa", url: "https://lupa.news/a", kind: "checagem", desc: "" }, O);
+  assert.match(c, /Checagem publicada por Lupa/);
+  assert.ok(c.endsWith("https://lupa.news/a"));
+});
+
+test("descrição longa é cortada em fim de frase", () => {
+  const d = "Primeira frase completa e bem comprida para passar do mínimo de oitenta caracteres sem problema nenhum. " + "Segunda frase ".repeat(30);
+  const s = R.shortDesc(d);
+  assert.ok(s.length <= 221);
+  assert.ok(s.endsWith("nenhum."));
+});
+
+test("mensagens do verificador não usam emojis de 4 bytes", () => {
+  for (const v of ["falso", "enganoso", "verdadeiro", "misto", "sem_checagem"]) {
+    const m = R.verdictMessage({ veredito: v, afirmacao: "x", checagens: [chk] }, O);
+    assert.doesNotMatch(m, /[\u{1F300}-\u{1FAFF}]/u, v);
+  }
 });
 
 test("waLink codifica quebras de linha e símbolos", () => {
