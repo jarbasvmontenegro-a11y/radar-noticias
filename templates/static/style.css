@@ -2,6 +2,7 @@
 :root {
   --bg: #f6f1e7; --paper: #fffdf8; --ink: #1b1a17; --muted: #5f5a4f; --rule: #d9d0bd;
   --accent: #8c1c13; --accent-ink: #fff; --zap: #128c4a; --zap-ink: #fff; --focus: #0b57d0; --ok: #1d6b34; --warn: #8a5a00; --bad: #a3231a;
+  --wrap: 1240px; --col-l: 190px; --col-r: 270px; --gap: 32px; --feed: 760px;
   --serif: Georgia, "Times New Roman", "Noto Serif", serif;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
@@ -25,7 +26,7 @@ a:hover { color: var(--accent); }
 .skip:focus { left: 8px; top: 8px; }
 
 /* cabeçalho */
-.masthead { max-width: 1240px; margin: 0 auto; padding: 14px 16px 0; text-align: center; }
+.masthead { max-width: var(--wrap); margin: 0 auto; padding: 14px 16px 0; text-align: center; }
 .top { display: flex; justify-content: space-between; align-items: center; font: 600 .72rem var(--sans); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); border-bottom: 1px solid var(--ink); padding-bottom: 8px; }
 .tools button { font: 700 .85rem var(--sans); background: none; border: 1px solid var(--rule); color: var(--ink); border-radius: 4px; padding: 6px 11px; min-height: 36px; cursor: pointer; margin-left: 4px; }
 .tools button:hover { border-color: var(--accent); }
@@ -37,9 +38,9 @@ a:hover { color: var(--accent); }
 .mainnav a[aria-current="page"], .mainnav a:hover { color: var(--ink); border-bottom-color: var(--accent); }
 
 /* grade principal: lista no meio */
-main { max-width: 1240px; margin: 0 auto; padding: 18px 16px 40px; }
-.layout { display: grid; grid-template-columns: 190px minmax(0, 1fr) 270px; gap: 0 32px; align-items: start; }
-.feed { min-width: 0; max-width: 760px; margin: 0 auto; width: 100%; }
+main { max-width: var(--wrap); margin: 0 auto; padding: 18px 16px 40px; }
+.layout { display: grid; grid-template-columns: var(--col-l) minmax(0, 1fr) var(--col-r); gap: 0 var(--gap); align-items: start; }
+.feed { min-width: 0; max-width: var(--feed); margin: 0 auto; width: 100%; }
 .side-title { font: 700 .72rem var(--sans); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 8px; }
 .sources { position: sticky; top: 12px; font: 500 .85rem var(--sans); }
 .sources ul { list-style: none; margin: 0; padding: 0; }
@@ -106,7 +107,7 @@ main { max-width: 1240px; margin: 0 auto; padding: 18px 16px 40px; }
 .sharebox .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .paste-row { margin: 0 0 10px; }
 .paste-row[hidden], .btn[hidden] { display: none; }
-.stale { max-width: 1240px; margin: 10px auto 0; padding: 10px 14px; background: var(--paper); border-left: 4px solid var(--warn); font: 500 .85rem var(--sans); }
+.stale { max-width: var(--wrap); margin: 10px auto 0; padding: 10px 14px; background: var(--paper); border-left: 4px solid var(--warn); font: 500 .85rem var(--sans); }
 .stale[hidden] { display: none; }
 .sum { margin-top: 10px; padding: 12px 14px; background: var(--paper); border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; font: 400 .95rem/1.55 var(--sans); }
 .sum .note { display: block; margin-top: 8px; color: var(--muted); font-size: .78rem; }
@@ -154,11 +155,26 @@ table.status th[scope="row"] { font-weight: 600; }
 .vsec .src { color: var(--muted); font-size: .8rem; }
 
 /* rodapé e consentimento */
-.footer { max-width: 1240px; margin: 0 auto; padding: 18px 16px 90px; border-top: 3px double var(--ink); font: 400 .85rem/1.6 var(--sans); color: var(--muted); }
+.footer { max-width: var(--wrap); margin: 0 auto; padding: 18px 16px 90px; border-top: 3px double var(--ink); font: 400 .85rem/1.6 var(--sans); color: var(--muted); }
 .footer a { color: var(--ink); }
 .consent { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--paper); border-top: 2px solid var(--ink); padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: center; font: 400 .85rem/1.45 var(--sans); }
 .consent[hidden] { display: none; }
 .consent p { margin: 0; max-width: 640px; }
+
+/* telas grandes: mais respiro no centro, colunas laterais um pouco maiores, texto proporcional */
+@media (min-width: 1500px) {
+  :root { --wrap: 1480px; --col-l: 220px; --col-r: 320px; --gap: 48px; --feed: 840px; }
+  html { font-size: 118%; }
+  main { padding-top: 28px; }
+}
+@media (min-width: 1900px) {
+  :root { --wrap: 1700px; --col-l: 250px; --col-r: 360px; --gap: 64px; --feed: 940px; }
+  html { font-size: 125%; }
+}
+@media (min-width: 2500px) {
+  :root { --wrap: 2000px; --col-l: 280px; --col-r: 400px; --gap: 80px; --feed: 1040px; }
+  html { font-size: 137.5%; }
+}
 
 /* telas menores: lista em coluna única, fontes viram faixa rolável */
 @media (max-width: 1020px) {
