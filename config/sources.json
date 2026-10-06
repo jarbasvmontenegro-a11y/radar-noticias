@@ -14,7 +14,7 @@
     {"id": "valor", "name": "Valor Econômico", "kind": "noticia", "home": "https://valor.globo.com/politica/", "url": "https://valor.globo.com/rss/politica/"},
     {"id": "gazeta-do-povo", "name": "Gazeta do Povo", "kind": "noticia", "home": "https://www.gazetadopovo.com.br/republica/", "url": "https://www.gazetadopovo.com.br/feed/rss/republica.xml"},
     {"id": "cartacapital", "name": "CartaCapital", "kind": "noticia", "home": "https://www.cartacapital.com.br/politica/", "url": "https://www.cartacapital.com.br/feed/"},
-    {"id": "correio-braziliense", "name": "Correio Braziliense", "kind": "noticia", "home": "https://www.correiobraziliense.com.br/politica/", "url": "https://www.correiobraziliense.com.br/rss/politica"},
+    {"id": "correio-braziliense", "name": "Correio Braziliense", "kind": "noticia", "home": "https://www.correiobraziliense.com.br/politica/", "url": "https://www.correiobraziliense.com.br/rss/noticia/politica/rss.xml"},
     {"id": "bbc-brasil", "name": "BBC News Brasil", "kind": "noticia", "home": "https://www.bbc.com/portuguese", "url": "https://feeds.bbci.co.uk/portuguese/rss.xml"},
 
     {"id": "lupa", "name": "Agência Lupa", "kind": "checagem", "home": "https://lupa.news/", "url": "https://lupa.news/feed/"},
