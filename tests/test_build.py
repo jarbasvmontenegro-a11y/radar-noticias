@@ -95,9 +95,45 @@ class BuildTests(unittest.TestCase):
         b.build(self.out)
         home = (b.ROOT / self.out / "index.html").read_text(encoding="utf-8")
         self.assertIn("https://wa.me/?text=", home)
-        self.assertIn("Mais cobertos agora", home)
-        self.assertIn("Também noticiado por", home)
-        self.assertIn("Enviar no Zap", home)
+        self.assertIn("Como cada veículo contou", home)
+        self.assertIn("Também em", home)
+        self.assertIn("Enviar no WhatsApp", home)
+
+    def test_paginas_por_estado_e_lista_de_estados(self):
+        self.write([article(1, title="Governador do Ceará anuncia obras em Fortaleza"), article(2, title="Senado aprova projeto de lei")])
+        b.build(self.out)
+        site = b.ROOT / self.out
+        ce = (site / "estado" / "ce" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("Governador do Ceará anuncia obras", ce)
+        self.assertNotIn("Senado aprova projeto de lei", ce)
+        self.assertFalse((site / "estado" / "sp").exists())  # estado sem manchete não vira página vazia
+        self.assertIn('href="/estado/ce/"', (site / "estados" / "index.html").read_text(encoding="utf-8"))
+        self.assertIn("/estado/ce/", (site / "sitemap.xml").read_text(encoding="utf-8"))
+
+    def test_paginacao_noindex_e_links_entre_paginas(self):
+        self.write([article(i) for i in range(1, 131)])
+        b.build(self.out)
+        site = b.ROOT / self.out
+        p1 = (site / "index.html").read_text(encoding="utf-8")
+        p2 = (site / "pagina" / "2" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/pagina/2/"', p1)
+        self.assertIn('rel="next"', p1)
+        self.assertIn("noindex", p2)
+        self.assertNotIn("noindex", p1)
+        self.assertIn('rel="prev" href="/"', p2)
+        self.assertNotIn("/pagina/2/", (site / "sitemap.xml").read_text(encoding="utf-8"))
+
+    def test_cabecalhos_de_seguranca_csp_sem_inline_solto(self):
+        self.write([article(1)])
+        b.build(self.out)
+        headers = (b.ROOT / self.out / "_headers").read_text(encoding="utf-8")
+        csp = [l for l in headers.splitlines() if "Content-Security-Policy" in l][0]
+        script_src = csp.split("script-src")[1].split(";")[0]
+        self.assertIn("'sha256-", script_src)  # o script do tema entra por hash
+        self.assertNotIn("unsafe-inline", script_src)
+        self.assertIn("frame-ancestors", csp)
+        self.assertIn("Strict-Transport-Security", headers)
+        self.assertNotIn(" onclick=", (b.ROOT / self.out / "index.html").read_text(encoding="utf-8"))  # CSP bloquearia
 
     def test_paginas_de_tema_manifest_e_share_target(self):
         self.write([article(1, title="Senado aprova projeto de lei em plenário")])

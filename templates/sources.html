@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page">
+  <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a> / <span>Fontes</span></nav>
+  <h1>Fontes monitoradas</h1>
+  <p class="lead">Perfis editoriais diferentes, agências oficiais, agências de checagem e veículos de cada estado. Estar aqui não é um aval ao conteúdo. O número é o de manchetes recentes que temos de cada uma.</p>
+  {% for g in grupos %}
+  <section class="src-group">
+    <h2>{{ g.titulo }}</h2>
+    {% if g.fontes is defined %}
+    <ul class="src-list">
+      {% for s in g.fontes %}<li><a href="/fonte/{{ s.id }}/">{{ s.name }}</a> <span class="n">{{ s.n }}</span></li>{% endfor %}
+    </ul>
+    {% else %}
+    {% for e in g.estados %}
+    <h3>{{ e.nome }}</h3>
+    <ul class="src-list">
+      {% for s in e.fontes %}<li><a href="/fonte/{{ s.id }}/">{{ s.name }}</a> <span class="n">{{ s.n }}</span></li>{% endfor %}
+    </ul>
+    {% endfor %}
+    {% endif %}
+  </section>
+  {% endfor %}
+</div>
+{% endblock %}

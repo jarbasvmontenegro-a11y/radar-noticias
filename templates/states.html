@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page">
+  <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a> / <span>Estados</span></nav>
+  <h1>Política por estado</h1>
+  <p class="lead">Escolha um estado para ver as manchetes de veículos locais e o que a imprensa nacional publica sobre ele. O número ao lado é o de manchetes recentes.</p>
+  <div class="regions">
+    {% for r in regioes %}
+    <section class="region">
+      <h2>{{ r.nome }}</h2>
+      <ul>
+        {% for e in r.estados %}
+        <li>{% if e.n %}<a href="/estado/{{ e.uf|lower }}/">{{ e.nome }}</a> <span class="n">{{ e.n }}</span>{% else %}<span class="off">{{ e.nome }}</span>{% endif %}</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endfor %}
+  </div>
+  <p class="small">Um estado aparece quando a manchete o cita ou quando vem de um veículo local. Notícias que citam muitos estados ao mesmo tempo ficam só no noticiário nacional.</p>
+</div>
+{% endblock %}

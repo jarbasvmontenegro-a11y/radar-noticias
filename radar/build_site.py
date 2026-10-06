@@ -9,6 +9,7 @@ import json
 import os
 import re
 import shutil
+import math
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -18,6 +19,7 @@ from zoneinfo import ZoneInfo
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+from . import geo
 from .cluster import cluster, topic_of
 from .collect import DATA, ROOT, load_json, load_sources, safe_url
 
@@ -46,8 +48,10 @@ def prepare(articles: list[dict], sources: dict, now: datetime) -> list[dict]:
             continue  # registro quebrado não derruba o site inteiro
         src = sources.get(a.get("source"), {"name": a.get("source", "?"), "id": a.get("source", "?")})
         same_day = pub.date() == now.date()
+        gap = (now.date() - pub.date()).days
+        label = "Hoje" if gap == 0 else "Ontem" if gap == 1 else f"{DIAS[pub.weekday()].split('-')[0].capitalize()}, {pub.day} de {MESES[pub.month - 1]}"
         out.append({**a, "source_name": src["name"], "source_id": src["id"], "dt": pub,
-                    "day": pub.strftime("%Y-%m-%d"),
+                    "day": pub.strftime("%Y-%m-%d"), "day_label": label, "hm": pub.strftime("%H:%M"),
                     "time_label": pub.strftime("%H:%M") if same_day else pub.strftime("%d/%m %H:%M")})
     return out
 
@@ -81,10 +85,6 @@ def wa_link(text: str) -> str:
     return "https://wa.me/?text=" + quote(text, safe="")
 
 
-MANIFEST_ICON = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="10" fill="#8c1c13"/>'
-                 '<path d="M16 18h32v6H16zm0 11h32v6H16zm0 11h20v6H16z" fill="#fff"/></svg>')
-
-
 class BuildError(RuntimeError):
     pass
 
@@ -97,7 +97,7 @@ def verify_site(path: Path, min_items: int = 0) -> list[str]:
     """Confere o site gerado antes de publicar. Devolve a lista de problemas (vazia = ok)."""
     problems: list[str] = []
     required = ["index.html", "404.html", "sitemap.xml", "robots.txt", "verificador/index.html", "sobre/index.html",
-                "privacidade/index.html", "data/search-index.json", "data/allowed-hosts.json", "data/municipios.json", "style.css", "app.js", "share.js",
+                "privacidade/index.html", "estados/index.html", "fontes/index.html", "data/search-index.json", "data/allowed-hosts.json", "data/municipios.json", "style.css", "app.js", "share.js",
                 "manifest.webmanifest"]
     for f in required:
         if not (path / f).is_file():
@@ -130,6 +130,25 @@ def verify_site(path: Path, min_items: int = 0) -> list[str]:
     return problems
 
 
+def source_groups(all_sources: list[dict], counts: dict) -> list[dict]:
+    """Fontes agrupadas para a página /fontes/: nacionais, oficiais, checagem e regionais por estado."""
+    def rows(lst):
+        return [{"id": s["id"], "name": s["name"], "home": s["home"], "n": counts.get(s["id"], 0)} for s in lst]
+    out = []
+    for gid, titulo in (("nacional", "Veículos nacionais"), ("oficial", "Agências oficiais"), ("checagem", "Agências de checagem")):
+        lst = [s for s in all_sources if s.get("grupo", "nacional") == gid]
+        if lst:
+            out.append({"titulo": titulo, "fontes": rows(lst)})
+    nomes = {e["uf"]: e["nome"] for e in geo.states()}
+    por_uf: dict[str, list] = {}
+    for s in all_sources:
+        if s.get("grupo") == "regional":
+            por_uf.setdefault(s.get("uf", ""), []).append(s)
+    out.append({"titulo": "Veículos regionais, por estado", "estados": [
+        {"uf": uf, "nome": nomes.get(uf, uf), "fontes": rows(lst)} for uf, lst in sorted(por_uf.items(), key=lambda kv: nomes.get(kv[0], kv[0]))]})
+    return out
+
+
 def build(out_dir: str = "site") -> str:
     cfg = json.loads((ROOT / "config" / "site.json").read_text(encoding="utf-8"))
     cfg["site_url"] = (os.environ.get("SITE_URL") or cfg["site_url"]).rstrip("/")
@@ -147,6 +166,10 @@ def build(out_dir: str = "site") -> str:
     items = prepare(store["articles"], sources, now)
     for a in items:
         a["grupo"] = sources.get(a["source"], {}).get("grupo", "nacional")
+    for a in items:  # estados citados (até 3; notícia que cita muitos estados é nacional) + estado da fonte regional
+        default = sources.get(a["source"], {}).get("uf", "") if a["grupo"] == "regional" else ""
+        found = geo.detect(f"{a['title']} {a.get('desc', '')}", default)
+        a["ufs"] = found if len(found) <= 3 else ([default] if default else [])
     all_news = [a for a in items if a["kind"] == "noticia"]
     news = [a for a in all_news if a["grupo"] != "regional"]  # home, temas e arquivo: escopo nacional
     checks = [a for a in items if a["kind"] == "checagem"]
@@ -164,7 +187,12 @@ def build(out_dir: str = "site") -> str:
     highlights = []
     for g in groups[:5]:
         names = sorted({x["source_name"] for x in g})
-        highlights.append({"lead": g[0], "n": len(names), "names": names})
+        por_veiculo, vistos = [], set()
+        for x in g:  # uma manchete por veículo: é o que mostra como cada um contou o mesmo fato
+            if x["source"] not in vistos:
+                vistos.add(x["source"])
+                por_veiculo.append(x)
+        highlights.append({"lead": g[0], "n": len(names), "names": names, "veiculos": por_veiculo[:6]})
     for a in items:
         a["wa"] = wa_link(share_text(a, cfg))
 
@@ -188,7 +216,13 @@ def build(out_dir: str = "site") -> str:
     days = sorted({a["day"] for a in news}, reverse=True)
     day_links = [{"day": d, "label": long_date(datetime.strptime(d, "%Y-%m-%d"))} for d in days[:7]]
 
+    estados = geo.states()
+    uf_news = {e["uf"]: [a for a in all_news if e["uf"] in a["ufs"]] for e in estados}
+    regioes = []
+    for reg in ("Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"):
+        regioes.append({"nome": reg, "estados": [{"uf": e["uf"], "nome": e["nome"], "n": len(uf_news[e["uf"]])} for e in estados if e["regiao"] == reg]})
     ctx = {
+        "regioes": regioes, "uf_nome": {e["uf"]: e["nome"] for e in estados}, "active_uf": None,
         "day_links": day_links,
         "cfg": cfg, "news_sources": news_sources, "check_sources": check_sources, "counts": counts,
         "now": now, "today_long": long_date(now), "weekday_long": weekday_date(now),
@@ -210,47 +244,74 @@ def build(out_dir: str = "site") -> str:
 
     last = (items[0]["dt"] if items else now).strftime("%Y-%m-%d")
 
-    # --- home ---------------------------------------------------------------------------
+    # --- listas paginadas ---------------------------------------------------------------
     page_size = cfg["page_size"]
-    render("/", "index.html", path="/", articles=news[:page_size], total=len(news), active=None, highlights=highlights,
-           title=f"Notícias de política hoje, {long_date(now)} | {cfg['name']}",
-           description=(f"As últimas notícias de política do Brasil, {long_date(now)}: títulos e resumos curtos de "
-                        f"{len(news_sources)} veículos, atualizados a cada 30 minutos, com link direto para a fonte. "
-                        "Resumo com IA sob demanda e verificador de fake news."),
-           heading=f"Notícias de política hoje", subheading=weekday_date(now))
+
+    def listing(base: str, arts: list[dict], max_pages: int = 15, **kw) -> None:
+        """Página 1 em `base` e as seguintes em `base`pagina/N/ (noindex: o que vale para busca é a página 1)."""
+        pages_n = max(1, min(max_pages, math.ceil(len(arts) / page_size)))
+        title, desc = kw.pop("title"), kw.pop("description")
+        for n in range(1, pages_n + 1):
+            path = base if n == 1 else f"{base}pagina/{n}/"
+            render(path, "index.html", path=path, base=base, articles=arts[(n - 1) * page_size:n * page_size], total=len(arts),
+                   page=n, pages=pages_n, noindex=n > 1, title=title if n == 1 else f"{title} (página {n})", description=desc, **kw)
+
+    listing("/", news, active=None, highlights=highlights,
+            title=f"Notícias de política hoje, {long_date(now)} | {cfg['name']}",
+            description=(f"As últimas notícias de política do Brasil, {long_date(now)}: títulos e resumos curtos de "
+                         f"{len(news_sources)} veículos, atualizados a cada 30 minutos, com link direto para a fonte. "
+                         "Resumo com IA sob demanda e verificador de fake news."),
+            heading="Notícias de política hoje", subheading="Manchetes dos principais veículos")
     pages.append(("/", last))
+
+    # --- por estado ---------------------------------------------------------------------
+    for e in estados:
+        lst = uf_news[e["uf"]]
+        if not lst:
+            continue
+        nfontes = len({a["source"] for a in lst})
+        listing(f"/estado/{e['uf'].lower()}/", lst, max_pages=8, active=None, active_uf=e["uf"],
+                title=f"Política em {e['nome']}: últimas notícias | {cfg['name']}",
+                description=f"Manchetes de política de {e['nome']} e do que o país noticia sobre o estado, de {nfontes} fontes, com link para ler no veículo.",
+                heading=f"Política em {e['nome']}", subheading="Veículos locais e nacionais que citam o estado")
+        pages.append((f"/estado/{e['uf'].lower()}/", lst[0]["dt"].strftime("%Y-%m-%d")))
+    render("/estados/", "states.html", path="/estados/", title=f"Notícias de política por estado | {cfg['name']}",
+           description="Escolha um estado e veja as manchetes de política de veículos locais e nacionais.")
+    pages.append(("/estados/", last))
 
     # --- por fonte ----------------------------------------------------------------------
     for s in all_sources:
         lst = [a for a in items if a["source"] == s["id"]]
-        render(f"/fonte/{s['id']}/", "index.html", path=f"/fonte/{s['id']}/", articles=lst, total=len(lst), active=s["id"],
-               source=s,
-               title=f"{s['name']}: últimas notícias de política | {cfg['name']}",
-               description=f"Últimas manchetes de {s['name']} sobre política, reunidas pelo {cfg['name']}, com link para ler na fonte.",
-               heading=f"{s['name']}", subheading="Últimas manchetes de política")
+        listing(f"/fonte/{s['id']}/", lst, max_pages=3, active=s["id"], source=s,
+                title=f"{s['name']}: últimas notícias de política | {cfg['name']}",
+                description=f"Últimas manchetes de {s['name']} sobre política, reunidas pelo {cfg['name']}, com link para ler na fonte.",
+                heading=f"{s['name']}", subheading="Últimas manchetes de política")
         if lst:
             pages.append((f"/fonte/{s['id']}/", lst[0]["dt"].strftime("%Y-%m-%d")))
+    render("/fontes/", "sources.html", path="/fontes/", title=f"Fontes monitoradas | {cfg['name']}",
+           description=f"Os {len(all_sources)} veículos e agências que o {cfg['name']} acompanha, por tipo e por estado.",
+           grupos=source_groups(all_sources, counts))
+    pages.append(("/fontes/", last))
 
     # --- por tema -----------------------------------------------------------------------
     for t in topics:
         lst = [a for a in news if t["id"] in a["topics"]]
         if not lst:
             continue
-        render(f"/tema/{t['id']}/", "index.html", path=f"/tema/{t['id']}/", articles=lst[:page_size], total=len(lst), active=None,
-               active_topic=t["id"],
-               title=f"{t['name']}: últimas notícias de política | {cfg['name']}",
-               description=f"Manchetes recentes sobre {t['name'].lower()} na política brasileira, de {len({a['source'] for a in lst})} veículos, com link para ler na fonte.",
-               heading=t["name"], subheading="Manchetes por tema")
+        listing(f"/tema/{t['id']}/", lst, max_pages=5, active=None, active_topic=t["id"],
+                title=f"{t['name']}: últimas notícias de política | {cfg['name']}",
+                description=f"Manchetes recentes sobre {t['name'].lower()} na política brasileira, de {len({a['source'] for a in lst})} veículos, com link para ler na fonte.",
+                heading=t["name"], subheading="Manchetes por tema")
         pages.append((f"/tema/{t['id']}/", lst[0]["dt"].strftime("%Y-%m-%d")))
 
     # --- por dia (arquivo) --------------------------------------------------------------
     for d in days:
         lst = [a for a in news if a["day"] == d]
         dd = datetime.strptime(d, "%Y-%m-%d")
-        render(f"/dia/{d}/", "index.html", path=f"/dia/{d}/", articles=lst, total=len(lst), active=None, day=d,
-               title=f"Notícias de política em {long_date(dd)} | {cfg['name']}",
-               description=f"Principais manchetes de política do Brasil em {long_date(dd)}, de {len({a['source'] for a in lst})} veículos.",
-               heading=f"Política em {long_date(dd)}", subheading=f"{len(lst)} manchetes registradas")
+        listing(f"/dia/{d}/", lst, max_pages=8, active=None, day=d,
+                title=f"Notícias de política em {long_date(dd)} | {cfg['name']}",
+                description=f"Principais manchetes de política do Brasil em {long_date(dd)}, de {len({a['source'] for a in lst})} veículos.",
+                heading=f"Política em {long_date(dd)}", subheading=f"{len(lst)} manchetes registradas")
         pages.append((f"/dia/{d}/", d))
 
     # --- páginas fixas ------------------------------------------------------------------
@@ -285,10 +346,11 @@ def build(out_dir: str = "site") -> str:
     (out / "manifest.webmanifest").write_text(json.dumps({
         "name": cfg["name"], "short_name": cfg["name"][:12], "description": cfg["tagline"], "lang": cfg["lang"],
         "start_url": "/", "scope": "/", "display": "standalone", "background_color": "#f6f1e7", "theme_color": "#8c1c13",
-        "icons": [{"src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}],
+        "icons": [{"src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"},
+                  {"src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+                  {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"}],
         "share_target": {"action": "/verificador/", "method": "GET", "params": {"title": "title", "text": "text", "url": "url"}},
     }, ensure_ascii=False), encoding="utf-8")
-    (out / "icon.svg").write_text(MANIFEST_ICON, encoding="utf-8")
 
     # índice usado pelo verificador e pelo resumo (títulos recentes; "c" = agência de checagem, "o" = fonte oficial,
     # "d" = descrição curta, só nas mais recentes para não pesar)

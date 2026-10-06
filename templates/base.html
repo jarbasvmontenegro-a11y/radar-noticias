@@ -6,7 +6,7 @@
   <title>{{ title }}</title>
   <meta name="description" content="{{ description }}">
   <link rel="canonical" href="{{ cfg.site_url }}{{ path }}">
-  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="robots" content="{% if noindex %}noindex, follow{% else %}index, follow, max-image-preview:large{% endif %}">
   <meta name="theme-color" content="#f6f1e7" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#14120e" media="(prefers-color-scheme: dark)">
   <meta property="og:type" content="website">
@@ -15,9 +15,17 @@
   <meta property="og:title" content="{{ title }}">
   <meta property="og:description" content="{{ description }}">
   <meta property="og:url" content="{{ cfg.site_url }}{{ path }}">
-  <meta name="twitter:card" content="summary">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%238c1c13'/%3E%3Cpath d='M16 18h32v6H16zm0 11h32v6H16zm0 11h20v6H16z' fill='%23fff'/%3E%3C/svg%3E">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="{{ cfg.site_url }}/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="/icon-192.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/fonts/newsreader-400-text.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/newsreader-700-text.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/style.css">
   <meta name="built" content="{{ built_iso }}">
   <script>document.documentElement.className+=" js";try{var s=localStorage.getItem("radar-size");if(s)document.documentElement.dataset.size=s;var th=localStorage.getItem("radar-theme");if(th)document.documentElement.dataset.theme=th}catch(e){}</script>
@@ -31,20 +39,26 @@
   <a class="skip" href="#conteudo">Pular para o conteúdo</a>
 
   <header class="masthead">
-    <div class="top">
-      <span class="date">{{ weekday_long }}</span>
-      <span class="tools" role="group" aria-label="Tamanho da letra">
+    <div class="mast-row">
+      <a class="brand" href="/">{% include "_logo.html" %}<span class="brand-name">{{ cfg.name }}</span></a>
+      <form class="gs" role="search" id="gs-form">
+        <label for="gs" class="sr">Buscar nas manchetes</label>
+        <input id="gs" type="search" placeholder="Buscar nas manchetes" autocomplete="off" aria-controls="gs-out" aria-expanded="false">
+        <div id="gs-out" class="gs-out" hidden></div>
+      </form>
+      <span class="tools" role="group" aria-label="Aparência">
         <button type="button" id="size-down" aria-label="Diminuir letra">A−</button>
         <button type="button" id="size-up" aria-label="Aumentar letra">A+</button>
         <button type="button" id="theme" aria-label="Alternar tema claro e escuro">Tema</button>
       </span>
     </div>
-    <a class="brand" href="/"><span class="brand-name">{{ cfg.name }}</span></a>
-    <p class="tagline">{{ cfg.tagline }}</p>
     <nav class="mainnav" aria-label="Principal">
       <a href="/" {% if path == "/" %}aria-current="page"{% endif %}>Últimas</a>
+      <a href="/estados/" {% if path.startswith("/estado") %}aria-current="page"{% endif %}>Estados</a>
+      <a href="/fontes/" {% if path == "/fontes/" %}aria-current="page"{% endif %}>Fontes</a>
       <a href="/verificador/" {% if path == "/verificador/" %}aria-current="page"{% endif %}>Verificador de fake news</a>
       <a href="/sobre/" {% if path == "/sobre/" %}aria-current="page"{% endif %}>Como funciona</a>
+      <span class="dateline">{{ weekday_long }}</span>
     </nav>
   </header>
 
@@ -55,13 +69,9 @@
   </main>
 
   <footer class="footer">
-    <nav aria-label="Fontes">
-      <strong>Fontes monitoradas:</strong>
-      {% for s in news_sources %}<a href="/fonte/{{ s.id }}/">{{ s.name }}</a>{% if not loop.last %} · {% endif %}{% endfor %}
-    </nav>
-    <p>Checagens: {% for s in check_sources %}<a href="/fonte/{{ s.id }}/">{{ s.name }}</a>{% if not loop.last %} · {% endif %}{% endfor %}</p>
-    <p class="small">Exibimos apenas título, descrição curta e link. Os textos e direitos pertencem aos veículos. Resumos de IA podem conter erros: confirme sempre na fonte.</p>
-    <p class="small"><a href="/sobre/">Como funciona</a> · <a href="/privacidade/">Privacidade</a>{% if cfg.contact_email %} · <a href="mailto:{{ cfg.contact_email }}">Contato</a>{% endif %} · © {{ now.year }} {{ cfg.name }}</p>
+    <p><a href="/estados/">Estados</a> <a href="/fontes/">Fontes monitoradas</a> <a href="/sobre/">Como funciona</a> <a href="/privacidade/">Privacidade</a>{% if cfg.contact_email %} <a href="mailto:{{ cfg.contact_email }}">Contato</a>{% endif %}</p>
+    <p class="small">Mostramos só o título, uma descrição curta e o link. Os textos e os direitos são dos veículos. Resumos de IA podem conter erros: confirme sempre na fonte.</p>
+    <p class="small">© {{ now.year }} {{ cfg.name }}</p>
   </footer>
 
   <div id="consent" class="consent" role="region" aria-label="Aviso de cookies" hidden>

@@ -7,7 +7,7 @@
 
 {% block content %}
 <div class="page">
-  <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a> › <span>Verificador de fake news</span></nav>
+  <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a> / <span>Verificador de fake news</span></nav>
   <h1>Verificador de fake news</h1>
   <p class="lead">Cole abaixo um texto, uma frase ou um link que chegou até você. Vamos conferir se agências de checagem já analisaram o assunto e quais notícias de fontes confiáveis tratam dele.</p>
 
@@ -27,16 +27,18 @@
 
   <section class="prose" aria-labelledby="como">
     <h2 id="zap">Como responder no WhatsApp</h2>
-    <p>Depois de verificar, você recebe uma mensagem pronta. Quando uma agência de checagem classificou o conteúdo como falso ou enganoso, a mensagem já traz a conclusão e o link da checagem. Edite se quiser e envie para o grupo. Se ninguém checou ainda, a mensagem pede calma e conferência, sem afirmar que é falso.</p>
+    <p>Depois de verificar, você recebe uma mensagem pronta, com a conclusão e os motivos. Edite se quiser e envie para o grupo.</p>
     <h2 id="como">Como a verificação funciona</h2>
     <ol>
-      <li><strong>Agências de checagem.</strong> Procuramos o assunto em bases públicas de checagem (como Lupa, Aos Fatos, Estadão Verifica e Comprova). Se alguma já analisou, mostramos a conclusão dela e o link.</li>
-      <li><strong>Notícias confiáveis.</strong> Procuramos manchetes recentes dos veículos monitorados sobre o mesmo tema.</li>
-      <li><strong>Sinais de alerta.</strong> Uma IA aponta pistas de desinformação no texto (apelo emocional, falta de fonte, pedido para compartilhar) e o que você pode conferir.</li>
+      <li><strong>Agências de checagem.</strong> Procuramos o assunto em bases públicas (Lupa, Aos Fatos, Estadão Verifica, Comprova, Boatos.org e outras). Se uma agência já analisou, mostramos a conclusão dela e o link. Só nesse caso dizemos "é falso" ou "é verdadeiro".</li>
+      <li><strong>Imprensa.</strong> Comparamos a afirmação com as manchetes recentes de todos os veículos monitorados e vemos quais confirmam, quais contradizem e quais só tratam do assunto.</li>
+      <li><strong>Dados oficiais.</strong> Quando o texto cita um município, conferimos se ele existe na lista do IBGE.</li>
+      <li><strong>Sinais de corrente.</strong> Pedidos de "compartilhe antes que apaguem", falta de fonte e linguagem absoluta pesam na avaliação.</li>
     </ol>
+    <p>Sem agência de checagem, o Radar dá uma avaliação própria e a identifica como tal: "provavelmente falso", "suspeito de ser boato" ou "não deu para confirmar", sempre com os motivos. A IA só extrai a afirmação e compara textos. Quem decide são regras fixas, que você pode ler na lista de motivos.</p>
     <h2>O que o verificador não faz</h2>
     <ul>
-      <li>Não decide sozinho se algo é verdadeiro ou falso. Só indicamos "falso", "enganoso" ou "verdadeiro" quando uma agência de checagem já concluiu isso.</li>
+      <li>Não substitui uma agência de checagem. Uma avaliação do Radar é uma estimativa, não uma checagem.</li>
       <li>Se ninguém checou ainda, isso <strong>não significa</strong> que é verdade. Desconfie e procure a fonte original.</li>
       <li>Não verificamos imagens ou vídeos, apenas texto e links.</li>
     </ul>

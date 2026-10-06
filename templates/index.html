@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "_macros.html" import ad, item with context %}
+{% from "_macros.html" import ad, item, pager, rail with context %}
 
 {% block jsonld %}
 <script type="application/ld+json">{{ {"@context":"https://schema.org","@type":"CollectionPage","name":title,"url":cfg.site_url ~ path,"inLanguage":"pt-BR","isPartOf":{"@type":"WebSite","name":cfg.name,"url":cfg.site_url},"mainEntity":{"@type":"ItemList","itemListElement":ld_items}}|jsonld|safe }}</script>
@@ -7,81 +7,79 @@
 
 {% block content %}
 <div class="layout">
-  <nav class="sources" aria-label="Filtrar por fonte">
-    <h2 class="side-title">Fontes</h2>
-    <ul>
-      <li><a href="/" {% if not active and path == "/" %}aria-current="page"{% endif %}>Todas</a></li>
-      {% for s in news_sources %}
-      <li><a href="/fonte/{{ s.id }}/" {% if active == s.id %}aria-current="page"{% endif %}>{{ s.name }} <span class="n">{{ counts.get(s.id, 0) }}</span></a></li>
-      {% endfor %}
-    </ul>
-  </nav>
+  {{ rail(active_uf, active, news_sources) }}
 
   <section class="feed" aria-labelledby="h1">
     <header class="feed-head">
+      {% if active_uf or source is defined or active_topic or day is defined %}<p class="crumbs"><a href="/">Últimas</a>{% if active_uf %} / <a href="/estados/">Estados</a>{% endif %}</p>{% endif %}
       <h1 id="h1">{{ heading }}</h1>
-      <p class="sub">{{ subheading }} · atualizado em {{ updated_label }}</p>
-      {% if source is defined %}<p class="sub"><a href="{{ source.home }}" target="_blank" rel="noopener">Ir ao site de {{ source.name }} ↗</a></p>{% endif %}
+      <p class="sub">{{ subheading }}. Atualizado às {{ updated_label[-5:] }}. {{ "{:,}".format(total).replace(",", ".") }} manchetes{% if pages > 1 %}, página {{ page }} de {{ pages }}{% endif %}.</p>
+      {% if source is defined %}<p class="sub"><a href="{{ source.home }}" target="_blank" rel="noopener">Abrir o site de {{ source.name }}</a></p>{% endif %}
     </header>
+
+    {% if path == "/" and highlights %}
+    {% set h0 = highlights[0] %}
+    <section class="lead-story" aria-labelledby="lead-h">
+      <h2 id="lead-h"><a href="{{ h0.lead.url }}" target="_blank" rel="noopener">{{ h0.lead.title }}</a></h2>
+      <p class="lead-by">Assunto coberto por {{ h0.n }} veículos.</p>
+      <h3 class="lead-how">Como cada veículo contou</h3>
+      <dl class="lead-rows">
+        {% for x in h0.veiculos %}
+        <dt>{{ x.source_name }}</dt>
+        <dd><a href="{{ x.url }}" target="_blank" rel="noopener">{{ x.title }}</a></dd>
+        {% endfor %}
+      </dl>
+      {% if highlights|length > 1 %}
+      <h3 class="lead-more-h">Também em alta</h3>
+      <ul class="lead-more">
+        {% for h in highlights[1:] %}
+        <li><a href="{{ h.lead.url }}" target="_blank" rel="noopener">{{ h.lead.title }}</a> <span class="src">{{ h.n }} veículos: {{ h.names|join(", ") }}</span></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </section>
+    {% endif %}
 
     {% if path == "/" %}
     <section class="zap-band" aria-labelledby="zap-h">
       <div>
         <h2 id="zap-h">Recebeu um boato no WhatsApp?</h2>
-        <p>Cole o texto aqui. Se uma agência de checagem já analisou, você recebe uma mensagem pronta para responder no grupo.</p>
+        <p>Cole o texto aqui. Você vê se agências de checagem já analisaram e o que os veículos noticiaram, e recebe uma resposta pronta para o grupo.</p>
       </div>
-      <a class="btn btn-primary btn-big" href="/verificador/">Verificar agora</a>
+      <a class="btn btn-zapbtn" href="/verificador/">Verificar agora</a>
     </section>
     {% endif %}
 
     {{ ad("topo", "ad-top") }}
 
-    <nav class="chips" aria-label="Filtrar por tema">
+    <nav class="topics" aria-label="Filtrar por tema">
       <a href="/" {% if path == "/" %}aria-current="page"{% endif %}>Tudo</a>
       {% for t in topic_links if t.n %}<a href="/tema/{{ t.id }}/" {% if active_topic == t.id %}aria-current="page"{% endif %}>{{ t.name }}</a>{% endfor %}
     </nav>
 
-    {% if highlights %}
-    <section class="hot" aria-labelledby="hot-h">
-      <h2 id="hot-h">Mais cobertos agora</h2>
-      <ol>
-        {% for h in highlights %}
-        <li><a href="{{ h.lead.url }}" target="_blank" rel="noopener">{{ h.lead.title }}</a>
-          <span class="src">{{ h.n }} veículos: {{ h.names|join(", ") }}</span></li>
-        {% endfor %}
-      </ol>
-    </section>
-    {% endif %}
-
-    <div class="searchbar">
-      <label for="q" class="sr">Buscar nas manchetes</label>
-      <input id="q" type="search" placeholder="Buscar nas manchetes desta página" autocomplete="off">
-      <p id="qcount" class="count" aria-live="polite">{{ total }} manchetes</p>
-    </div>
-
     <div id="list">
+    {% set ns = namespace(day="") %}
     {% for a in articles %}
-      {{ item(a, show_source_link=(active is none)) }}
+      {% if a.day_label != ns.day %}{% set ns.day = a.day_label %}<h2 class="day">{{ a.day_label }}</h2>{% endif %}
+      {{ item(a, show_source_link=(active is none), show_ufs=(active_uf is none)) }}
       {% if loop.index in (8, 28) %}{{ ad("lista", "ad-feed") }}{% endif %}
     {% else %}
       <p class="empty">Ainda não há manchetes aqui. A coleta roda a cada 30 minutos.</p>
     {% endfor %}
     </div>
 
-    {% if path == "/" and total > articles|length %}
-    <p class="more">Mostrando as {{ articles|length }} mais recentes de {{ total }}. Para ver o restante, navegue por fonte ou pelo arquivo do dia.</p>
-    {% endif %}
+    {{ pager(base, page, pages) }}
   </section>
 
   <aside class="side" aria-label="Complementos">
-    <section class="box box-verify">
-      <h2 class="side-title">Recebeu um boato?</h2>
-      <p>Cole o texto ou link no nosso verificador e veja se agências de checagem já analisaram.</p>
-      <a class="btn btn-primary" href="/verificador/">Verificar agora</a>
+    <section class="side-sec side-verify">
+      <h2>Recebeu um boato?</h2>
+      <p>Cole o texto ou o link no verificador e veja o que as agências de checagem e os veículos dizem.</p>
+      <a class="btn btn-zapbtn" href="/verificador/">Verificar agora</a>
     </section>
     {% if checks %}
-    <section class="box">
-      <h2 class="side-title">Checagens recentes</h2>
+    <section class="side-sec">
+      <h2>Checagens recentes</h2>
       <ul class="mini">
         {% for c in checks %}
         <li><a href="{{ c.url }}" target="_blank" rel="noopener">{{ c.title }}</a> <span class="src">{{ c.source_name }}</span></li>
@@ -90,9 +88,9 @@
     </section>
     {% endif %}
     {{ ad("lateral", "ad-side") }}
-    <section class="box">
-      <h2 class="side-title">Arquivo</h2>
-      <ul class="mini">
+    <section class="side-sec">
+      <h2>Arquivo</h2>
+      <ul class="mini mini-plain">
         {% for d in day_links %}
         <li><a href="/dia/{{ d.day }}/">{{ d.label }}</a></li>
         {% endfor %}
