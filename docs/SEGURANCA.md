@@ -11,8 +11,8 @@ OWASP ASVS 4.0 e CWE.
 | ID | Severidade | Achado | Padrão | Situação |
 |---|---|---|---|---|
 | A4 | Alta | Sem Turnstile, quem forja o cabeçalho `Origin` (um script) consegue chamar a IA | OWASP A04 · ASVS 11.1.4 · CWE-799 | Aberto: precisa criar o widget do Turnstile (ver abaixo) |
-| A5 | Alta | Rajada em paralelo passa do limite por IP: o KV não faz contagem atômica (14 de 14 pedidos passaram) | OWASP A04 · CWE-362/770 | Parcialmente mitigado (contador em memória por instância); só o Turnstile resolve de vez |
-| A5b | Alta | Em sequência o limite funciona (5 por dia por IP sem Turnstile; 429 depois) | OWASP A04 · CWE-770 | Mitigado, exceto pela rajada (A5) |
+| A5 | Alta | Rajada em paralelo passa do limite por IP: o KV não faz contagem atômica (14 de 14 pedidos passaram) | OWASP A04 · CWE-362/770 | Aberto: um contador em memória foi adicionado, mas o teste seguinte ainda passou 14 de 14 (cada pedido caiu numa instância diferente). Só o Turnstile resolve |
+| A5b | Alta | Em sequência o limite funciona (5 por dia por IP sem Turnstile; 429 depois) | OWASP A04 · CWE-770 | Ok em sequência; a rajada (A5) continua aberta |
 | E2 | Baixa | Sem `security.txt` (canal para reportar falhas) | RFC 9116 | Precisa de um e-mail de contato (variável `CONTACT_EMAIL`); o build publica sozinho |
 | H1–H4 | Alta/Média | Sem CSP e sem HSTS | OWASP A05 · ASVS 14.4 · CWE-1021/79/319 | Corrigido (CSP sem `unsafe-inline` em scripts, por hash; HSTS 1 ano; COOP/CORP) |
 | G1 | Média | Ações do GitHub Actions sem versão fixa por SHA | OWASP A08 · CWE-829 | Corrigido |
