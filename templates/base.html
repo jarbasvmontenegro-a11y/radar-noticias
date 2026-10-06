@@ -41,9 +41,9 @@
   <header class="masthead">
     <div class="mast-row">
       <a class="brand" href="/">{% include "_logo.html" %}<span class="brand-name">{{ cfg.name }}</span></a>
-      <form class="gs" role="search" id="gs-form">
+      <form class="gs" role="search" id="gs-form" action="/busca/" method="get">
         <label for="gs" class="sr">Buscar nas manchetes</label>
-        <input id="gs" type="search" placeholder="Buscar nas manchetes" autocomplete="off" aria-controls="gs-out" aria-expanded="false">
+        <input id="gs" name="q" type="search" placeholder="Buscar nas manchetes" autocomplete="off" aria-controls="gs-out" aria-expanded="false">
         <div id="gs-out" class="gs-out" hidden></div>
       </form>
       <span class="tools" role="group" aria-label="Aparência">
@@ -55,6 +55,7 @@
     <nav class="mainnav" aria-label="Principal">
       <a href="/" {% if path == "/" %}aria-current="page"{% endif %}>Últimas</a>
       <a href="/estados/" {% if path.startswith("/estado") %}aria-current="page"{% endif %}>Estados</a>
+      <a href="/pessoas/" {% if path == "/pessoas/" or path.startswith("/pessoa/") %}aria-current="page"{% endif %}>Pessoas</a>
       <a href="/fontes/" {% if path == "/fontes/" %}aria-current="page"{% endif %}>Fontes</a>
       <a href="/notificacoes/" {% if path == "/notificacoes/" %}aria-current="page"{% endif %}>Notificações</a>
       <a href="/verificador/" {% if path == "/verificador/" %}aria-current="page"{% endif %}>Verificador de fake news</a>

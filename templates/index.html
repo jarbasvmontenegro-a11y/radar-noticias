@@ -11,9 +11,10 @@
 
   <section class="feed" aria-labelledby="h1">
     <header class="feed-head">
-      {% if active_uf or source is defined or active_topic or day is defined %}<p class="crumbs"><a href="/">Últimas</a>{% if active_uf %} / <a href="/estados/">Estados</a>{% endif %}</p>{% endif %}
+      {% if active_uf or source is defined or active_topic or day is defined or active_pessoa is defined %}<p class="crumbs"><a href="/">Últimas</a>{% if active_uf %} / <a href="/estados/">Estados</a>{% endif %}{% if active_pessoa is defined %} / <a href="/pessoas/">Pessoas</a>{% endif %}</p>{% endif %}
       <h1 id="h1">{{ heading }}</h1>
       <p class="sub">{{ subheading }}. Atualizado às {{ updated_label[-5:] }}. {{ "{:,}".format(total).replace(",", ".") }} manchetes{% if pages > 1 %}, página {{ page }} de {{ pages }}{% endif %}.</p>
+      {% if pessoa is defined %}<p class="sub">Últimas 24 horas: {{ pessoa.n24 }} manchetes com o nome no título, em {{ pessoa.v24 }} veículos. Na semana: {{ pessoa.n7 }}.</p>{% endif %}
       {% if source is defined %}<p class="sub"><a href="{{ source.home }}" target="_blank" rel="noopener">Abrir o site de {{ source.name }}</a></p>{% endif %}
     </header>
 
@@ -40,6 +41,22 @@
     </section>
     {% endif %}
 
+    {% if path == "/" and placar %}
+    <section class="placar" aria-labelledby="placar-h">
+      <h2 id="placar-h">Quem mais aparece nas manchetes <span class="placar-when">últimas 24 horas</span></h2>
+      <ul class="placar-list">
+        {% for p in placar %}
+        <li><a href="/pessoa/{{ p.id }}/">
+          <span class="pn">{{ p.nome }}</span>
+          <span class="bar" aria-hidden="true"><i style="width: {{ p.pct }}%"></i></span>
+          <span class="pv"><strong>{{ p.n24 }}</strong> manchetes, {{ p.v24 }} veículos</span>
+        </a></li>
+        {% endfor %}
+      </ul>
+      <p class="small">Conta quantas vezes o nome aparece no título. Não mede apoio, aprovação nem se a notícia é boa ou ruim. <a href="/pessoas/">Ver todas as pessoas</a></p>
+    </section>
+    {% endif %}
+
     {% if path == "/" %}
     <section class="zap-band" aria-labelledby="zap-h">
       <div>
@@ -56,6 +73,13 @@
       <a href="/" {% if path == "/" %}aria-current="page"{% endif %}>Tudo</a>
       {% for t in topic_links if t.n %}<a href="/tema/{{ t.id }}/" {% if active_topic == t.id %}aria-current="page"{% endif %}>{{ t.name }}</a>{% endfor %}
     </nav>
+
+    {% if pessoas_links and (path == "/" or active_pessoa is defined) %}
+    <nav class="people" aria-label="Filtrar por pessoa">
+      <span class="people-h">Quem está na notícia</span>
+      {% for p in pessoas_links %}<a href="/pessoa/{{ p.id }}/" {% if active_pessoa is defined and active_pessoa == p.id %}aria-current="page"{% endif %}>{{ p.nome }}</a>{% endfor %}
+    </nav>
+    {% endif %}
 
     <div id="list">
     {% set ns = namespace(day="") %}

@@ -10,9 +10,12 @@ O Radar reúne, de hora em hora, as manchetes de política de mais de 100 veícu
 
 - **Todas as manchetes, sem ruído.** Linha do tempo por dia, com filtro por estado, tema e fonte.
 - **Como cada veículo contou.** Quando vários veículos cobrem o mesmo assunto, o site mostra as manchetes lado a lado.
+- **Quem está na notícia.** Filtro por político e placar de quantas manchetes e veículos citam cada nome (contagem de aparições, não de apoio nem de tom).
+- **Busca no próprio site**, com filtro por pessoa e por tipo.
+- **Conferência antes de publicar.** Notícia nova só entra se o título for uma manchete e o link abrir (404 e páginas apagadas ficam de fora).
 - **Resumo com IA sob demanda.** Só quando a pessoa pede, relacionando o que outros veículos publicaram.
 - **Verificador de fake news.** Cole um boato e veja se agências de checagem já analisaram e quais sinais de alerta aparecem.
-- **Notificações escolhidas por você.** Temas, estados e alertas de checagem; só os assuntos mais noticiados, sem repetir e sem avisos de madrugada.
+- **Notificações escolhidas por você.** Temas, estados, pessoas e alertas de checagem; só os assuntos mais noticiados, sem repetir e sem avisos de madrugada.
 - **Envio no WhatsApp**, busca nas manchetes, tema claro e escuro, letra ajustável e instalação como app.
 
 ## Como é feito

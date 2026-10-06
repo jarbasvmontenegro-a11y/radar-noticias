@@ -169,6 +169,33 @@ class BuildTests(unittest.TestCase):
         home = (b.ROOT / self.out / "index.html").read_text(encoding="utf-8")
         self.assertIn('href="/notificacoes/"', home)
 
+    def test_pessoas_deteccao_e_paginas(self):
+        from radar import pessoas
+        self.assertEqual(pessoas.detect("Caiado anuncia apoio a Flávio no 2º turno"), ["flavio-bolsonaro", "caiado"])
+        self.assertEqual(pessoas.detect("Flávio Dino vota contra o projeto"), ["flavio-dino"])  # outro Flávio
+        self.assertEqual(pessoas.detect("Lula e Bolsonaro se encontram"), ["lula", "jair-bolsonaro"])
+        self.assertEqual(pessoas.detect("Flávio Bolsonaro critica Lula"), ["lula", "flavio-bolsonaro"])
+        self.assertNotIn("jair-bolsonaro", pessoas.detect("Eduardo Bolsonaro e a família Bolsonaro"))
+        self.assertEqual(pessoas.detect("Michelle Obama visita escola"), [])
+        arts = [article(1, title="Lula sanciona projeto sobre reforma tributária"),
+                article(2, url="https://oglobo.globo.com/a/2", source="oglobo", title="Flávio Bolsonaro critica Lula em entrevista"),
+                article(3, url="https://folha.uol.com.br/a/3", source="folha", title="Lula fala sobre o Orçamento do próximo ano")]
+        self.write(arts)
+        b.build(self.out)
+        root = b.ROOT / self.out
+        home = (root / "index.html").read_text(encoding="utf-8")
+        self.assertIn("Quem mais aparece nas manchetes", home)
+        self.assertIn("Não mede apoio", home)
+        lula = (root / "pessoa" / "lula" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("Lula sanciona projeto", lula)
+        self.assertEqual(lula.count('class="item"'), 3)
+        idx = json.loads((root / "data" / "search-index.json").read_text(encoding="utf-8"))
+        self.assertTrue(any("lula" in e.get("g", []) and e.get("i") for e in idx))
+        busca = (root / "busca" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("noindex", busca)
+        self.assertIn("/busca.js", busca)
+        self.assertIn('action="/busca/"', home)
+
     def test_mensagem_do_zap_tem_descricao_e_link_no_fim(self):
         a = {"source_name": "Poder360", "title": "Título", "url": "https://p.com/x", "kind": "noticia",
              "desc": "Partido decidiu não apoiar candidatos no 1º turno. Leia no Poder360."}

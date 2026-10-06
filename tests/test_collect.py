@@ -191,3 +191,74 @@ class DownloadTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ValidacaoTests(Base):
+    def test_titulos_ruins(self):
+        from radar import validar as v
+        self.assertTrue(v.titulo_ruim("Oi"))
+        self.assertTrue(v.titulo_ruim("Sem título"))
+        self.assertTrue(v.titulo_ruim("https://g1.globo.com/politica/noticia/2026/10/06/abc.ghtml"))
+        self.assertTrue(v.titulo_ruim("!!!! 1234 ???? 5678 !!!!"))
+        self.assertEqual(v.titulo_ruim("Senado aprova projeto da reforma tributária"), "")
+
+    def test_link_morto_so_quando_o_veiculo_diz_que_nao_existe(self):
+        from radar import validar as v
+
+        class Resp:
+            def __init__(self, status, url):
+                self.status_code, self.url = status, url
+            def __enter__(self): return self
+            def __exit__(self, *a): return False
+
+        def get_com(status, final=None):
+            return lambda url, **k: Resp(status, final or url)
+
+        u = "https://g1.globo.com/politica/noticia/a.ghtml"
+        self.assertEqual(v.checar_link(u, get=get_com(200))[0], "ok")
+        self.assertEqual(v.checar_link(u, get=get_com(404))[0], "morto")
+        self.assertEqual(v.checar_link(u, get=get_com(410))[0], "morto")
+        self.assertEqual(v.checar_link(u, get=get_com(200, "https://g1.globo.com/"))[0], "morto")  # soft 404
+        self.assertEqual(v.checar_link("https://g1.globo.com/", get=get_com(200))[0], "ok")  # a própria home não é soft 404
+        for status in (403, 429, 500, 503):  # bloqueio de robô ou instabilidade: a notícia entra
+            self.assertEqual(v.checar_link(u, get=get_com(status))[0], "incerto")
+
+        import requests
+
+        def cai(url, **k):
+            raise requests.Timeout("lento")
+        self.assertEqual(v.checar_link(u, get=cai)[0], "incerto")
+
+    def test_coleta_descarta_link_morto_e_titulo_ruim_e_mantem_incertos(self):
+        from radar import validar as v
+        now = datetime.now(timezone.utc)
+        feed = [("Matéria que existe e abre normalmente", "https://x.com/ok", "d", now),
+                ("Matéria que o veículo apagou do ar", "https://x.com/morta", "d", now),
+                ("Matéria que o veículo bloqueia robôs", "https://x.com/bloqueada", "d", now),
+                ("Oi", "https://x.com/curto", "d", now)]
+        est = {"https://x.com/ok": ("ok", ""), "https://x.com/morta": ("morto", "HTTP 404"), "https://x.com/bloqueada": ("incerto", "HTTP 403")}
+        with mock.patch.object(v, "checar_link", lambda url, **k: est.get(url, ("ok", ""))):
+            def fetch(src):
+                return c.parse_feed(rss(feed))
+            with mock.patch.object(c, "load_sources", lambda *a, **k: [self.src()]), mock.patch.object(c, "fetch_feed", fetch):
+                # o validador usa o checar padrão por dentro: troca a função que ele chama por padrão
+                orig = v.validar_novas
+                with mock.patch.object(v, "validar_novas", lambda novas, **k: orig(novas, checar=v.checar_link, **k)):
+                    stats = c.collect(7, 40, validar=True)
+        guardadas = {a["url"] for a in c.load_json(self.tmp / "articles.json", {})["articles"]}
+        self.assertEqual(guardadas, {"https://x.com/ok", "https://x.com/bloqueada"})
+        self.assertEqual(stats["validacao"]["mortas"], 1)
+        self.assertEqual(stats["novas"], 2)
+
+    def test_sem_validar_nada_e_descartado(self):
+        now = datetime.now(timezone.utc)
+        feed = [("Matéria qualquer com título bom", "https://x.com/a", "d", now)]
+        self.run_collect([self.src()], lambda s: c.parse_feed(rss(feed)))
+        self.assertEqual(len(c.load_json(self.tmp / "articles.json", {})["articles"]), 1)
+
+    def test_orcamento_de_tempo_esgotado_nao_descarta(self):
+        from radar import validar as v
+        novas = [{"title": f"Manchete de teste número {i} sobre política", "url": f"https://x.com/{i}", "source": "t"} for i in range(5)]
+        aceitos, descartados, cont = v.validar_novas(novas, orcamento_s=-1, checar=lambda u: ("morto", "x"))
+        self.assertEqual(len(aceitos), 5)
+        self.assertEqual(cont["sem_tempo"], 5)

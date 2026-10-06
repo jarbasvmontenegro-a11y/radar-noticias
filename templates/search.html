@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block scripts %}<script src="/busca.js" defer></script>{% endblock %}
+
+{% block content %}
+<div class="page">
+  <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a> / <span>Busca</span></nav>
+  <h1>Buscar nas manchetes</h1>
+  <form id="sf" class="sform" action="/busca/" method="get" role="search">
+    <p class="sform-row">
+      <label for="sq" class="sr">Palavras da busca</label>
+      <input id="sq" name="q" type="search" placeholder="Ex.: reforma tributária, Lula, Ceará" autocomplete="off" maxlength="120">
+      <button type="submit" class="btn btn-primary">Buscar</button>
+    </p>
+    <p class="sform-row sform-opts">
+      <label>Quem está na notícia
+        <select name="p">
+          <option value="">Qualquer pessoa</option>
+          {% for p in pessoas_todas if p.total %}<option value="{{ p.id }}">{{ p.nome }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>Tipo
+        <select name="t">
+          <option value="">Notícias e checagens</option>
+          <option value="n">Só notícias</option>
+          <option value="c">Só checagens</option>
+        </select>
+      </label>
+    </p>
+  </form>
+  <p id="sinfo" class="sinfo" role="status" aria-live="polite">Digite o que procura. A busca olha os títulos e as descrições guardados pelo Radar.</p>
+  <div id="sres"></div>
+  <p><button type="button" id="smore" class="btn" hidden>Mostrar mais resultados</button></p>
+  <noscript><p class="notice">A busca precisa de JavaScript ativado.</p></noscript>
+</div>
+{% endblock %}

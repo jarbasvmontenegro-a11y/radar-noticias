@@ -46,7 +46,7 @@ def main() -> int:
 
     def run_collect() -> bool:
         try:
-            stats = collect(cfg["window_days"], cfg["per_source_limit"])
+            stats = collect(cfg["window_days"], cfg["per_source_limit"], validar=os.environ.get("RADAR_VALIDAR_LINKS", "1") != "0")
         except StoreCorrupted as exc:
             print("ERRO:", exc, file=sys.stderr)
             return False

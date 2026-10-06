@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page">
+  <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a> / <span>Pessoas</span></nav>
+  <h1>Quem aparece nas notícias</h1>
+  <p class="lead">Quantas manchetes e quantos veículos diferentes citam cada político ou autoridade. Escolha um nome para ver só as notícias em que ele aparece.</p>
+  <table class="ptable">
+    <caption class="sr">Aparições nas manchetes por pessoa</caption>
+    <thead><tr><th scope="col">Pessoa</th><th scope="col">24 horas</th><th scope="col">Veículos (24 h)</th><th scope="col">Semana</th></tr></thead>
+    <tbody>
+      {% for p in pessoas_todas if p.total %}
+      <tr>
+        <th scope="row"><a href="/pessoa/{{ p.id }}/">{{ p.nome }}</a><span class="cargo">{{ p.cargo }}</span></th>
+        <td>{{ p.n24 }}</td><td>{{ p.v24 }}</td><td>{{ p.n7 }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <h2>Como contamos</h2>
+  <ul>
+    <li>Contamos as manchetes que trazem o nome da pessoa no título. A página de cada pessoa lista também as que citam o nome só na descrição.</li>
+    <li>É uma contagem de aparições. O Radar não mede apoio, aprovação nem o tom da notícia: uma manchete pode ser favorável, crítica ou neutra, e dizer isso exige leitura humana.</li>
+    <li>Quem aparece mais não é, por isso, quem tem mais razão nem mais votos: aparece mais quem está no centro da agenda do dia, inclusive por escândalo ou por cargo.</li>
+    <li>A identificação é feita por comparação de nomes, sem IA, e pode errar com nomes parecidos. Se achar algum erro, avise pelo canal de contato.</li>
+  </ul>
+</div>
+{% endblock %}

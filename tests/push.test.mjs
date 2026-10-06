@@ -80,7 +80,8 @@ test("prefsValidas limpa lixo, limita tamanhos e exige ao menos uma escolha", ()
   assert.equal(prefsValidas({}), null);
   assert.equal(prefsValidas({ temas: ["<script>"], ufs: ["XX"] }), null);
   const p = prefsValidas({ geral: true, temas: ["justica", "justica", "a b"], ufs: ["CE", "ZZ"], nivel: "x", max: 99 });
-  assert.deepEqual(p, { geral: true, temas: ["justica"], ufs: ["CE"], checagens: false, nivel: "top", max: 5 });
+  assert.deepEqual(p, { geral: true, temas: ["justica"], ufs: ["CE"], pessoas: [], checagens: false, nivel: "top", max: 5 });
+  assert.deepEqual(prefsValidas({ pessoas: ["lula", "<x>", "lula"] }).pessoas, ["lula"]);
   assert.equal(prefsValidas({ temas: Array.from({ length: 50 }, (_, i) => `t${i}`) }).temas.length, 12);
 });
 
@@ -97,7 +98,7 @@ test("segredoConfere exige segredo longo e igual", () => {
 // ---------- seleção ----------
 const D = (id, n, extra = {}) => ({ id, t: `Assunto ${id}`, u: `https://g1.globo.com/${id}`, f: "g1", n, temas: [], ufs: [], k: "assunto", p: 1000 + n, ...extra });
 const meioDia = new Date("2026-10-06T15:00:00Z"); // 12h em Brasília
-const prefs = (o = {}) => ({ geral: false, temas: [], ufs: [], checagens: false, nivel: "top", max: 3, ...o });
+const prefs = (o = {}) => ({ geral: false, temas: [], ufs: [], pessoas: [], checagens: false, nivel: "top", max: 3, ...o });
 
 test("pontuar respeita os limiares de cada nível, tema e estado", () => {
   assert.equal(pontuar(D("a", 6), prefs({ geral: true })), 0);
@@ -106,6 +107,9 @@ test("pontuar respeita os limiares de cada nível, tema e estado", () => {
   assert.equal(pontuar(D("a", 4, { temas: ["justica"] }), prefs({ temas: ["justica"] })), 0);
   assert.ok(pontuar(D("a", 5, { temas: ["justica"] }), prefs({ temas: ["justica"] })) > 0);
   assert.equal(pontuar(D("a", 9, { temas: ["economia"] }), prefs({ temas: ["justica"] })), 0); // tema que a pessoa não escolheu
+  assert.ok(pontuar(D("a", 5, { pessoas: ["lula"] }), prefs({ pessoas: ["lula"] })) > 0);
+  assert.equal(pontuar(D("a", 4, { pessoas: ["lula"] }), prefs({ pessoas: ["lula"] })), 0);
+  assert.equal(pontuar(D("a", 9, { pessoas: ["moraes"] }), prefs({ pessoas: ["lula"] })), 0);
   assert.ok(pontuar(D("a", 3, { ufs: ["CE"] }), prefs({ ufs: ["CE"] })) > 0);
   assert.equal(pontuar(D("a", 2, { ufs: ["CE"] }), prefs({ ufs: ["CE"] })), 0);
   assert.equal(pontuar(D("a", 9, { ufs: ["SP"] }), prefs({ ufs: ["CE"] })), 0);

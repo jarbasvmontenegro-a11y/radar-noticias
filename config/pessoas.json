@@ -1,0 +1,23 @@
+{
+  "placar": ["lula", "flavio-bolsonaro"],
+  "pessoas": [
+    {"id": "lula", "nome": "Lula", "cargo": "Presidente da República", "padrao": "\\blula\\b"},
+    {"id": "flavio-bolsonaro", "nome": "Flávio Bolsonaro", "cargo": "Senador (PL)", "padrao": "\\bflavio bolsonaro\\b|\\bflavio\\b(?! dino| abreu| arns| rocha| pimenta| gomes| augusto)"},
+    {"id": "jair-bolsonaro", "nome": "Jair Bolsonaro", "cargo": "Ex-presidente", "padrao": "\\bjair bolsonaro\\b|(?<!flavio )(?<!eduardo )(?<!michelle )(?<!carlos )(?<!familia )(?<!clã )\\bbolsonaro\\b"},
+    {"id": "michelle-bolsonaro", "nome": "Michelle Bolsonaro", "cargo": "Senadora (PL)", "padrao": "\\bmichelle\\b(?! obama)"},
+    {"id": "eduardo-bolsonaro", "nome": "Eduardo Bolsonaro", "cargo": "Deputado (PL)", "padrao": "\\beduardo bolsonaro\\b"},
+    {"id": "tarcisio", "nome": "Tarcísio de Freitas", "cargo": "Governador de São Paulo", "padrao": "\\btarcisio\\b"},
+    {"id": "caiado", "nome": "Ronaldo Caiado", "cargo": "Governador de Goiás", "padrao": "\\bcaiado\\b"},
+    {"id": "zema", "nome": "Romeu Zema", "cargo": "Governador de Minas Gerais", "padrao": "\\bzema\\b"},
+    {"id": "haddad", "nome": "Fernando Haddad", "cargo": "Ministro da Fazenda", "padrao": "\\bhaddad\\b"},
+    {"id": "alcolumbre", "nome": "Davi Alcolumbre", "cargo": "Presidente do Senado", "padrao": "\\balcolumbre\\b"},
+    {"id": "hugo-motta", "nome": "Hugo Motta", "cargo": "Presidente da Câmara", "padrao": "\\bhugo motta\\b|\\bmotta\\b"},
+    {"id": "moraes", "nome": "Alexandre de Moraes", "cargo": "Ministro do STF", "padrao": "\\bmoraes\\b"},
+    {"id": "fachin", "nome": "Edson Fachin", "cargo": "Presidente do STF", "padrao": "\\bfachin\\b"},
+    {"id": "gilmar-mendes", "nome": "Gilmar Mendes", "cargo": "Ministro do STF", "padrao": "\\bgilmar\\b"},
+    {"id": "flavio-dino", "nome": "Flávio Dino", "cargo": "Ministro do STF", "padrao": "\\bflavio dino\\b|\\bdino\\b"},
+    {"id": "andre-mendonca", "nome": "André Mendonça", "cargo": "Ministro do STF", "padrao": "\\bandre mendonca\\b|\\bministro mendonca\\b|\\bmendonca\\b"},
+    {"id": "nunes-marques", "nome": "Nunes Marques", "cargo": "Ministro do STF", "padrao": "\\bnunes marques\\b"},
+    {"id": "trump", "nome": "Donald Trump", "cargo": "Presidente dos EUA", "padrao": "\\btrump\\b"}
+  ]
+}

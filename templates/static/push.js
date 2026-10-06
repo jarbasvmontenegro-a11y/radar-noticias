@@ -18,7 +18,7 @@
   function readPrefs() {
     return {
       geral: form.elements.geral.checked, checagens: form.elements.checagens.checked,
-      temas: checked("tema"), ufs: checked("uf"),
+      temas: checked("tema"), ufs: checked("uf"), pessoas: checked("pessoa"),
       nivel: (form.querySelector('input[name="nivel"]:checked') || {}).value || "top",
       max: Number(form.elements.max.value) || 3,
     };
@@ -27,6 +27,7 @@
     if (!p) return;
     form.elements.geral.checked = !!p.geral; form.elements.checagens.checked = !!p.checagens;
     Array.prototype.forEach.call(form.querySelectorAll('input[name="tema"]'), function (i) { i.checked = (p.temas || []).indexOf(i.value) >= 0; });
+    Array.prototype.forEach.call(form.querySelectorAll('input[name="pessoa"]'), function (i) { i.checked = (p.pessoas || []).indexOf(i.value) >= 0; });
     Array.prototype.forEach.call(form.querySelectorAll('input[name="uf"]'), function (i) { i.checked = (p.ufs || []).indexOf(i.value) >= 0; });
     Array.prototype.forEach.call(form.querySelectorAll('input[name="nivel"]'), function (i) { i.checked = i.value === p.nivel; });
     if (p.max) form.elements.max.value = String(p.max);
@@ -48,7 +49,7 @@
   form.addEventListener("submit", function (ev) {
     ev.preventDefault();
     var prefs = readPrefs();
-    if (!prefs.geral && !prefs.checagens && !prefs.temas.length && !prefs.ufs.length) { say("Escolha pelo menos uma opção: assuntos do dia, checagens, um tema ou um estado.", true); return; }
+    if (!prefs.geral && !prefs.checagens && !prefs.temas.length && !prefs.ufs.length && !prefs.pessoas.length) { say("Escolha pelo menos uma opção: assuntos do dia, checagens, um tema, uma pessoa ou um estado.", true); return; }
     on.disabled = true; say("Ativando…");
     // o pedido de permissão precisa nascer do toque da pessoa, então vem antes de qualquer espera
     var perm = Notification.permission === "granted" ? Promise.resolve("granted") : Notification.requestPermission();

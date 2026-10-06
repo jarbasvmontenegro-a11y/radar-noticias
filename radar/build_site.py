@@ -21,6 +21,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from . import geo
 from . import destaques as destaques_mod
+from . import pessoas as pessoas_mod
 from .cluster import cluster, topic_of
 from .collect import DATA, ROOT, load_json, load_sources, safe_url
 
@@ -98,7 +99,7 @@ def verify_site(path: Path, min_items: int = 0) -> list[str]:
     """Confere o site gerado antes de publicar. Devolve a lista de problemas (vazia = ok)."""
     problems: list[str] = []
     required = ["index.html", "404.html", "sitemap.xml", "robots.txt", "verificador/index.html", "sobre/index.html",
-                "privacidade/index.html", "notificacoes/index.html", "estados/index.html", "fontes/index.html", "data/search-index.json", "data/allowed-hosts.json", "data/municipios.json", "data/destaques.json", "style.css", "app.js", "share.js", "push.js", "sw.js",
+                "privacidade/index.html", "notificacoes/index.html", "pessoas/index.html", "busca/index.html", "estados/index.html", "fontes/index.html", "data/search-index.json", "data/allowed-hosts.json", "data/municipios.json", "data/destaques.json", "style.css", "app.js", "share.js", "push.js", "busca.js", "sw.js",
                 "manifest.webmanifest"]
     for f in required:
         if not (path / f).is_file():
@@ -183,6 +184,8 @@ def build(out_dir: str = "site") -> str:
     for a in all_news:
         a["topics"] = topic_of(a, topics)
         a["also"] = []
+        a["pessoas_t"] = pessoas_mod.detect(a["title"])  # citadas no título
+        a["pessoas"] = pessoas_mod.detect(f"{a['title']} {a.get('desc', '')}")  # no título ou na descrição
     recent = [a for a in news if (now - a["dt"]).total_seconds() < 36 * 3600]
     groups = cluster(recent)
     for g in groups:
@@ -225,7 +228,22 @@ def build(out_dir: str = "site") -> str:
     regioes = []
     for reg in ("Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"):
         regioes.append({"nome": reg, "estados": [{"uf": e["uf"], "nome": e["nome"], "n": len(uf_news[e["uf"]])} for e in estados if e["regiao"] == reg]})
+    # quem aparece: conta manchetes (título) e veículos distintos, nas últimas 24 h e na semana guardada
+    pessoas_info = []
+    for pe in pessoas_mod.todas():
+        em_titulo = [a for a in all_news if pe["id"] in a["pessoas_t"]]
+        d1 = [a for a in em_titulo if (now - a["dt"]).total_seconds() < 24 * 3600]
+        todas_p = [a for a in all_news if pe["id"] in a["pessoas"]]
+        pessoas_info.append({**{k: pe[k] for k in ("id", "nome", "cargo")}, "n24": len(d1), "v24": len({a["source"] for a in d1}),
+                             "n7": len(em_titulo), "v7": len({a["source"] for a in em_titulo}), "total": len(todas_p)})
+    pessoas_info.sort(key=lambda p: (-p["n24"], -p["n7"], p["nome"]))
+    pessoa_por_id = {p["id"]: p for p in pessoas_info}
+    placar = [pessoa_por_id[i] for i in pessoas_mod.placar_ids() if i in pessoa_por_id]
+    topo = max([p["n24"] for p in placar] or [0]) or 1
+    for p in placar:
+        p["pct"] = round(100 * p["n24"] / topo)
     ctx = {
+        "pessoas_links": [p for p in pessoas_info if p["total"]][:10], "placar": placar if any(p["n24"] for p in placar) else [],
         "regioes": regioes, "uf_nome": {e["uf"]: e["nome"] for e in estados}, "active_uf": None,
         "day_links": day_links,
         "cfg": cfg, "news_sources": news_sources, "check_sources": check_sources, "counts": counts,
@@ -283,6 +301,21 @@ def build(out_dir: str = "site") -> str:
            description="Escolha um estado e veja as manchetes de política de veículos locais e nacionais.")
     pages.append(("/estados/", last))
 
+    # --- por pessoa ---------------------------------------------------------------------
+    for pe in pessoas_info:
+        lst = [a for a in all_news if pe["id"] in a["pessoas"]]
+        if not lst:
+            continue
+        listing(f"/pessoa/{pe['id']}/", lst, max_pages=5, active=None, active_pessoa=pe["id"], pessoa=pe,
+                title=f"{pe['nome']}: últimas notícias | {cfg['name']}",
+                description=f"Manchetes de política que citam {pe['nome']} ({pe['cargo']}), de {len({a['source'] for a in lst})} veículos, com link para ler na fonte.",
+                heading=pe["nome"], subheading=f"{pe['cargo']}. Manchetes que citam o nome")
+        pages.append((f"/pessoa/{pe['id']}/", lst[0]["dt"].strftime("%Y-%m-%d")))
+    render("/pessoas/", "people.html", path="/pessoas/", title=f"Quem aparece nas notícias de política | {cfg['name']}",
+           description="Quantas manchetes e quantos veículos citam cada político e autoridade, nas últimas 24 horas e na semana.",
+           pessoas_todas=pessoas_info)
+    pages.append(("/pessoas/", last))
+
     # --- por fonte ----------------------------------------------------------------------
     for s in all_sources:
         lst = [a for a in items if a["source"] == s["id"]]
@@ -325,8 +358,11 @@ def build(out_dir: str = "site") -> str:
     pages.append(("/verificador/", last))
     render("/notificacoes/", "notifications.html", path="/notificacoes/",
            title=f"Notificações de notícias de política | {cfg['name']}",
-           description="Receba no celular ou no computador só as notícias de política que importam: escolha temas e estados e veja só os assuntos mais cobertos pela imprensa.")
+           description="Receba no celular ou no computador só as notícias de política que importam: escolha temas, estados e pessoas e veja só os assuntos mais cobertos pela imprensa.",
+           pessoas_todas=pessoas_info)
     pages.append(("/notificacoes/", None))
+    render("/busca/", "search.html", path="/busca/", noindex=True, title=f"Buscar nas manchetes | {cfg['name']}",
+           description="Busque nas manchetes de política guardadas pelo Radar de Notícias.", pessoas_todas=pessoas_info)
     render("/sobre/", "about.html", path="/sobre/", title=f"Sobre e metodologia | {cfg['name']}",
            description="Como o Radar de Notícias funciona: quais fontes usa, como coleta, o que a IA faz e o que não faz.",
            status=status)
@@ -364,11 +400,13 @@ def build(out_dir: str = "site") -> str:
     # "d" = descrição curta, só nas mais recentes para não pesar)
     index = []
     for i, a in enumerate(items[:2500]):
-        e = {"t": a["title"], "s": a["source_name"], "u": a["url"], "p": a["published"][:16]}
+        e = {"t": a["title"], "s": a["source_name"], "i": a["source"], "u": a["url"], "p": a["published"][:16]}
         if a["kind"] == "checagem":
             e["c"] = 1
         if a["grupo"] == "oficial":
             e["o"] = 1
+        if a.get("pessoas"):
+            e["g"] = a["pessoas"]
         if i < 1200 and a.get("desc"):
             e["d"] = short_desc(a["desc"], 110)
         index.append(e)

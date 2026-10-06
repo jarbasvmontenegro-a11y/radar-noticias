@@ -26,6 +26,14 @@
     </fieldset>
 
     <fieldset>
+      <legend>Pessoas</legend>
+      <p class="small">Avisos sobre assuntos em que a pessoa aparece no título de vários veículos.</p>
+      <div class="chk-grid">
+        {% for p in pessoas_todas %}<label class="chk"><input type="checkbox" name="pessoa" value="{{ p.id }}"> {{ p.nome }}</label>{% endfor %}
+      </div>
+    </fieldset>
+
+    <fieldset>
       <legend>Estados</legend>
       {% for r in regioes %}
       <p class="rail-reg">{{ r.nome }}</p>

@@ -91,6 +91,7 @@
       }
       gsOut.textContent = "";
       if (!hits.length) gsOut.appendChild(el("p", { text: "Nenhuma manchete encontrada para essa busca." }));
+      else gsOut.appendChild(el("a", { class: "gs-all", href: "/busca/?q=" + encodeURIComponent(gs.value.trim()), text: "Ver todos os resultados no Radar" }));
       hits.forEach(function (e) {
         gsOut.appendChild(el("a", { href: safeUrl(e.u), target: "_blank", rel: "noopener" }, [document.createTextNode(e.t), el("span", { class: "src", text: e.s + ", " + (e.p || "").slice(8, 10) + "/" + (e.p || "").slice(5, 7) })]));
       });
@@ -110,7 +111,8 @@
       if (ev.key === "ArrowDown") nxt = cur.nextElementSibling; else if (ev.key === "ArrowUp") nxt = cur.previousElementSibling || gs; else if (ev.key === "Escape") { gsClose(); gs.focus(); return; }
       if (nxt && nxt.focus) { ev.preventDefault(); nxt.focus(); }
     });
-    $("#gs-form").addEventListener("submit", function (ev) { ev.preventDefault(); var f = gsOut.querySelector("a"); if (f) f.click(); });
+    // Enter vai para a página de resultados do próprio site (nada de abrir a primeira matéria em outro endereço)
+    $("#gs-form").addEventListener("submit", function (ev) { if (fold(gs.value).trim().length < 2) ev.preventDefault(); });
     document.addEventListener("click", function (ev) { if (!ev.target.closest(".gs")) gsClose(); });
   }
 
@@ -165,8 +167,11 @@
   window.RadarPost = post; // usado por push.js (notificações)
 
   // ---- resumo sob demanda -----------------------------------------------------------
-  $$(".btn-sum").forEach(function (btn) {
-    btn.addEventListener("click", function () {
+  // delegado: vale também para os resultados que a página de busca monta depois de carregada
+  document.addEventListener("click", function (ev) {
+    var btn = ev.target.closest && ev.target.closest(".btn-sum");
+    if (!btn) return;
+    (function () {
       var out = btn.closest(".item").querySelector(".sum");
       if (!out.hidden && btn.dataset.done) { out.hidden = true; btn.textContent = "Resumir com IA"; return; }
       btn.disabled = true; btn.textContent = "Resumindo…";
@@ -193,7 +198,7 @@
           btn.textContent = "Tentar de novo";
         })
         .then(function () { btn.disabled = false; });
-    });
+    })();
   });
 
   // ---- verificador ------------------------------------------------------------------

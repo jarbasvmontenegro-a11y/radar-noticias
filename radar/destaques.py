@@ -41,11 +41,17 @@ def montar(news: list[dict], checks: list[dict], now: datetime, janela_h: int = 
                 txt[u] = txt.get(u, 0) + 1
             if x.get("uf_fonte"):
                 fonte[x["uf_fonte"]] = fonte.get(x["uf_fonte"], 0) + 1
+        # pessoas: no título de pelo menos 2 veículos e de um terço do grupo (citação de passagem não conta)
+        quem: dict[str, int] = {}
+        for x in g:
+            for pid in x.get("pessoas_t", []):
+                quem[pid] = quem.get(pid, 0) + 1
+        pessoas = sorted(pid for pid, c in quem.items() if c >= 2 and c * 3 >= len(g))
         ufs = sorted({u for u, c in txt.items() if c >= 2} | {u for u, c in fonte.items() if c >= 2 and c * 2 >= len(g)})
         out.append({"id": _id(mais_antigo["url"]), "t": lider["title"], "u": lider["url"], "f": lider["source_name"],
-                    "n": len(fontes), "temas": temas, "ufs": ufs, "k": "assunto", "p": int(lider["dt"].timestamp())})
+                    "n": len(fontes), "temas": temas, "ufs": ufs, "pessoas": pessoas, "k": "assunto", "p": int(lider["dt"].timestamp())})
     alertas = [a for a in checks if (now - a["dt"]).total_seconds() < 24 * 3600 and ALERTA.search(fold(a["title"]))]
     for a in sorted(alertas, key=lambda x: x["dt"], reverse=True)[:max_checagens]:
         out.append({"id": _id(a["url"]), "t": a["title"], "u": a["url"], "f": a["source_name"], "n": 1,
-                    "temas": [], "ufs": [], "k": "checagem", "p": int(a["dt"].timestamp())})
+                    "temas": [], "ufs": [], "pessoas": [], "k": "checagem", "p": int(a["dt"].timestamp())})
     return out

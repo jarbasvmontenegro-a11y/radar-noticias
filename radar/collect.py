@@ -340,7 +340,7 @@ def update_health(status: dict, now: datetime) -> dict:
     return new
 
 
-def collect(window_days: int = 7, per_source_limit: int = 40) -> dict:
+def collect(window_days: int = 7, per_source_limit: int = 40, validar: bool = False) -> dict:
     """Atualiza data/articles.json (e health.json/status.json). Devolve estatísticas."""
     now = datetime.now(timezone.utc)
     cutoff = now - timedelta(days=window_days)
@@ -350,6 +350,10 @@ def collect(window_days: int = 7, per_source_limit: int = 40) -> dict:
     results = _fetch_all(sources)
 
     status, novas = {}, 0
+    pend_ids: set[str] = set()
+    pendentes: list[dict] = []  # notícias novas; só entram no arquivo depois da pré-validação
+    por_fonte: dict[str, int] = {}
+    meta: dict[str, tuple] = {}
     for src in sources:
         entries, err = results[src["id"]]
         added = 0
@@ -357,23 +361,35 @@ def collect(window_days: int = 7, per_source_limit: int = 40) -> dict:
         for e in usable[:src.get("limite", per_source_limit)]:
             aid = article_id(e["url"])
             tkey = title_key(src["id"], e["title"])
-            if aid in store or tkey in seen_titles:
+            if aid in store or aid in pend_ids or tkey in seen_titles:
                 continue
             pub = e["published"] or now  # sem data no feed: usamos o momento da coleta
             if pub > now + timedelta(hours=2):
                 pub = now
             if pub < cutoff:
                 continue
-            store[aid] = {
+            pendentes.append({
                 "id": aid, "title": e["title"], "desc": e["desc"], "url": canonical_url(e["url"]),
                 "source": src["id"], "kind": src.get("kind", "noticia"),
                 "published": pub.isoformat(timespec="seconds"), "seen": now.isoformat(timespec="seconds"),
-            }
+            })
             seen_titles.add(tkey)
-            added += 1
-        novas += added
-        status[src["id"]] = {"name": src["name"], "ok": not err, "items": len(entries), "usable": len(usable), "new": added, "error": err,
-                             "checked": now.isoformat(timespec="seconds")}
+            pend_ids.add(aid)
+        meta[src["id"]] = (src, entries, err, len(usable))
+
+    validacao = {}
+    if validar and pendentes:
+        from .validar import validar_novas
+        pendentes, descartadas, validacao = validar_novas(pendentes)
+        for a, motivo in descartadas:
+            print(f"descartada ({motivo}): {a['source']}: {a['title'][:70]}")
+    for a in pendentes:
+        store[a["id"]] = a
+        por_fonte[a["source"]] = por_fonte.get(a["source"], 0) + 1
+    novas = len(pendentes)
+    for sid, (src, entries, err, usable_n) in meta.items():
+        status[sid] = {"name": src["name"], "ok": not err, "items": len(entries), "usable": usable_n, "new": por_fonte.get(sid, 0), "error": err,
+                       "checked": now.isoformat(timespec="seconds")}
 
     articles = [a for a in store.values() if datetime.fromisoformat(a["published"]) >= cutoff]
     articles.sort(key=lambda a: a["published"], reverse=True)
@@ -383,7 +399,7 @@ def collect(window_days: int = 7, per_source_limit: int = 40) -> dict:
     health = update_health(status, now)
 
     ok = sum(s["ok"] for s in status.values())
-    return {"novas": novas, "total": len(articles), "fontes_ok": ok, "fontes": len(status),
+    return {"novas": novas, "total": len(articles), "fontes_ok": ok, "fontes": len(status), "validacao": validacao,
             "fora_do_ar": sorted(k for k, v in health.items() if v["down_since"])}
 
 
