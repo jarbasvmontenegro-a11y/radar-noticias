@@ -68,7 +68,14 @@ jobs:
           git config user.email "radar-bot@users.noreply.github.com"
           git commit -m "dados: $(date -u +%FT%TZ)"
           for i in 1 2 3; do
-            git pull --rebase --autostash && git push && exit 0
+            git push && exit 0
+            # outra execução guardou dados antes: descarta o commit local, refaz a coleta em cima dos dados mais novos
+            git fetch -q origin main
+            git reset -q --hard origin/main
+            python -m radar collect
+            git add -f data/articles.json data/health.json
+            git diff --staged --quiet && exit 0
+            git commit -qm "dados: $(date -u +%FT%TZ)"
             sleep $((i * 5))
           done
           echo "não foi possível enviar os dados" >&2
