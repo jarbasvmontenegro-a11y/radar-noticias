@@ -1,0 +1,11 @@
+# Mantém as versões fixas (ações do GitHub por SHA e pacotes Python) atualizadas por pull request semanal.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"

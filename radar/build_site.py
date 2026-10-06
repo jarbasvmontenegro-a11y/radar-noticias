@@ -259,7 +259,7 @@ def build(out_dir: str = "site") -> str:
     listing("/", news, active=None, highlights=highlights,
             title=f"Notícias de política hoje, {long_date(now)} | {cfg['name']}",
             description=(f"As últimas notícias de política do Brasil, {long_date(now)}: títulos e resumos curtos de "
-                         f"{len(news_sources)} veículos, atualizados a cada 30 minutos, com link direto para a fonte. "
+                         f"{len(news_sources)} veículos, atualizados de hora em hora, com link direto para a fonte. "
                          "Resumo com IA sob demanda e verificador de fake news."),
             heading="Notícias de política hoje", subheading="Manchetes dos principais veículos")
     pages.append(("/", last))

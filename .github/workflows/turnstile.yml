@@ -5,6 +5,9 @@ name: Segurança e Turnstile
 on:
   workflow_dispatch:
     inputs:
+      publico:
+        description: "Repositório público: digite sim para rodar (o resultado fica visível a todos na branch de resultados)"
+        default: "nao"
       acao:
         description: "testar, configurar ou atacar"
         default: "testar"
@@ -14,6 +17,7 @@ permissions:
 
 jobs:
   seguranca:
+    if: ${{ github.event.repository.private || inputs.publico == 'sim' }}
     runs-on: ubuntu-latest
     timeout-minutes: 12
     env:

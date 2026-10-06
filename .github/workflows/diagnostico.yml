@@ -4,6 +4,9 @@ name: Diagnóstico
 on:
   workflow_dispatch:
     inputs:
+      publico:
+        description: "Repositório público: digite sim para rodar (o resultado fica visível a todos na branch de resultados)"
+        default: "nao"
       tarefa:
         description: "Qual diagnóstico rodar: feeds, apis, fontes, extracao, coleta ou tudo"
         default: "tudo"
@@ -13,6 +16,7 @@ permissions:
 
 jobs:
   diagnostico:
+    if: ${{ github.event.repository.private || inputs.publico == 'sim' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:

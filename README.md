@@ -1,13 +1,13 @@
 # Radar de Notícias
 
-Site de notícias de política no formato de jornal: lista compacta no meio, com **título, descrição curta e fonte** de 15 veículos, atualizada a cada 30 minutos. Resumo com IA **só quando o leitor pede**, e um **verificador de fake news**.
+Site de notícias de política no formato de jornal: lista compacta no meio, com **título, descrição curta e fonte** de 15 veículos, atualizada de hora em hora. Resumo com IA **só quando o leitor pede**, e um **verificador de fake news**.
 
 A busca de notícias **não usa IA** (só RSS), então o custo fixo é praticamente zero. A IA só roda sob demanda, com cache e limites.
 
 ## Como funciona
 
 ```
-GitHub Actions (a cada 30 min)                         Cloudflare Pages
+GitHub Actions (de hora em hora)                         Cloudflare Pages
   coleta RSS ─▶ data/articles.json ─▶ gera HTML  ─▶     site estático (SEO)
   (sem IA)      (commit só se houver novidade)           + /api/resumir   (IA sob demanda)
                                                          + /api/verificar (checagens + IA)
@@ -49,19 +49,27 @@ node --test tests/functions.test.mjs tests/share.test.mjs      # testes das fun�
 4. **GitHub** (Settings → Secrets and variables → Actions):
    - Secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
    - Variables: `SITE_URL` (seu domínio), e depois `ADSENSE_CLIENT`, `TURNSTILE_SITEKEY`, `CONTACT_EMAIL`, `CF_PROJECT` se usar.
-5. Rode **Actions → Monitorar notícias → Run workflow**. Depois disso roda sozinho a cada 30 minutos e só publica quando há notícia nova.
+5. Rode **Actions → Monitorar notícias → Run workflow**. Depois disso roda sozinho de hora em hora e só publica quando há notícia nova.
 
-Repositório privado gasta minutos do Actions (2.000/mês no plano grátis, e o intervalo de 30 min usa quase tudo). Em repositório público é ilimitado.
+O repositório é público: os minutos do GitHub Actions são ilimitados para o plano gratuito. A coleta roda de hora em hora (cada execução leva cerca de 80 segundos).
 
 ## Controle de custo da IA e segurança
 
 - Busca de notícias nunca chama IA.
 - Resumo e verificador só rodam por clique, com **cache de 24 h**.
-- As APIs só respondem ao próprio site (cabeçalho `Origin` obrigatório). Isso barra uso casual, mas **um script pode forjar o `Origin`**: a proteção real é o **Cloudflare Turnstile**, que ainda precisa ser ligado (passo a passo em `docs/SEGURANCA.md`).
+- As APIs só respondem ao próprio site (cabeçalho `Origin` obrigatório). O cabeçalho sozinho barra uso casual; a proteção forte é o **Cloudflare Turnstile**, que prova que há um navegador de verdade (veja "Ligar o Turnstile").
 - Sem Turnstile: 5 usos por IP por dia e teto global de 300. Com Turnstile: 10 por IP e 1.500. Se o contador (KV) falhar, a IA não é chamada.
 - O resumo só aceita links dos domínios monitorados e valida cada redirecionamento (anti-SSRF).
 - Cabeçalhos de segurança (CSP por hash, HSTS, COOP/CORP) são gerados no build.
-- `scripts/pentest_site.mjs` ataca o site no ar (workflow "Segurança e Turnstile", `acao = atacar`) e gera o relatório por padrão OWASP/ASVS/CWE.
+- `scripts/pentest_site.mjs` testa o site no ar (workflow "Segurança e Turnstile", `acao = atacar`), com mapeamento OWASP/ASVS/CWE.
+- Falhas de segurança: veja [SECURITY.md](SECURITY.md).
+
+### Ligar o Turnstile
+
+1. Painel da Cloudflare, Turnstile, Add widget: nome "Radar de Notícias", domínio do site, modo Managed. Copie a Site Key e a Secret Key.
+2. Pages, projeto `radar-noticias`, Settings, Variables and Secrets, Production: secret `TURNSTILE_SECRET` com a Secret Key.
+3. GitHub, Settings, Variables: `TURNSTILE_SITEKEY` com a Site Key.
+4. Actions, "Monitorar notícias", Run workflow.
 
 ## Verificador de fake news: o que faz e o que não faz
 

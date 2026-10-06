@@ -1,8 +1,9 @@
 // Testes do extrator de texto (lib/extract.js).
 //
-// tests/fixtures/html/*.html são versões ENXUTAS (10-30 KB) de páginas reais de matérias publicadas por veículos de
-// imprensa (g1, Folha, Estadão, Poder360, Gazeta do Povo, Agência Brasil, CartaCapital, Correio Braziliense, BBC Brasil),
-// usadas aqui só como amostra de teste do extrator. Foram geradas por scripts/montar_fixtures.mjs: mantêm a estrutura
+// tests/fixtures/html/*.html são versões ENXUTAS (10-30 KB) da ESTRUTURA de páginas de matérias de veículos de imprensa
+// (g1, Folha, Estadão, Poder360, Gazeta do Povo, Agência Brasil, CartaCapital, Correio Braziliense, BBC Brasil). O texto
+// corrido das matérias foi trocado por texto neutro do mesmo tamanho (o repositório não guarda textos de terceiros);
+// ficam as tags, classes, menus e rodapés, que é o que o extrator precisa distinguir. Foram geradas por scripts/montar_fixtures.mjs: mantêm a estrutura
 // (class/id, aninhamento, menus e rodapé como "isca"), mas sem scripts, estilos, imagens, campos de formulário nem tokens.
 import test from "node:test";
 import assert from "node:assert/strict";
