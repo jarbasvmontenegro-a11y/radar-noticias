@@ -1,0 +1,56 @@
+name: Diagnóstico
+# Roda sob demanda. Testa feeds de notícias, APIs externas, o site no ar e prepara fontes.
+# O resultado vai para a branch "diagnostico" (não mexe na main).
+on:
+  workflow_dispatch:
+    inputs:
+      tarefa:
+        description: "Qual diagnóstico rodar: feeds, apis, fontes ou tudo"
+        default: "tudo"
+
+permissions:
+  contents: write
+
+jobs:
+  diagnostico:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SITE_URL: ${{ vars.SITE_URL }}
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt fonttools brotli
+      - run: mkdir -p diag
+
+      - name: Feeds e sitemaps de notícias
+        if: inputs.tarefa == 'feeds' || inputs.tarefa == 'tudo'
+        continue-on-error: true
+        run: python -m radar discover --out diag/probe.json --md diag/probe.md
+
+      - name: APIs externas e site no ar
+        if: inputs.tarefa == 'apis' || inputs.tarefa == 'tudo'
+        continue-on-error: true
+        run: python scripts/diagnostico_apis.py diag
+
+      - name: Fontes (recorte para português)
+        if: inputs.tarefa == 'fontes' || inputs.tarefa == 'tudo'
+        continue-on-error: true
+        run: python scripts/preparar_fontes.py diag/fonts
+
+      - name: Guardar resultado na branch diagnostico
+        if: always()
+        run: |
+          git config user.name "radar-bot"
+          git config user.email "radar-bot@users.noreply.github.com"
+          rm -rf /tmp/diag-out && cp -r diag /tmp/diag-out
+          git checkout -q --orphan diagnostico
+          git rm -rfq . || true
+          git clean -fdxq
+          cp -r /tmp/diag-out/. .
+          git add -A
+          git commit -qm "diagnóstico $(date -u +%FT%TZ)"
+          git push -qf origin diagnostico

@@ -181,6 +181,33 @@ def parse_feed(content: bytes) -> list[dict]:
     return out
 
 
+def parse_sitemap(content: bytes) -> list[dict]:
+    """Sitemap de notícias (padrão do Google News): título, link e data de publicação, sem descrição."""
+    root = parse_xml(content)
+    out = []
+    for u in (x for x in root.iter() if _local(x.tag) == "url"):
+        title, pub = "", None
+        for n in u.iter():
+            ns = n.tag.split("}")[0] if n.tag.startswith("{") else ""
+            if "sitemap-news" not in ns:  # ignora <image:title> e afins
+                continue
+            if _local(n.tag) == "title" and n.text:
+                title = n.text
+            elif _local(n.tag) == "publication_date" and n.text:
+                pub = _parse_date(n.text)
+        out.append({"title": short(clean(title), MAX_TITLE), "url": safe_url(_child_text(u, "loc")), "desc": "",
+                    "published": pub or _parse_date(_child_text(u, "lastmod"))})
+    return [e for e in out if e["title"]]
+
+
+def parse_entries(content: bytes) -> list[dict]:
+    """RSS, Atom ou sitemap de notícias: descobre pelo elemento raiz."""
+    root = parse_xml(content)
+    if _local(root.tag) == "urlset":
+        return parse_sitemap(content)
+    return parse_feed(content)
+
+
 # ---------------------------------------------------------------- rede
 RETRYABLE = (429, 500, 502, 503, 504)
 
@@ -215,7 +242,28 @@ def _download(url: str) -> bytes:
 
 
 def fetch_feed(source: dict) -> list[dict]:
-    return parse_feed(_download(source["url"]))
+    return parse_entries(_download(source["url"]))
+
+
+# ---------------------------------------------------------------- filtros por fonte
+def keep_entry(src: dict, e: dict) -> bool:
+    """Feeds gerais trazem de tudo (esporte, polícia...). Cada fonte pode pedir: "include"/"exclude" (trechos da URL)
+    e "politica": true (só manchetes de política, por palavras-chave)."""
+    url = e["url"]
+    inc, exc = src.get("include") or [], src.get("exclude") or []
+    if inc and not any(x in url for x in inc):
+        return False
+    if any(x in url for x in exc):
+        return False
+    if src.get("politica"):
+        from .relevance import is_political
+        return is_political(f"{e['title']} {e['desc']}")
+    return True
+
+
+def _newest_first(entries: list[dict]) -> list[dict]:
+    far_past = datetime.min.replace(tzinfo=timezone.utc)
+    return sorted(entries, key=lambda e: e["published"] or far_past, reverse=True)
 
 
 # ---------------------------------------------------------------- coleta
@@ -261,9 +309,8 @@ def collect(window_days: int = 7, per_source_limit: int = 40) -> dict:
     for src in sources:
         entries, err = results[src["id"]]
         added = 0
-        for e in entries[:per_source_limit]:
-            if not e["url"] or not e["title"]:
-                continue
+        usable = [e for e in _newest_first(entries) if e["url"] and e["title"] and keep_entry(src, e)]
+        for e in usable[:src.get("limite", per_source_limit)]:
             aid = article_id(e["url"])
             tkey = title_key(src["id"], e["title"])
             if aid in store or tkey in seen_titles:
@@ -281,7 +328,7 @@ def collect(window_days: int = 7, per_source_limit: int = 40) -> dict:
             seen_titles.add(tkey)
             added += 1
         novas += added
-        status[src["id"]] = {"name": src["name"], "ok": not err, "items": len(entries), "new": added, "error": err,
+        status[src["id"]] = {"name": src["name"], "ok": not err, "items": len(entries), "usable": len(usable), "new": added, "error": err,
                              "checked": now.isoformat(timespec="seconds")}
 
     articles = [a for a in store.values() if datetime.fromisoformat(a["published"]) >= cutoff]

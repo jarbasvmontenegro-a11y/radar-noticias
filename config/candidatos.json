@@ -1,0 +1,795 @@
+{
+ "_nota": "Candidatos a fonte. `python -m radar discover` testa cada endereço, a home (link rel=alternate), o robots.txt (sitemaps) e variações comuns (/feed/, /rss, /rss.xml).",
+ "grupos": [
+  {
+   "id": "o-globo",
+   "nome": "O Globo",
+   "home": "https://oglobo.globo.com/politica/",
+   "urls": [
+    "https://oglobo.globo.com/rss.xml",
+    "https://oglobo.globo.com/rss/politica/",
+    "https://oglobo.globo.com/politica/rss.xml",
+    "https://oglobo.globo.com/rss/oglobo",
+    "https://oglobo.globo.com/sitemap-news.xml",
+    "https://oglobo.globo.com/news-sitemap.xml",
+    "https://oglobo.globo.com/sitemap/oglobo/news.xml"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "uol",
+   "nome": "UOL",
+   "home": "https://noticias.uol.com.br/politica/",
+   "urls": [
+    "https://rss.uol.com.br/feed/noticias.xml",
+    "https://rss.uol.com.br/",
+    "https://noticias.uol.com.br/sitemap-news.xml",
+    "https://noticias.uol.com.br/politica/ultimas/index.xml",
+    "https://noticias.uol.com.br/politica/index.xml"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "cnn-brasil",
+   "nome": "CNN Brasil",
+   "home": "https://www.cnnbrasil.com.br/politica/",
+   "urls": [
+    "https://www.cnnbrasil.com.br/feed/",
+    "https://admin.cnnbrasil.com.br/feed/",
+    "https://admin.cnnbrasil.com.br/politica/feed/",
+    "https://admin.cnnbrasil.com.br/sitemap-news.xml",
+    "https://www.cnnbrasil.com.br/sitemap-news.xml",
+    "https://www.cnnbrasil.com.br/rss/"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "valor",
+   "nome": "Valor Econômico",
+   "home": "https://valor.globo.com/politica/",
+   "urls": [
+    "https://valor.globo.com/rss/politica/",
+    "https://valor.globo.com/rss/valor/",
+    "https://valor.globo.com/rss/",
+    "https://valor.globo.com/rss/home/",
+    "https://valor.globo.com/rss/brasil/",
+    "https://valor.globo.com/sitemap/valor/news.xml"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "metropoles",
+   "nome": "Metrópoles",
+   "home": "https://www.metropoles.com/brasil/politica-brasil",
+   "urls": [
+    "https://www.metropoles.com/feed",
+    "https://www.metropoles.com/brasil/politica-brasil/feed"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "veja",
+   "nome": "Veja",
+   "home": "https://veja.abril.com.br/politica/",
+   "urls": [
+    "https://veja.abril.com.br/feed/",
+    "https://veja.abril.com.br/politica/feed/",
+    "https://veja.abril.com.br/brasil/feed/"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "oeste",
+   "nome": "Revista Oeste",
+   "home": "https://revistaoeste.com/politica/",
+   "urls": [
+    "https://revistaoeste.com/feed/",
+    "https://revistaoeste.com/politica/feed/"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "brasil-de-fato",
+   "nome": "Brasil de Fato",
+   "home": "https://www.brasildefato.com.br/politica",
+   "urls": [
+    "https://www.brasildefato.com.br/feed/",
+    "https://www.brasildefato.com.br/rss",
+    "https://www.brasildefato.com.br/rss/politica"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "intercept",
+   "nome": "The Intercept Brasil",
+   "home": "https://www.intercept.com.br/",
+   "urls": [
+    "https://www.intercept.com.br/feed/"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "congresso-em-foco",
+   "nome": "Congresso em Foco",
+   "home": "https://congressoemfoco.uol.com.br/",
+   "urls": [
+    "https://congressoemfoco.uol.com.br/feed/"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "jota",
+   "nome": "JOTA",
+   "home": "https://www.jota.info/",
+   "urls": [
+    "https://www.jota.info/feed"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "conjur",
+   "nome": "ConJur",
+   "home": "https://www.conjur.com.br/",
+   "urls": [
+    "https://www.conjur.com.br/rss.xml"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "jovem-pan",
+   "nome": "Jovem Pan",
+   "home": "https://jovempan.com.br/noticias/politica",
+   "urls": [
+    "https://jovempan.com.br/feed",
+    "https://jovempan.com.br/noticias/politica/feed"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "r7",
+   "nome": "R7",
+   "home": "https://noticias.r7.com/politica",
+   "urls": [
+    "https://noticias.r7.com/feed.xml",
+    "https://noticias.r7.com/politica/feed.xml"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "istoe",
+   "nome": "IstoÉ",
+   "home": "https://istoe.com.br/politica/",
+   "urls": [
+    "https://istoe.com.br/feed/",
+    "https://istoe.com.br/politica/feed/"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "exame",
+   "nome": "Exame",
+   "home": "https://exame.com/brasil/",
+   "urls": [
+    "https://exame.com/brasil/feed/",
+    "https://exame.com/feed/"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "infomoney",
+   "nome": "InfoMoney",
+   "home": "https://www.infomoney.com.br/politica/",
+   "urls": [
+    "https://www.infomoney.com.br/politica/feed/"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "brasil247",
+   "nome": "Brasil 247",
+   "home": "https://www.brasil247.com/",
+   "urls": [
+    "https://www.brasil247.com/feed",
+    "https://www.brasil247.com/rss"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "dw-brasil",
+   "nome": "DW Brasil",
+   "home": "https://www.dw.com/pt-br/brasil/s-7107",
+   "urls": [
+    "https://rss.dw.com/xml/rss-br-all",
+    "https://rss.dw.com/xml/rss-br-bra"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "apublica",
+   "nome": "Agência Pública",
+   "home": "https://apublica.org/",
+   "urls": [
+    "https://apublica.org/feed/"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "piaui",
+   "nome": "Revista piauí",
+   "home": "https://piaui.folha.uol.com.br/",
+   "urls": [
+    "https://piaui.folha.uol.com.br/feed/"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "nexo",
+   "nome": "Nexo Jornal",
+   "home": "https://www.nexojornal.com.br/",
+   "urls": [
+    "https://www.nexojornal.com.br/rss.xml"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "band",
+   "nome": "Band",
+   "home": "https://www.band.uol.com.br/noticias",
+   "urls": [
+    "https://www.band.uol.com.br/rss/noticias.xml"
+   ],
+   "uf": "",
+   "grupo": "nacional"
+  },
+  {
+   "id": "planalto",
+   "nome": "Planalto",
+   "home": "https://www.gov.br/planalto/pt-br/acompanhe-o-planalto/noticias",
+   "urls": [
+    "https://www.gov.br/planalto/pt-br/acompanhe-o-planalto/noticias/RSS"
+   ],
+   "uf": "",
+   "grupo": "oficial"
+  },
+  {
+   "id": "stf",
+   "nome": "STF",
+   "home": "https://noticias.stf.jus.br/",
+   "urls": [
+    "https://noticias.stf.jus.br/feed/"
+   ],
+   "uf": "",
+   "grupo": "oficial"
+  },
+  {
+   "id": "tse",
+   "nome": "TSE",
+   "home": "https://www.tse.jus.br/comunicacao/noticias",
+   "urls": [
+    "https://www.tse.jus.br/comunicacao/noticias/RSS"
+   ],
+   "uf": "",
+   "grupo": "oficial"
+  },
+  {
+   "id": "tcu",
+   "nome": "TCU",
+   "home": "https://portal.tcu.gov.br/imprensa/noticias",
+   "urls": [],
+   "uf": "",
+   "grupo": "oficial"
+  },
+  {
+   "id": "pgr",
+   "nome": "PGR",
+   "home": "https://www.mpf.mp.br/pgr/noticias-pgr",
+   "urls": [],
+   "uf": "",
+   "grupo": "oficial"
+  },
+  {
+   "id": "cnj",
+   "nome": "CNJ",
+   "home": "https://www.cnj.jus.br/noticias/",
+   "urls": [
+    "https://www.cnj.jus.br/feed/"
+   ],
+   "uf": "",
+   "grupo": "oficial"
+  },
+  {
+   "id": "fazenda",
+   "nome": "Ministério da Fazenda",
+   "home": "https://www.gov.br/fazenda/pt-br/assuntos/noticias",
+   "urls": [
+    "https://www.gov.br/fazenda/pt-br/assuntos/noticias/RSS"
+   ],
+   "uf": "",
+   "grupo": "oficial"
+  },
+  {
+   "id": "fato-ou-fake",
+   "nome": "Fato ou Fake",
+   "home": "https://g1.globo.com/fato-ou-fake/",
+   "urls": [
+    "https://g1.globo.com/rss/g1/fato-ou-fake/"
+   ],
+   "uf": "",
+   "grupo": "checagem"
+  },
+  {
+   "id": "boatos",
+   "nome": "Boatos.org",
+   "home": "https://www.boatos.org/",
+   "urls": [
+    "https://www.boatos.org/feed"
+   ],
+   "uf": "",
+   "grupo": "checagem"
+  },
+  {
+   "id": "e-farsas",
+   "nome": "E-Farsas",
+   "home": "https://www.e-farsas.com/",
+   "urls": [
+    "https://www.e-farsas.com/feed"
+   ],
+   "uf": "",
+   "grupo": "checagem"
+  },
+  {
+   "id": "o-povo",
+   "nome": "O Povo",
+   "home": "https://www.opovo.com.br/",
+   "urls": [],
+   "uf": "CE",
+   "grupo": "regional"
+  },
+  {
+   "id": "diario-do-nordeste",
+   "nome": "Diário do Nordeste",
+   "home": "https://diariodonordeste.verdesmares.com.br/politica",
+   "urls": [],
+   "uf": "CE",
+   "grupo": "regional"
+  },
+  {
+   "id": "tribuna-do-ceara",
+   "nome": "Tribuna do Ceará",
+   "home": "https://tribunadoceara.com.br/",
+   "urls": [],
+   "uf": "CE",
+   "grupo": "regional"
+  },
+  {
+   "id": "o-dia",
+   "nome": "O Dia",
+   "home": "https://odia.ig.com.br/",
+   "urls": [],
+   "uf": "RJ",
+   "grupo": "regional"
+  },
+  {
+   "id": "o-tempo",
+   "nome": "O Tempo",
+   "home": "https://www.otempo.com.br/politica",
+   "urls": [],
+   "uf": "MG",
+   "grupo": "regional"
+  },
+  {
+   "id": "estado-de-minas",
+   "nome": "Estado de Minas",
+   "home": "https://www.em.com.br/politica/",
+   "urls": [],
+   "uf": "MG",
+   "grupo": "regional"
+  },
+  {
+   "id": "bahia-noticias",
+   "nome": "Bahia Notícias",
+   "home": "https://www.bahianoticias.com.br/",
+   "urls": [],
+   "uf": "BA",
+   "grupo": "regional"
+  },
+  {
+   "id": "a-tarde",
+   "nome": "A Tarde",
+   "home": "https://atarde.com.br/",
+   "urls": [],
+   "uf": "BA",
+   "grupo": "regional"
+  },
+  {
+   "id": "correio-24h",
+   "nome": "Correio 24 horas",
+   "home": "https://www.correio24horas.com.br/",
+   "urls": [],
+   "uf": "BA",
+   "grupo": "regional"
+  },
+  {
+   "id": "folha-pe",
+   "nome": "Folha de Pernambuco",
+   "home": "https://www.folhape.com.br/politica/",
+   "urls": [],
+   "uf": "PE",
+   "grupo": "regional"
+  },
+  {
+   "id": "diario-de-pernambuco",
+   "nome": "Diario de Pernambuco",
+   "home": "https://www.diariodepernambuco.com.br/",
+   "urls": [],
+   "uf": "PE",
+   "grupo": "regional"
+  },
+  {
+   "id": "plural",
+   "nome": "Plural",
+   "home": "https://www.plural.jor.br/",
+   "urls": [],
+   "uf": "PR",
+   "grupo": "regional"
+  },
+  {
+   "id": "bem-parana",
+   "nome": "Bem Paraná",
+   "home": "https://www.bemparana.com.br/",
+   "urls": [],
+   "uf": "PR",
+   "grupo": "regional"
+  },
+  {
+   "id": "tribuna-pr",
+   "nome": "Tribuna do Paraná",
+   "home": "https://www.tribunapr.com.br/",
+   "urls": [],
+   "uf": "PR",
+   "grupo": "regional"
+  },
+  {
+   "id": "gzh",
+   "nome": "GZH",
+   "home": "https://gauchazh.clicrbs.com.br/politica/",
+   "urls": [],
+   "uf": "RS",
+   "grupo": "regional"
+  },
+  {
+   "id": "correio-do-povo",
+   "nome": "Correio do Povo",
+   "home": "https://www.correiodopovo.com.br/",
+   "urls": [],
+   "uf": "RS",
+   "grupo": "regional"
+  },
+  {
+   "id": "nsc",
+   "nome": "NSC Total",
+   "home": "https://www.nsctotal.com.br/",
+   "urls": [],
+   "uf": "SC",
+   "grupo": "regional"
+  },
+  {
+   "id": "nd-mais",
+   "nome": "ND Mais",
+   "home": "https://ndmais.com.br/",
+   "urls": [],
+   "uf": "SC",
+   "grupo": "regional"
+  },
+  {
+   "id": "jornal-opcao",
+   "nome": "Jornal Opção",
+   "home": "https://www.jornalopcao.com.br/",
+   "urls": [],
+   "uf": "GO",
+   "grupo": "regional"
+  },
+  {
+   "id": "mais-goias",
+   "nome": "Mais Goiás",
+   "home": "https://www.maisgoias.com.br/",
+   "urls": [],
+   "uf": "GO",
+   "grupo": "regional"
+  },
+  {
+   "id": "o-popular",
+   "nome": "O Popular",
+   "home": "https://opopular.com.br/",
+   "urls": [],
+   "uf": "GO",
+   "grupo": "regional"
+  },
+  {
+   "id": "o-liberal",
+   "nome": "O Liberal",
+   "home": "https://www.oliberal.com/",
+   "urls": [],
+   "uf": "PA",
+   "grupo": "regional"
+  },
+  {
+   "id": "diario-do-para",
+   "nome": "Diário do Pará",
+   "home": "https://www.diarioonline.com.br/",
+   "urls": [],
+   "uf": "PA",
+   "grupo": "regional"
+  },
+  {
+   "id": "a-critica",
+   "nome": "A Crítica",
+   "home": "https://www.acritica.com/",
+   "urls": [],
+   "uf": "AM",
+   "grupo": "regional"
+  },
+  {
+   "id": "em-tempo",
+   "nome": "Em Tempo",
+   "home": "https://emtempo.com.br/",
+   "urls": [],
+   "uf": "AM",
+   "grupo": "regional"
+  },
+  {
+   "id": "o-imparcial",
+   "nome": "O Imparcial",
+   "home": "https://oimparcial.com.br/",
+   "urls": [],
+   "uf": "MA",
+   "grupo": "regional"
+  },
+  {
+   "id": "imirante",
+   "nome": "Imirante",
+   "home": "https://imirante.com/",
+   "urls": [],
+   "uf": "MA",
+   "grupo": "regional"
+  },
+  {
+   "id": "clickpb",
+   "nome": "ClickPB",
+   "home": "https://www.clickpb.com.br/",
+   "urls": [],
+   "uf": "PB",
+   "grupo": "regional"
+  },
+  {
+   "id": "jornal-da-paraiba",
+   "nome": "Jornal da Paraíba",
+   "home": "https://jornaldaparaiba.com.br/",
+   "urls": [],
+   "uf": "PB",
+   "grupo": "regional"
+  },
+  {
+   "id": "paraiba-online",
+   "nome": "Paraíba Online",
+   "home": "https://paraibaonline.com.br/",
+   "urls": [],
+   "uf": "PB",
+   "grupo": "regional"
+  },
+  {
+   "id": "tribuna-do-norte",
+   "nome": "Tribuna do Norte",
+   "home": "https://tribunadonorte.com.br/",
+   "urls": [],
+   "uf": "RN",
+   "grupo": "regional"
+  },
+  {
+   "id": "novo-noticias",
+   "nome": "Novo Notícias",
+   "home": "https://www.novonoticias.com/",
+   "urls": [],
+   "uf": "RN",
+   "grupo": "regional"
+  },
+  {
+   "id": "gazetaweb",
+   "nome": "Gazeta de Alagoas",
+   "home": "https://www.gazetaweb.com/",
+   "urls": [],
+   "uf": "AL",
+   "grupo": "regional"
+  },
+  {
+   "id": "tnh1",
+   "nome": "TNH1",
+   "home": "https://www.tnh1.com.br/",
+   "urls": [],
+   "uf": "AL",
+   "grupo": "regional"
+  },
+  {
+   "id": "infonet",
+   "nome": "Infonet",
+   "home": "https://infonet.com.br/",
+   "urls": [],
+   "uf": "SE",
+   "grupo": "regional"
+  },
+  {
+   "id": "f5news",
+   "nome": "F5 News",
+   "home": "https://www.f5news.com.br/",
+   "urls": [],
+   "uf": "SE",
+   "grupo": "regional"
+  },
+  {
+   "id": "cidade-verde",
+   "nome": "Cidade Verde",
+   "home": "https://www.cidadeverde.com/",
+   "urls": [],
+   "uf": "PI",
+   "grupo": "regional"
+  },
+  {
+   "id": "meio-norte",
+   "nome": "Meio Norte",
+   "home": "https://www.meionorte.com/",
+   "urls": [],
+   "uf": "PI",
+   "grupo": "regional"
+  },
+  {
+   "id": "gazeta-digital",
+   "nome": "Gazeta Digital",
+   "home": "https://www.gazetadigital.com.br/",
+   "urls": [],
+   "uf": "MT",
+   "grupo": "regional"
+  },
+  {
+   "id": "olhar-direto",
+   "nome": "Olhar Direto",
+   "home": "https://www.olhardireto.com.br/",
+   "urls": [],
+   "uf": "MT",
+   "grupo": "regional"
+  },
+  {
+   "id": "campo-grande-news",
+   "nome": "Campo Grande News",
+   "home": "https://www.campograndenews.com.br/",
+   "urls": [],
+   "uf": "MS",
+   "grupo": "regional"
+  },
+  {
+   "id": "midiamax",
+   "nome": "Midiamax",
+   "home": "https://www.midiamax.com.br/",
+   "urls": [],
+   "uf": "MS",
+   "grupo": "regional"
+  },
+  {
+   "id": "folha-vitoria",
+   "nome": "Folha Vitória",
+   "home": "https://www.folhavitoria.com.br/",
+   "urls": [],
+   "uf": "ES",
+   "grupo": "regional"
+  },
+  {
+   "id": "a-gazeta-es",
+   "nome": "A Gazeta",
+   "home": "https://www.agazeta.com.br/",
+   "urls": [],
+   "uf": "ES",
+   "grupo": "regional"
+  },
+  {
+   "id": "conexao-to",
+   "nome": "Conexão Tocantins",
+   "home": "https://conexaoto.com.br/",
+   "urls": [],
+   "uf": "TO",
+   "grupo": "regional"
+  },
+  {
+   "id": "t1-noticias",
+   "nome": "T1 Notícias",
+   "home": "https://t1noticias.com.br/",
+   "urls": [],
+   "uf": "TO",
+   "grupo": "regional"
+  },
+  {
+   "id": "rondoniaovivo",
+   "nome": "Rondônia ao Vivo",
+   "home": "https://www.rondoniaovivo.com/",
+   "urls": [],
+   "uf": "RO",
+   "grupo": "regional"
+  },
+  {
+   "id": "tudo-rondonia",
+   "nome": "Tudo Rondônia",
+   "home": "https://www.tudorondonia.com/",
+   "urls": [],
+   "uf": "RO",
+   "grupo": "regional"
+  },
+  {
+   "id": "ac24horas",
+   "nome": "ac24horas",
+   "home": "https://ac24horas.com/",
+   "urls": [],
+   "uf": "AC",
+   "grupo": "regional"
+  },
+  {
+   "id": "a-gazeta-ac",
+   "nome": "A Gazeta do Acre",
+   "home": "https://agazetadoacre.com/",
+   "urls": [],
+   "uf": "AC",
+   "grupo": "regional"
+  },
+  {
+   "id": "selesnafes",
+   "nome": "Seles Nafes",
+   "home": "https://www.selesnafes.com/",
+   "urls": [],
+   "uf": "AP",
+   "grupo": "regional"
+  },
+  {
+   "id": "folhabv",
+   "nome": "Folha BV",
+   "home": "https://folhabv.com.br/",
+   "urls": [],
+   "uf": "RR",
+   "grupo": "regional"
+  },
+  {
+   "id": "agencia-brasilia",
+   "nome": "Agência Brasília",
+   "home": "https://www.agenciabrasilia.df.gov.br/",
+   "urls": [],
+   "uf": "DF",
+   "grupo": "regional"
+  },
+  {
+   "id": "agencia-sp",
+   "nome": "Agência SP",
+   "home": "https://www.saopaulo.sp.gov.br/",
+   "urls": [],
+   "uf": "SP",
+   "grupo": "regional"
+  }
+ ]
+}

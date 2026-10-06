@@ -1,0 +1,426 @@
+{
+ "_nota": "Termos: maiúsculas contam (evita 'para', 'natal'). Prefixo re: = expressão regular. Gentílicios: qualquer caixa. Siglas entre parênteses, como (SP), também valem.",
+ "estados": [
+  {
+   "uf": "AC",
+   "nome": "Acre",
+   "regiao": "Norte",
+   "g1": "acre",
+   "termos": [
+    "Acre"
+   ],
+   "gentilicios": [
+    "acreano",
+    "acreana"
+   ]
+  },
+  {
+   "uf": "AL",
+   "nome": "Alagoas",
+   "regiao": "Nordeste",
+   "g1": "alagoas",
+   "termos": [
+    "Alagoas",
+    "Maceió"
+   ],
+   "gentilicios": [
+    "alagoano",
+    "alagoana"
+   ]
+  },
+  {
+   "uf": "AP",
+   "nome": "Amapá",
+   "regiao": "Norte",
+   "g1": "amapa",
+   "termos": [
+    "Amapá",
+    "Macapá"
+   ],
+   "gentilicios": [
+    "amapaense"
+   ]
+  },
+  {
+   "uf": "AM",
+   "nome": "Amazonas",
+   "regiao": "Norte",
+   "g1": "amazonas",
+   "termos": [
+    "Amazonas",
+    "Manaus"
+   ],
+   "gentilicios": [
+    "amazonense"
+   ]
+  },
+  {
+   "uf": "BA",
+   "nome": "Bahia",
+   "regiao": "Nordeste",
+   "g1": "bahia",
+   "termos": [
+    "Bahia",
+    "Feira de Santana",
+    "em Salvador",
+    "de Salvador"
+   ],
+   "gentilicios": [
+    "baiano",
+    "baiana"
+   ]
+  },
+  {
+   "uf": "CE",
+   "nome": "Ceará",
+   "regiao": "Nordeste",
+   "g1": "ceara",
+   "termos": [
+    "Ceará",
+    "Fortaleza",
+    "Juazeiro do Norte",
+    "Caucaia"
+   ],
+   "gentilicios": [
+    "cearense",
+    "fortalezense"
+   ]
+  },
+  {
+   "uf": "DF",
+   "nome": "Distrito Federal",
+   "regiao": "Centro-Oeste",
+   "g1": "distrito-federal",
+   "termos": [
+    "Distrito Federal",
+    "GDF",
+    "Câmara Legislativa",
+    "CLDF"
+   ],
+   "gentilicios": [
+    "candango",
+    "brasiliense"
+   ]
+  },
+  {
+   "uf": "ES",
+   "nome": "Espírito Santo",
+   "regiao": "Sudeste",
+   "g1": "espirito-santo",
+   "termos": [
+    "Espírito Santo",
+    "Vila Velha",
+    "Cariacica"
+   ],
+   "gentilicios": [
+    "capixaba"
+   ]
+  },
+  {
+   "uf": "GO",
+   "nome": "Goiás",
+   "regiao": "Centro-Oeste",
+   "g1": "goias",
+   "termos": [
+    "Goiás",
+    "Goiânia",
+    "Anápolis"
+   ],
+   "gentilicios": [
+    "goiano",
+    "goiana",
+    "goianiense"
+   ]
+  },
+  {
+   "uf": "MA",
+   "nome": "Maranhão",
+   "regiao": "Nordeste",
+   "g1": "maranhao",
+   "termos": [
+    "Maranhão",
+    "São Luís"
+   ],
+   "gentilicios": [
+    "maranhense"
+   ]
+  },
+  {
+   "uf": "MT",
+   "nome": "Mato Grosso",
+   "regiao": "Centro-Oeste",
+   "g1": "mato-grosso",
+   "termos": [
+    "Mato Grosso",
+    "Cuiabá",
+    "Várzea Grande"
+   ],
+   "gentilicios": [
+    "mato-grossense",
+    "matogrossense"
+   ]
+  },
+  {
+   "uf": "MS",
+   "nome": "Mato Grosso do Sul",
+   "regiao": "Centro-Oeste",
+   "g1": "mato-grosso-do-sul",
+   "termos": [
+    "Mato Grosso do Sul",
+    "Campo Grande",
+    "Dourados"
+   ],
+   "gentilicios": [
+    "sul-mato-grossense"
+   ]
+  },
+  {
+   "uf": "MG",
+   "nome": "Minas Gerais",
+   "regiao": "Sudeste",
+   "g1": "minas-gerais",
+   "termos": [
+    "Minas Gerais",
+    "re:Minas(?! e Energia)",
+    "Belo Horizonte",
+    "Uberlândia",
+    "Contagem",
+    "Juiz de Fora",
+    "Montes Claros"
+   ],
+   "gentilicios": [
+    "mineiro",
+    "mineira"
+   ]
+  },
+  {
+   "uf": "PA",
+   "nome": "Pará",
+   "regiao": "Norte",
+   "g1": "para",
+   "termos": [
+    "Pará",
+    "Belém",
+    "Ananindeua",
+    "Marabá",
+    "Santarém"
+   ],
+   "gentilicios": [
+    "paraense",
+    "paraenses"
+   ]
+  },
+  {
+   "uf": "PB",
+   "nome": "Paraíba",
+   "regiao": "Nordeste",
+   "g1": "paraiba",
+   "termos": [
+    "Paraíba",
+    "João Pessoa",
+    "Campina Grande"
+   ],
+   "gentilicios": [
+    "paraibano",
+    "paraibana"
+   ]
+  },
+  {
+   "uf": "PR",
+   "nome": "Paraná",
+   "regiao": "Sul",
+   "g1": "parana",
+   "termos": [
+    "Paraná",
+    "Curitiba",
+    "Londrina",
+    "Maringá",
+    "Cascavel",
+    "Ponta Grossa",
+    "Foz do Iguaçu"
+   ],
+   "gentilicios": [
+    "paranaense",
+    "curitibano"
+   ]
+  },
+  {
+   "uf": "PE",
+   "nome": "Pernambuco",
+   "regiao": "Nordeste",
+   "g1": "pernambuco",
+   "termos": [
+    "Pernambuco",
+    "Recife",
+    "Olinda",
+    "Caruaru",
+    "Petrolina",
+    "Jaboatão dos Guararapes"
+   ],
+   "gentilicios": [
+    "pernambucano",
+    "pernambucana",
+    "recifense"
+   ]
+  },
+  {
+   "uf": "PI",
+   "nome": "Piauí",
+   "regiao": "Nordeste",
+   "g1": "piaui",
+   "termos": [
+    "Piauí",
+    "Teresina",
+    "Parnaíba"
+   ],
+   "gentilicios": [
+    "piauiense"
+   ]
+  },
+  {
+   "uf": "RJ",
+   "nome": "Rio de Janeiro",
+   "regiao": "Sudeste",
+   "g1": "rio-de-janeiro",
+   "termos": [
+    "Rio de Janeiro",
+    "Niterói",
+    "Duque de Caxias",
+    "Nova Iguaçu",
+    "São Gonçalo",
+    "Alerj",
+    "Petrópolis"
+   ],
+   "gentilicios": [
+    "fluminense",
+    "carioca",
+    "cariocas"
+   ]
+  },
+  {
+   "uf": "RN",
+   "nome": "Rio Grande do Norte",
+   "regiao": "Nordeste",
+   "g1": "rio-grande-do-norte",
+   "termos": [
+    "Rio Grande do Norte",
+    "Mossoró",
+    "Parnamirim"
+   ],
+   "gentilicios": [
+    "potiguar",
+    "potiguares"
+   ]
+  },
+  {
+   "uf": "RS",
+   "nome": "Rio Grande do Sul",
+   "regiao": "Sul",
+   "g1": "rio-grande-do-sul",
+   "termos": [
+    "Rio Grande do Sul",
+    "Porto Alegre",
+    "Caxias do Sul",
+    "Pelotas",
+    "Canoas"
+   ],
+   "gentilicios": [
+    "gaúcho",
+    "gaúcha"
+   ]
+  },
+  {
+   "uf": "RO",
+   "nome": "Rondônia",
+   "regiao": "Norte",
+   "g1": "rondonia",
+   "termos": [
+    "Rondônia",
+    "Porto Velho",
+    "Ji-Paraná"
+   ],
+   "gentilicios": [
+    "rondoniense"
+   ]
+  },
+  {
+   "uf": "RR",
+   "nome": "Roraima",
+   "regiao": "Norte",
+   "g1": "roraima",
+   "termos": [
+    "Roraima",
+    "Boa Vista"
+   ],
+   "gentilicios": [
+    "roraimense"
+   ]
+  },
+  {
+   "uf": "SC",
+   "nome": "Santa Catarina",
+   "regiao": "Sul",
+   "g1": "santa-catarina",
+   "termos": [
+    "Santa Catarina",
+    "Florianópolis",
+    "Joinville",
+    "Blumenau",
+    "Balneário Camboriú",
+    "Chapecó"
+   ],
+   "gentilicios": [
+    "catarinense",
+    "florianopolitano"
+   ]
+  },
+  {
+   "uf": "SP",
+   "nome": "São Paulo",
+   "regiao": "Sudeste",
+   "g1": "sao-paulo",
+   "termos": [
+    "São Paulo",
+    "Campinas",
+    "Guarulhos",
+    "Ribeirão Preto",
+    "Sorocaba",
+    "Osasco",
+    "Alesp"
+   ],
+   "gentilicios": [
+    "paulista",
+    "paulistano",
+    "paulistas",
+    "paulistanos"
+   ]
+  },
+  {
+   "uf": "SE",
+   "nome": "Sergipe",
+   "regiao": "Nordeste",
+   "g1": "sergipe",
+   "termos": [
+    "Sergipe",
+    "Aracaju"
+   ],
+   "gentilicios": [
+    "sergipano",
+    "sergipana",
+    "aracajuano"
+   ]
+  },
+  {
+   "uf": "TO",
+   "nome": "Tocantins",
+   "regiao": "Norte",
+   "g1": "tocantins",
+   "termos": [
+    "Tocantins"
+   ],
+   "gentilicios": [
+    "tocantinense"
+   ]
+  }
+ ]
+}

@@ -5,6 +5,7 @@
   build         gera o site em site/ (só substitui o anterior se passar na verificação)
   verify        confere o site já gerado (HTML, JSON-LD, sitemap, links perigosos)
   update        collect + build (o que o monitoramento roda a cada 30 min)
+  discover      testa candidatos de feed/sitemap (config/candidatos.json) e mostra quais funcionam; roda no Actions
   demo          dados fictícios + site em site-demo/ (não mexe em data/ nem em site/)
 """
 import argparse
@@ -31,7 +32,9 @@ def write_summary(stats: dict) -> None:
 
 def main() -> int:
     p = argparse.ArgumentParser(prog="radar", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("command", choices=["check-feeds", "collect", "build", "verify", "update", "demo"])
+    p.add_argument("command", choices=["check-feeds", "collect", "build", "verify", "update", "demo", "discover"])
+    p.add_argument("--out", default="probe.json")
+    p.add_argument("--md", default="probe.md")
     args = p.parse_args()
 
     if args.command == "demo":  # dados de exemplo ficam isolados para nunca irem parar no repositório
@@ -54,7 +57,10 @@ def main() -> int:
             return False
         return True
 
-    if args.command == "check-feeds":
+    if args.command == "discover":
+        from .discover import run
+        run(args.out, args.md)
+    elif args.command == "check-feeds":
         check_feeds()
     elif args.command == "collect":
         return 0 if run_collect() else 1
