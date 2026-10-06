@@ -6,7 +6,7 @@ pages_build_output_dir = "site"
 # e cole o id abaixo.
 [[kv_namespaces]]
 binding = "RADAR_KV"
-id = "COLE_O_ID_DO_KV_AQUI"
+id = "57ba7a22ffcb4277a43b904989f7bc26"
 
 # Segredos (configure no painel do Cloudflare Pages > Settings > Variables and Secrets):
 #   LLM_API_KEY          chave do DeepSeek (ou outro provedor compatível com OpenAI)
