@@ -41,7 +41,7 @@ say(`# Auditoria de ${SITE}  (${new Date().toISOString().slice(0, 16)}Z)`);
 
 // 1) o que o visitante recebe: HTML, scripts, dados
 say("\n## 1. Segredos no que o visitante recebe");
-const pages = ["/", "/verificador/", "/sobre/", "/privacidade/", "/app.js", "/share.js", "/style.css", "/manifest.webmanifest", "/robots.txt", "/sitemap.xml",
+const pages = ["/", "/estados/", "/fontes/", "/estado/ce/", "/pagina/2/", "/og.png", "/icon-192.png", "/fonts/newsreader-400-text.woff2", "/verificador/", "/sobre/", "/privacidade/", "/app.js", "/share.js", "/style.css", "/manifest.webmanifest", "/robots.txt", "/sitemap.xml",
   "/data/search-index.json", "/data/allowed-hosts.json"];
 const home = await get("/");
 const extra = [...home.body.matchAll(/(?:src|href)=["'](\/[^"'#?]+\.(?:js|json|css|webmanifest))["']/g)].map((m) => m[1]);
