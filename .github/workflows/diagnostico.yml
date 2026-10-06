@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       tarefa:
-        description: "Qual diagnóstico rodar: feeds, apis, fontes ou tudo"
+        description: "Qual diagnóstico rodar: feeds, apis, fontes, extracao ou tudo"
         default: "tudo"
 
 permissions:
@@ -40,6 +40,16 @@ jobs:
         if: inputs.tarefa == 'fontes' || inputs.tarefa == 'tudo'
         continue-on-error: true
         run: python scripts/preparar_fontes.py diag/fonts
+
+      - uses: actions/setup-node@v4
+        if: inputs.tarefa == 'extracao' || inputs.tarefa == 'tudo'
+        with:
+          node-version: "22"
+
+      - name: Leitura do texto das matérias
+        if: inputs.tarefa == 'extracao' || inputs.tarefa == 'tudo'
+        continue-on-error: true
+        run: node scripts/diagnostico_extracao.mjs diag
 
       - name: Guardar resultado na branch diagnostico
         if: always()
