@@ -71,6 +71,15 @@ O repositório é público: os minutos do GitHub Actions são ilimitados para o 
 3. GitHub, Settings, Variables: `TURNSTILE_SITEKEY` com a Site Key.
 4. Actions, "Monitorar notícias", Run workflow.
 
+## Notificações (opcional para quem lê)
+
+Em `/notificacoes/` a pessoa liga avisos no navegador (Web Push) e escolhe o que quer: maiores assuntos do dia, temas, estados e alertas de checagem. Só recebe os **melhores**: um assunto só vira aviso quando muitos veículos diferentes o publicam (contagem de veículos, sem IA), com limite por rodada (2) e por dia (escolha da pessoa), nunca repetido e só entre 7h e 22h (Brasília).
+
+- Sem cadastro: o KV guarda só o endereço de envio do navegador, as chaves dele e as escolhas (`push:*`). A chave VAPID é criada sozinha na primeira visita (`vapid:v1`).
+- O envio roda no GitHub Actions depois de cada publicação (`scripts/push_enviar.mjs`), com criptografia própria (RFC 8291) sem dependências. O segredo entre o Actions e o site (`PUSH_SECRET`) é derivado do token da Cloudflare e criado sozinho por `scripts/push_setup.mjs`; se o token não tiver permissão para editar o projeto do Pages, o passo avisa e o envio fica desligado.
+- Custo: zero. Limite a observar: o plano gratuito do KV permite 1.000 escritas por dia (cada inscrição nova e cada rodada com avisos escrevem no KV).
+- iPhone: precisa de iOS 16.4+ e do site adicionado à Tela de Início.
+
 ## Verificador de fake news: o que faz e o que não faz
 
 1. A IA extrai a afirmação central do texto (ou da página, se for link).

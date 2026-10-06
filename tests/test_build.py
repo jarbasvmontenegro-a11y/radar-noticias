@@ -145,6 +145,30 @@ class BuildTests(unittest.TestCase):
         self.assertIn("/tema/congresso/", (site / "sitemap.xml").read_text(encoding="utf-8"))
         self.assertTrue((site / "share.js").is_file())
 
+    def test_destaques_para_notificacoes_e_pagina(self):
+        titulos = ["Senado aprova projeto da reforma tributária em votação apertada",
+                   "Senado aprova reforma tributária após votação apertada",
+                   "Reforma tributária aprovada no Senado em votação apertada"]
+        arts = [article(i + 1, url=f"https://x{i}.com/a", title=t, source=s) for i, (t, s) in enumerate(zip(titulos, ["g1", "oglobo", "folha"]))]
+        arts.append(article(9, url="https://lupa.news/a", kind="checagem", source="lupa", title="É falso que político disse isso em vídeo"))
+        arts.append(article(10, url="https://lupa.news/b", kind="checagem", source="lupa", title="Entenda como funciona o voto eletrônico"))
+        self.write(arts)
+        b.build(self.out)
+        dest = json.loads((b.ROOT / self.out / "data" / "destaques.json").read_text(encoding="utf-8"))
+        assunto = [d for d in dest if d["k"] == "assunto"]
+        self.assertEqual(len(assunto), 1)
+        self.assertEqual(assunto[0]["n"], 3)
+        self.assertEqual(len(assunto[0]["id"]), 12)
+        checagens = [d for d in dest if d["k"] == "checagem"]
+        self.assertEqual([d["u"] for d in checagens], ["https://lupa.news/a"])  # só a que desmente algo
+        page = (b.ROOT / self.out / "notificacoes" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('name="tema"', page)
+        self.assertIn('value="CE"', page)
+        self.assertIn("/push.js", page)
+        self.assertTrue((b.ROOT / self.out / "sw.js").is_file())
+        home = (b.ROOT / self.out / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/notificacoes/"', home)
+
     def test_mensagem_do_zap_tem_descricao_e_link_no_fim(self):
         a = {"source_name": "Poder360", "title": "Título", "url": "https://p.com/x", "kind": "noticia",
              "desc": "Partido decidiu não apoiar candidatos no 1º turno. Leia no Poder360."}

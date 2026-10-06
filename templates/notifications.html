@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block scripts %}<script src="/push.js" defer></script>{% endblock %}
+
+{% block content %}
+<div class="page">
+  <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a> / <span>Notificações</span></nav>
+  <h1>Notificações de notícias</h1>
+  <p class="lead">Escolha o que quer acompanhar e receba um aviso só quando um assunto for muito noticiado pela imprensa. Sem cadastro, sem e-mail, e você desativa quando quiser.</p>
+
+  <p id="nf-unsupported" class="notice" hidden>Este navegador não permite notificações do site. No iPhone, toque em Compartilhar, depois em “Adicionar à Tela de Início”, abra o Radar por esse ícone e volte aqui.</p>
+  <noscript><p class="notice">As notificações precisam de JavaScript ativado.</p></noscript>
+
+  <form id="nf" class="nform" novalidate>
+    <fieldset>
+      <legend>O que você quer receber</legend>
+      <label class="chk"><input type="checkbox" name="geral"> Os maiores assuntos do dia no país</label>
+      <label class="chk"><input type="checkbox" name="checagens"> Alertas de checagem: boatos que as agências de checagem desmentiram</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Temas</legend>
+      <div class="chk-grid">
+        {% for t in topics %}<label class="chk"><input type="checkbox" name="tema" value="{{ t.id }}"> {{ t.name }}</label>{% endfor %}
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Estados</legend>
+      {% for r in regioes %}
+      <p class="rail-reg">{{ r.nome }}</p>
+      <div class="chk-grid">
+        {% for e in r.estados %}<label class="chk"><input type="checkbox" name="uf" value="{{ e.uf }}"> {{ e.nome }}</label>{% endfor %}
+      </div>
+      {% endfor %}
+    </fieldset>
+
+    <fieldset>
+      <legend>Quão seletivo</legend>
+      <label class="chk"><input type="radio" name="nivel" value="top" checked> Só os maiores assuntos (menos avisos)</label>
+      <label class="chk"><input type="radio" name="nivel" value="importantes"> Também assuntos importantes, mas menos cobertos</label>
+      <label class="sel">No máximo por dia
+        <select name="max">
+          <option value="1">1 aviso</option><option value="2">2 avisos</option><option value="3" selected>3 avisos</option><option value="5">5 avisos</option>
+        </select>
+      </label>
+    </fieldset>
+
+    <p class="actions-row">
+      <button type="submit" class="btn btn-primary btn-big" id="nf-on">Ativar notificações</button>
+      <button type="button" class="btn" id="nf-off" hidden>Desativar</button>
+    </p>
+    <p id="nf-status" class="nstatus" role="status" aria-live="polite"></p>
+  </form>
+
+  <h2>Como escolhemos o que avisar</h2>
+  <ul>
+    <li>Um assunto só vira aviso quando vários veículos diferentes publicam sobre ele. Quanto mais veículos, mais importante.</li>
+    <li>Avisos de estado exigem menos veículos, porque a imprensa local é menor.</li>
+    <li>Nada de aviso de madrugada: enviamos das 7h às 22h, horário de Brasília.</li>
+    <li>Você nunca recebe o mesmo assunto duas vezes nem passa do limite diário que escolheu.</li>
+    <li>O aviso leva direto para a matéria no veículo. A escolha é feita por contagem de veículos, sem IA.</li>
+  </ul>
+  <p class="small">Guardamos apenas o endereço de envio do seu navegador e as suas escolhas. Veja a <a href="/privacidade/">política de privacidade</a>.</p>
+</div>
+{% endblock %}

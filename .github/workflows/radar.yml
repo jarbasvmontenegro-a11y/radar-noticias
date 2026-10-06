@@ -37,7 +37,7 @@ jobs:
       - name: Testes
         run: |
           python -m unittest discover -s tests
-          node --test tests/functions.test.mjs tests/share.test.mjs
+          node --test tests/functions.test.mjs tests/share.test.mjs tests/push.test.mjs
 
       # Coleta é só RSS: sem IA e sem custo. Falha (e avisa) se nenhuma fonte responder.
       - name: Coletar notícias
@@ -81,6 +81,16 @@ jobs:
           echo "não foi possível enviar os dados" >&2
           exit 1
 
+      # Notificações: garante o segredo de envio no Pages antes da publicação (não faz nada se já existe; nunca derruba o fluxo).
+      - name: Preparar notificações
+        if: env.HAS_CLOUDFLARE == 'true' && (steps.changes.outputs.changed == 'true' || github.event_name == 'workflow_dispatch')
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CF_PROJECT: ${{ vars.CF_PROJECT || 'radar-noticias' }}
+        run: node scripts/push_setup.mjs
+
       - name: Publicar no Cloudflare Pages
         if: env.HAS_CLOUDFLARE == 'true' && (steps.changes.outputs.changed == 'true' || github.event_name == 'workflow_dispatch')
         uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd # v3
@@ -95,6 +105,15 @@ jobs:
         run: |
           sleep 10
           curl -fsS --retry 4 --retry-delay 10 --max-time 20 "${{ vars.SITE_URL }}/" | grep -q "<title>"
+
+      # Envia os avisos escolhidos por cada inscrito (só os assuntos mais cobertos). Falha aqui vira aviso, não erro.
+      - name: Enviar notificações
+        if: env.HAS_CLOUDFLARE == 'true' && vars.SITE_URL != '' && (steps.changes.outputs.changed == 'true' || github.event_name == 'workflow_dispatch')
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: node scripts/push_enviar.mjs
 
       # Alerta: abre uma issue (uma só) quando algo falha e fecha quando volta a funcionar.
       - name: Abrir alerta se falhou

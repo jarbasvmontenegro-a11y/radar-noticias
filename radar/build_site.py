@@ -20,6 +20,7 @@ from zoneinfo import ZoneInfo
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from . import geo
+from . import destaques as destaques_mod
 from .cluster import cluster, topic_of
 from .collect import DATA, ROOT, load_json, load_sources, safe_url
 
@@ -97,7 +98,7 @@ def verify_site(path: Path, min_items: int = 0) -> list[str]:
     """Confere o site gerado antes de publicar. Devolve a lista de problemas (vazia = ok)."""
     problems: list[str] = []
     required = ["index.html", "404.html", "sitemap.xml", "robots.txt", "verificador/index.html", "sobre/index.html",
-                "privacidade/index.html", "estados/index.html", "fontes/index.html", "data/search-index.json", "data/allowed-hosts.json", "data/municipios.json", "style.css", "app.js", "share.js",
+                "privacidade/index.html", "notificacoes/index.html", "estados/index.html", "fontes/index.html", "data/search-index.json", "data/allowed-hosts.json", "data/municipios.json", "data/destaques.json", "style.css", "app.js", "share.js", "push.js", "sw.js",
                 "manifest.webmanifest"]
     for f in required:
         if not (path / f).is_file():
@@ -108,7 +109,7 @@ def verify_site(path: Path, min_items: int = 0) -> list[str]:
         ET.parse(path / "sitemap.xml")
     except ET.ParseError as exc:
         problems.append(f"sitemap.xml inválido: {exc}")
-    for f in ("data/search-index.json", "data/allowed-hosts.json"):
+    for f in ("data/search-index.json", "data/allowed-hosts.json", "data/destaques.json"):
         try:
             json.loads((path / f).read_text(encoding="utf-8"))
         except json.JSONDecodeError as exc:
@@ -170,13 +171,16 @@ def build(out_dir: str = "site") -> str:
         default = sources.get(a["source"], {}).get("uf", "") if a["grupo"] == "regional" else ""
         found = geo.detect(f"{a['title']} {a.get('desc', '')}", default)
         a["ufs"] = found if len(found) <= 3 else ([default] if default else [])
+        txt = geo.detect(f"{a['title']} {a.get('desc', '')}", "")
+        a["ufs_txt"] = txt if len(txt) <= 3 else []  # estados citados no texto (sem o estado do veículo)
+        a["uf_fonte"] = default
     all_news = [a for a in items if a["kind"] == "noticia"]
     news = [a for a in all_news if a["grupo"] != "regional"]  # home, temas e arquivo: escopo nacional
     checks = [a for a in items if a["kind"] == "checagem"]
 
     # temas e assuntos cobertos por vários veículos: comparação de palavras, sem IA
     topics = json.loads((ROOT / "config" / "topics.json").read_text(encoding="utf-8"))
-    for a in news:
+    for a in all_news:
         a["topics"] = topic_of(a, topics)
         a["also"] = []
     recent = [a for a in news if (now - a["dt"]).total_seconds() < 36 * 3600]
@@ -319,6 +323,10 @@ def build(out_dir: str = "site") -> str:
            title=f"Verificador de fake news: confira boatos sobre política | {cfg['name']}",
            description="Cole um texto ou link suspeito e veja se agências de checagem já analisaram, quais notícias confiáveis tratam do assunto e quais sinais de alerta merecem atenção.")
     pages.append(("/verificador/", last))
+    render("/notificacoes/", "notifications.html", path="/notificacoes/",
+           title=f"Notificações de notícias de política | {cfg['name']}",
+           description="Receba no celular ou no computador só as notícias de política que importam: escolha temas e estados e veja só os assuntos mais cobertos pela imprensa.")
+    pages.append(("/notificacoes/", None))
     render("/sobre/", "about.html", path="/sobre/", title=f"Sobre e metodologia | {cfg['name']}",
            description="Como o Radar de Notícias funciona: quais fontes usa, como coleta, o que a IA faz e o que não faz.",
            status=status)
@@ -367,6 +375,8 @@ def build(out_dir: str = "site") -> str:
     (out / "data").mkdir()
     shutil.copy(ROOT / "config" / "municipios.json", out / "data" / "municipios.json")  # lista do IBGE, usada pelo verificador
     (out / "data" / "search-index.json").write_text(json.dumps(index, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    (out / "data" / "destaques.json").write_text(
+        json.dumps(destaques_mod.montar(all_news, checks, now), ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     hosts = {urlsplit(s["home"]).hostname for s in all_sources} | {urlsplit(a["url"]).hostname for a in items}
     (out / "data" / "allowed-hosts.json").write_text(
         json.dumps(sorted(h.removeprefix("www.") for h in hosts if h)), encoding="utf-8")
@@ -407,7 +417,7 @@ def build(out_dir: str = "site") -> str:
         "/fonts/*\n  Cache-Control: public, max-age=31536000, immutable\n"
         "/manifest.webmanifest\n  Content-Type: application/manifest+json\n"
         "/\n  Cache-Control: public, max-age=300, s-maxage=300\n/fonte/*\n  Cache-Control: public, max-age=300, s-maxage=300\n"
-        "/data/*\n  Cache-Control: public, max-age=300\n", encoding="utf-8")
+        "/data/*\n  Cache-Control: public, max-age=300\n/sw.js\n  Cache-Control: no-cache\n  Service-Worker-Allowed: /\n", encoding="utf-8")
 
     if cfg.get("contact_email"):  # RFC 9116: só publica se houver um contato configurado
         (out / ".well-known").mkdir(exist_ok=True)

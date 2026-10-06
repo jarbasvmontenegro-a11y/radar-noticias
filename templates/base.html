@@ -56,6 +56,7 @@
       <a href="/" {% if path == "/" %}aria-current="page"{% endif %}>Últimas</a>
       <a href="/estados/" {% if path.startswith("/estado") %}aria-current="page"{% endif %}>Estados</a>
       <a href="/fontes/" {% if path == "/fontes/" %}aria-current="page"{% endif %}>Fontes</a>
+      <a href="/notificacoes/" {% if path == "/notificacoes/" %}aria-current="page"{% endif %}>Notificações</a>
       <a href="/verificador/" {% if path == "/verificador/" %}aria-current="page"{% endif %}>Verificador de fake news</a>
       <a href="/sobre/" {% if path == "/sobre/" %}aria-current="page"{% endif %}>Como funciona</a>
       <span class="dateline">{{ weekday_long }}</span>
@@ -81,5 +82,6 @@
 
   <script src="/share.js" defer></script>
   <script src="/app.js" defer></script>
+  {% block scripts %}{% endblock %}
 </body>
 </html>

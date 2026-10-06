@@ -162,6 +162,8 @@
     }).then(function (d) { if (timer) clearTimeout(timer); return d; }, function (e) { if (timer) clearTimeout(timer); throw e; });
   }
 
+  window.RadarPost = post; // usado por push.js (notificações)
+
   // ---- resumo sob demanda -----------------------------------------------------------
   $$(".btn-sum").forEach(function (btn) {
     btn.addEventListener("click", function () {
