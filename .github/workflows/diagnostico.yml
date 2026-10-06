@@ -44,6 +44,8 @@ jobs:
       - name: Ensaio de coleta (filtros e fontes)
         if: inputs.tarefa == 'coleta' || inputs.tarefa == 'tudo'
         continue-on-error: true
+        env:
+          PYTHONPATH: .
         run: python scripts/diagnostico_coleta.py diag
 
       - uses: actions/setup-node@v4
@@ -67,5 +69,5 @@ jobs:
           git clean -fdxq
           cp -r /tmp/diag-out/. .
           git add -A
-          git commit -qm "diagnóstico $(date -u +%FT%TZ)"
+          git commit -qm "diagnóstico $(date -u +%FT%TZ)" --allow-empty
           git push -qf origin diagnostico

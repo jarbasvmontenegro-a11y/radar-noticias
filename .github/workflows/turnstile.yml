@@ -1,0 +1,48 @@
+name: Segurança e Turnstile
+# Roda sob demanda. "testar" audita o site no ar e confere o que o token da Cloudflare pode fazer (não muda nada).
+# "configurar" cria o widget do Turnstile, guarda o segredo no projeto do Pages e mostra a sitekey (pública).
+# O resultado vai para a branch "auditoria".
+on:
+  workflow_dispatch:
+    inputs:
+      acao:
+        description: "testar ou configurar"
+        default: "testar"
+
+permissions:
+  contents: write
+
+jobs:
+  seguranca:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      SITE_URL: ${{ vars.SITE_URL }}
+      CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CF_PROJECT: ${{ vars.CF_PROJECT || 'radar-noticias' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: mkdir -p diag
+      - name: Auditoria do site no ar
+        continue-on-error: true
+        run: node scripts/auditoria_site.mjs diag
+      - name: Cloudflare e Turnstile
+        continue-on-error: true
+        run: node scripts/turnstile.mjs "${{ inputs.acao }}" diag
+      - name: Guardar resultado na branch auditoria
+        if: always()
+        run: |
+          git config user.name "radar-bot"
+          git config user.email "radar-bot@users.noreply.github.com"
+          rm -rf /tmp/diag-out && cp -r diag /tmp/diag-out
+          git checkout -q --orphan auditoria
+          git rm -rfq . || true
+          git clean -fdxq
+          cp -r /tmp/diag-out/. .
+          git add -A
+          git commit -qm "auditoria $(date -u +%FT%TZ)" --allow-empty
+          git push -qf origin auditoria
