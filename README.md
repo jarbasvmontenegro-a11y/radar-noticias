@@ -2,7 +2,7 @@
 
 Política do Brasil em um só lugar, direto das fontes.
 
-**Site:** https://radar-noticias.pages.dev
+**Site:** https://radarnoticias.top
 
 O Radar reúne, de hora em hora, as manchetes de política de mais de 100 veículos e agências de checagem, de grandes portais a jornais locais de cada estado. Cada manchete leva ao texto no veículo original: o site organiza e ajuda a entender, não republica conteúdo.
 
@@ -27,7 +27,7 @@ fontes (RSS) → coleta → site estático → Cloudflare Pages
                                   └→ funções: IA, verificador, notificações
 ```
 
-Segurança e privacidade estão descritas em [SECURITY.md](SECURITY.md) e na [política de privacidade](https://radar-noticias.pages.dev/privacidade/) do site.
+Segurança e privacidade estão descritas em [SECURITY.md](SECURITY.md) e na [política de privacidade](https://radarnoticias.top/privacidade/) do site.
 
 ## Rodar localmente
 
