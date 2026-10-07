@@ -524,9 +524,10 @@ def build(out_dir: str = "site") -> str:
         extra_connect += ["https://*.google.com", "https://*.doubleclick.net", "https://*.googlesyndication.com"]
         extra_img += ["https:"]
         extra_frame += ["https://*.googlesyndication.com", "https://*.doubleclick.net", "https://*.google.com"]
-    if cfg.get("cloudflare_analytics_token"):
-        script_src.append("https://static.cloudflareinsights.com")
-        extra_connect.append("https://cloudflareinsights.com")
+    # Cloudflare Web Analytics: vale tanto para o snippet com token quanto para a ativação automática do Pages (o Cloudflare
+    # injeta o script na borda, então a política de segurança precisa deixar o endereço dele passar nos dois casos)
+    script_src.append("https://static.cloudflareinsights.com")
+    extra_connect.append("https://cloudflareinsights.com")
     csp = "; ".join([
         "default-src 'self'",
         "script-src " + " ".join(script_src),
