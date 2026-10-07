@@ -1,43 +1,34 @@
 {
- "gerado": "2026-10-07T03:42:18+00:00",
+ "gerado": "2026-10-07T10:59:47+00:00",
  "assuntos": [
   {
-   "titulo": "TSE julga caso Garotinho e pode definir segundo turno no Rio",
-   "resumo": "O TSE marcou para quinta-feira o julgamento sobre a candidatura de Garotinho, que pode definir a realização do segundo turno no Rio.",
+   "titulo": "Flávio Bolsonaro diz que usará maioria no Congresso para mudar a Constituição",
+   "resumo": "Flávio Bolsonaro afirmou que, se eleito, terá maioria no Congresso para alterar a Constituição e 'redemocratizar' o país.",
    "ids": [
-    "2423839cd251",
-    "688800c2e472",
-    "95721592d6dd",
-    "7424dc60116d",
-    "da34339dddc7",
-    "0f1d63ba3964",
-    "cb3d6ab8571f",
-    "2ce564793026",
-    "f8185d3fcd74",
-    "075e565a9f61",
-    "688a2f7fa411",
-    "4af782377606",
-    "80decefdf6e8",
-    "bb72b94f80e1",
-    "fea8c9fe16be",
-    "8271d2003007",
-    "1290cc0c84cb",
-    "39f45ae6ca5b",
-    "e8a8a53c5622",
-    "48ddd81926c4",
-    "a2f5183ff556",
-    "0b709d5fb1bb",
-    "5d6c1ad82894",
-    "e9f30060e7a3",
-    "639ddb685ba7",
-    "f4b889aefd8c",
-    "0cce215f001d"
+    "290da21d420b",
+    "703294a150ea",
+    "4fd4f66a50b3",
+    "629a1274f1bf",
+    "1f6ffccbb76b",
+    "2419f0802350",
+    "f3943c8585a7",
+    "85f5b237d68f",
+    "581dc84a9bd4",
+    "907b60fef0a3",
+    "0fb826265ebd",
+    "a480a01883e0",
+    "d6078d0ceb79",
+    "f21c60063461",
+    "9d110935203b",
+    "c5b4d6863fd3",
+    "9194fc7bc007"
    ]
   },
   {
-   "titulo": "Gilmar arquiva investigação contra vice de Flávio por estupro",
-   "resumo": "Gilmar Mendes arquivou pedido de investigação contra Alfredo Gaspar, vice de Flávio Bolsonaro, por suspeita de estupro de vulnerável.",
+   "titulo": "Gilmar Mendes arquiva investigação contra vice de Flávio por suspeita de estupro",
+   "resumo": "O ministro Gilmar Mendes arquivou pedido de investigação contra Alfredo Gaspar, vice de Flávio Bolsonaro, por suspeita de estupro de vulnerável.",
    "ids": [
+    "204a19971876",
     "f13347552310",
     "f159fbf39fe7",
     "76cf0e7fd90e",
@@ -53,116 +44,19 @@
     "80a5a4943bcf",
     "ddcc2ebef8d2",
     "7559c24789c5",
-    "55c8c48acde3",
-    "7ebd6531ac15",
-    "b49647dd8b12",
-    "ee496a61e132",
-    "847cb994ddad",
-    "9482555a47ce"
+    "55c8c48acde3"
    ]
   },
   {
-   "titulo": "PGR dá aval para Flávio visitar Bolsonaro na prisão",
-   "resumo": "A PGR se manifestou favoravelmente ao pedido para que Flávio Bolsonaro possa visitar Jair Bolsonaro na prisão domiciliar.",
+   "titulo": "Coordenador da campanha de Flávio, Rogério Marinho é hospitalizado após mal-estar",
+   "resumo": "Rogério Marinho, coordenador da campanha de Flávio Bolsonaro, passou mal em voo e foi levado a hospital em Brasília.",
    "ids": [
-    "44e32871a9b9",
-    "fa4812f891ec",
-    "f4d5bdb724f4",
-    "0e5d80ddaae3",
-    "96dbd7f10dfb",
-    "fb4dec3f1ffe",
-    "9181f813e9b0",
-    "edd9edd3fc37",
-    "f770b06fa9cf",
-    "b5bb430ae798",
-    "513261c5eacb",
-    "04b1ef9d4f6e",
-    "486029eb996f",
-    "d2e0b459a37b",
-    "b3bdb3ddb18c",
-    "28280e214ed4",
-    "6eb623115ee3",
-    "1f916aa835f9",
-    "58cee63af896",
-    "e82a6f83582f",
-    "91362848be76",
-    "4450f32272a0",
-    "1b46e5f93ebb",
-    "20b08cdcd255",
-    "a83077c13b28"
-   ]
-  },
-  {
-   "titulo": "Moraes arquiva inquérito contra Do Val, Eustáquio e Allan dos Santos",
-   "resumo": "Moraes arquivou inquérito aberto contra Marcos do Val, Oswaldo Eustáquio e Allan dos Santos por ataques à Polícia Federal.",
-   "ids": [
-    "571bf14ddf56",
-    "7972c599ab54",
-    "5ff38a52d9c6",
-    "855650c8f469",
-    "23d7a18bd8ab",
-    "e157c5936b25",
-    "d22acbec8346",
-    "ccb847ef1886",
-    "52cd229ecea3",
-    "3acf95f4df04"
-   ]
-  },
-  {
-   "titulo": "Flávio Bolsonaro defende mudar a Constituição com maioria no Congresso",
-   "resumo": "Flávio Bolsonaro afirmou que usará maioria no Congresso para mudar a Constituição e redemocratizar o país.",
-   "ids": [
-    "581dc84a9bd4",
-    "907b60fef0a3",
-    "0fb826265ebd",
-    "a480a01883e0",
-    "d6078d0ceb79",
-    "f21c60063461",
-    "9d110935203b",
-    "c5b4d6863fd3",
-    "9194fc7bc007",
-    "45dbcacafc0e",
-    "298a6a9ad00b",
-    "b9e22100e9e7",
-    "198bc7090814",
-    "4c1d3d939691",
-    "9f582203fe9e",
-    "61f912b54f59",
-    "d056b6aa6eb2"
-   ]
-  },
-  {
-   "titulo": "PP e União Brasil anunciam apoio a Flávio Bolsonaro",
-   "resumo": "PP e União Brasil formalizaram apoio à candidatura de Flávio Bolsonaro no segundo turno.",
-   "ids": [
-    "783a10e9eab5",
-    "8c2cb6c19cfe",
-    "1127b76311c3",
-    "035a99bf2ffe",
-    "3df40970063c",
-    "6a34735780ce",
-    "e6f1f7955596",
-    "6cbf5bd0438b",
-    "3c99e7b2ff5b",
-    "11d198f03531",
-    "22c10fd73bca",
-    "27a0355a1853",
-    "1da377a6c0c2",
-    "a864450fe944",
-    "e27c859245f8",
-    "703ab3c16c90",
-    "0c8ac836c48a"
-   ]
-  },
-  {
-   "titulo": "Rogério Marinho passa mal e é hospitalizado em Brasília",
-   "resumo": "O coordenador da campanha de Flávio Bolsonaro, Rogério Marinho, passou mal e foi levado a hospital em Brasília.",
-   "ids": [
+    "fce37074a3d6",
+    "652c8a95b0f0",
     "a21e7c826c60",
     "9a0796aa6177",
     "45398560c38a",
     "6221af7ed8c4",
-    "56f98dec56c8",
     "8bcf9a4e5461",
     "dc4b2c8d0e6c",
     "02882917fcb5",
@@ -174,40 +68,85 @@
    ]
   },
   {
-   "titulo": "TSE explica mensagem de 'faltou' para eleitores que votaram",
-   "resumo": "O TSE esclareceu que a mensagem 'faltou' no site não é definitiva e que os dados de comparecimento estão em processamento.",
+   "titulo": "PP e União Brasil anunciam apoio a Flávio Bolsonaro no segundo turno",
+   "resumo": "As federações PP e União Brasil formalizaram apoio à candidatura de Flávio Bolsonaro no segundo turno da eleição presidencial.",
    "ids": [
-    "afe4d15f6dac",
-    "e8919f206fc1",
-    "b99f4a7bb7ff",
-    "454cda6a6e34",
-    "4236fd820f4f",
-    "a8ebe278ccb6",
-    "97035517ebcf",
-    "0d9ee7cb34b7",
-    "9c126341d416",
-    "a8098613e24a",
-    "f05c31e63ee6",
-    "12c69baf540e",
-    "dc6d87c9fff8",
-    "dbb864ff99d0",
-    "9a72078b674e",
-    "3bf421f3f120",
-    "5337a51d98c4",
-    "c9e9fb18f167",
-    "b6141d6b0cc0",
-    "1bfc7f911e8c",
-    "3a0cb4121e49",
-    "ced5ba22dd9b",
-    "f8c3c621c01a"
+    "783a10e9eab5",
+    "8c2cb6c19cfe",
+    "1127b76311c3",
+    "035a99bf2ffe",
+    "3df40970063c",
+    "e0d2e04c6da2",
+    "e6f1f7955596",
+    "6cbf5bd0438b"
    ]
   },
   {
-   "titulo": "Lula cobra votação da PEC do fim da escala 6x1",
-   "resumo": "Lula defendeu a votação da PEC que acaba com a escala 6x1 e disse que a máscara vai cair para o PL.",
+   "titulo": "TSE marca julgamento sobre candidatura de Garotinho que pode definir eleição no Rio",
+   "resumo": "O TSE agendou para quinta-feira julgamento sobre a desistência de Garotinho, que pode definir se haverá segundo turno no Rio.",
+   "ids": [
+    "a55e3cc5af0a",
+    "e27ebb50afd2",
+    "2423839cd251",
+    "7424dc60116d",
+    "da34339dddc7",
+    "0f1d63ba3964",
+    "cb3d6ab8571f",
+    "f8185d3fcd74",
+    "bb72b94f80e1",
+    "fea8c9fe16be",
+    "39f45ae6ca5b",
+    "e8a8a53c5622"
+   ]
+  },
+  {
+   "titulo": "Paes pede ao TSE que mantenha votos de Garotinho e garanta segundo turno no Rio",
+   "resumo": "A campanha de Eduardo Paes pediu ao TSE que rejeite a desistência de Garotinho e contabilize seus votos para assegurar o segundo turno.",
+   "ids": [
+    "95721592d6dd",
+    "2ce564793026",
+    "075e565a9f61",
+    "688a2f7fa411",
+    "4af782377606",
+    "80decefdf6e8",
+    "8271d2003007",
+    "1290cc0c84cb",
+    "48ddd81926c4",
+    "a2f5183ff556",
+    "0b709d5fb1bb",
+    "5d6c1ad82894",
+    "e9f30060e7a3"
+   ]
+  },
+  {
+   "titulo": "Senado inicia discussão da PEC que acaba com a escala 6x1",
+   "resumo": "O Senado realizou as primeiras sessões de discussão da PEC que extingue a escala 6x1, com ausência da maioria dos senadores do PL.",
+   "ids": [
+    "e0d80766e86b",
+    "0f19f44d1169",
+    "2f20680af132",
+    "fa462e604384",
+    "9bd54e8957c0",
+    "ab8b07257ff3",
+    "30b30e4c2a45",
+    "590df763d79b",
+    "14d9127fcca8",
+    "dce2131c0d5d",
+    "16f2de004016",
+    "bb1de23469c9",
+    "2efe37181e86",
+    "7ac4486c7509",
+    "00def0f598fb",
+    "e6ff2acf0372",
+    "09e8aee95b8f",
+    "d3b7e6b13068"
+   ]
+  },
+  {
+   "titulo": "Lula cobra votação da PEC da escala 6x1 e diz que 'máscaras vão cair'",
+   "resumo": "Lula defendeu a votação da PEC do fim da escala 6x1 e afirmou que o posicionamento do PL mostrará 'quem é quem'.",
    "ids": [
     "366a5bb1c5a0",
-    "b279d0e533ca",
     "0f513c430d83",
     "818a4996f2e1",
     "d3fd4cb1e379",
@@ -220,84 +159,94 @@
     "01875da1e83b",
     "b858105881a1",
     "70bd4438babb",
-    "1f1c590b798f",
-    "80b73ecb89e8",
-    "d8c5b9399578",
-    "1e2582488111"
+    "1f1c590b798f"
    ]
   },
   {
-   "titulo": "Alcolumbre anuncia sessões para discutir fim da escala 6x1",
-   "resumo": "O presidente do Senado, Alcolumbre, anunciou a realização de sessões para discutir e votar a PEC que acaba com a escala 6x1.",
+   "titulo": "Moraes arquiva inquérito contra Marcos do Val, Eustáquio e Allan dos Santos",
+   "resumo": "O ministro Alexandre de Moraes arquivou inquérito contra Marcos do Val, Oswaldo Eustáquio e Allan dos Santos por ataques à PF.",
    "ids": [
-    "ab8b07257ff3",
-    "30b30e4c2a45",
-    "5dc8c118a3ca",
-    "590df763d79b",
-    "14d9127fcca8",
-    "dce2131c0d5d",
-    "16f2de004016",
-    "bb1de23469c9",
-    "f5bb506d0fbf",
-    "2efe37181e86",
-    "7ac4486c7509",
-    "00def0f598fb",
-    "e6ff2acf0372",
-    "09e8aee95b8f",
-    "d3b7e6b13068",
-    "dd6e91aeba8d",
-    "2e81092e7673",
-    "9fb73fb07605",
-    "ac6af44aa838",
-    "1ed2b6509d30",
-    "8ab8c4bd7dce",
-    "072c8948402d",
-    "2bb8ba066dc7"
+    "978d85f5017c",
+    "7972c599ab54",
+    "5ff38a52d9c6",
+    "855650c8f469",
+    "23d7a18bd8ab",
+    "e157c5936b25",
+    "d22acbec8346",
+    "ccb847ef1886"
    ]
   },
   {
-   "titulo": "Caiado anuncia apoio a Flávio Bolsonaro no segundo turno",
-   "resumo": "O governador de Goiás, Ronaldo Caiado, declarou apoio a Flávio Bolsonaro no segundo turno.",
+   "titulo": "TSE explica mensagem 'faltou' e nega fraude na apuração",
+   "resumo": "O TSE esclareceu que a mensagem 'faltou' no site não é definitiva e negou alegações de fraude na apuração dos votos.",
    "ids": [
-    "5525a808270f",
-    "019bcfc6173d",
-    "f02f27c7565f",
-    "5c1f6e580c62",
-    "dcf25f4dd13e",
-    "d7f78e114c83",
-    "e0c22cdfbac7"
+    "5a7c67d07c39",
+    "afe4d15f6dac",
+    "e8919f206fc1",
+    "b99f4a7bb7ff",
+    "821bfdf9ec4a",
+    "454cda6a6e34",
+    "4236fd820f4f",
+    "a8ebe278ccb6",
+    "0d9ee7cb34b7",
+    "9c126341d416",
+    "a8098613e24a",
+    "f05c31e63ee6",
+    "12c69baf540e",
+    "dc6d87c9fff8",
+    "dbb864ff99d0"
    ]
   },
   {
-   "titulo": "Flávio Bolsonaro perde para Lula em sua seção eleitoral no Rio",
-   "resumo": "Flávio Bolsonaro recebeu menos votos que Lula na seção eleitoral em que vota, no Rio de Janeiro.",
+   "titulo": "Flávio Bolsonaro recebe apoio da Frente Parlamentar da Agropecuária",
+   "resumo": "A Frente Parlamentar da Agropecuária declarou apoio a Flávio Bolsonaro, que prometeu crédito, seguro e infraestrutura para o setor.",
    "ids": [
-    "80530f669790",
-    "048fa852fb8f",
-    "626db867a762",
-    "ea1d2acd6c5d"
+    "d5654ee06b82",
+    "8ffc1d27f896",
+    "b70dccbb6856",
+    "07bc1212b44f",
+    "8d1688aa097a",
+    "9aba54203e21"
    ]
   },
   {
-   "titulo": "OEA elogia eleição brasileira e aponta preocupações",
-   "resumo": "A OEA elogiou o processo eleitoral brasileiro, mas apontou preocupação com desinformação e interferência externa.",
+   "titulo": "PGR dá parecer favorável à visita de Flávio Bolsonaro a Jair Bolsonaro",
+   "resumo": "A PGR emitiu parecer favorável para que Flávio Bolsonaro visite o pai, Jair Bolsonaro, antes do fim da restrição imposta por Moraes.",
    "ids": [
-    "ebd6df1686eb",
-    "7f53d945824c",
-    "58d929faa31a",
-    "fd07dabbd578",
-    "00ff8a7b51d9",
-    "5d1bacc7f30c",
-    "f00e46b1f993",
-    "af833f4b190e",
-    "e6620335a7c9",
-    "893fb914588e",
-    "d61dcd956f2a"
+    "44e32871a9b9",
+    "d19ab11a0ca4",
+    "fa4812f891ec",
+    "f4d5bdb724f4",
+    "0e5d80ddaae3",
+    "96dbd7f10dfb",
+    "fb4dec3f1ffe"
    ]
   },
   {
-   "titulo": "Flávio Bolsonaro nega candidatura do pai em 2030 e apoia fim da reeleição",
-   "resumo": "Flávio Bolsonaro negou que Jair Bolsonaro dispute a Presidência em 2030 e afirmou apoiar a PEC contra a reeleição.",
+   "titulo": "Lula e Flávio Bolsonaro terão debates no segundo turno",
+   "resumo": "Foram definidos debates e sabatinas entre Lula e Flávio Bolsonaro no segundo turno, incluindo encontro na Band e na TV Globo.",
+   "ids": [
+    "cad2a0cbdfcd",
+    "33dcfc20544a",
+    "7264b694ed0e",
+    "8ff37e3b6476",
+    "92211584f8c6",
+    "d1e86d04c3d1"
+   ]
+  },
+  {
+   "titulo": "PF e MPRJ investigam policiais por venda de armas e lavagem no Rio",
+   "resumo": "Operação da PF e do MPRJ investiga policiais acusados de vender fuzis e lavar dinheiro para o TCP no Rio.",
+   "ids": [
+    "ed8549d8c7ca",
+    "4e03973fad08",
+    "63cc129a59cb",
+    "40bb5ff9783c"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro nega candidatura de Jair em 2030 e apoia fim da reeleição",
+   "resumo": "Flávio Bolsonaro negou que Jair Bolsonaro dispute a Presidência em 2030 e reafirmou apoio à PEC que acaba com a reeleição.",
    "ids": [
     "cbf119d7b6ae",
     "157e8cb62eea",
@@ -312,190 +261,229 @@
    ]
   },
   {
-   "titulo": "Frente da Agropecuária declara apoio a Flávio Bolsonaro",
-   "resumo": "A Frente Parlamentar da Agropecuária formalizou apoio a Flávio Bolsonaro e ele prometeu Ministério da Agricultura.",
+   "titulo": "Governo bloqueia mais de 13 mil sites de bets ilegais",
+   "resumo": "O governo federal informou que mais de 13 mil sites de apostas ilegais foram bloqueados e que R$ 1,3 bilhão segue retido.",
    "ids": [
-    "d5654ee06b82",
-    "8ffc1d27f896",
-    "b70dccbb6856",
-    "07bc1212b44f",
-    "8d1688aa097a",
-    "9aba54203e21"
-   ]
-  },
-  {
-   "titulo": "Ciro Gomes contesta derrota no Ceará e acusa STF",
-   "resumo": "Ciro Gomes não reconheceu a derrota na eleição do Ceará, disse ter sido roubado e criticou o STF.",
-   "ids": [
-    "012d8fb8d0b0",
-    "e745f9c8619f",
-    "e5202800854c",
-    "bf3165122e89",
-    "99c9e6a3b531",
-    "d6a74db8f262",
-    "13591c9bcfa1",
-    "9335bccea198"
-   ]
-  },
-  {
-   "titulo": "Debates entre Lula e Flávio Bolsonaro são marcados para o segundo turno",
-   "resumo": "Foram definidos debates entre Lula e Flávio Bolsonaro no segundo turno, incluindo o da Band em 18 de outubro.",
-   "ids": [
-    "33dcfc20544a",
-    "7264b694ed0e",
-    "8ff37e3b6476",
-    "92211584f8c6",
-    "166b8fc13077",
-    "e5c2a6c385b5",
-    "482d5fb5d294",
-    "de5451073b06",
-    "7a9352e0d699",
-    "ca7ae0f78ad1",
-    "dc2a304ef47f"
-   ]
-  },
-  {
-   "titulo": "Edinho Silva propõe Alckmin na coordenação da campanha de Lula",
-   "resumo": "Edinho Silva defendeu maior participação de Alckmin na coordenação da campanha de Lula no segundo turno.",
-   "ids": [
-    "c6221210c9ee",
-    "3a9c38c0685d",
-    "1c4354b32ac2",
-    "18dba4da7e73",
-    "e81b8447d0a5",
-    "32f1f9f22cd6",
-    "5c85b859110b",
-    "48e495cf7fe1",
-    "3958a54d7678",
-    "f4376d6942c1",
-    "ea8ddc27c147",
-    "3faba00189de",
-    "977df0870257",
-    "3c1fe2d7b1e3",
-    "8ba3d446d147",
-    "ab8de03744fb"
-   ]
-  },
-  {
-   "titulo": "Leila do Vôlei pede licença médica e deixa o Senado",
-   "resumo": "Após derrota eleitoral, Leila do Vôlei pediu licença médica de quatro meses e não retornará ao Senado.",
-   "ids": [
-    "225d617c8750",
-    "984138cfb93b",
-    "aa4116180801",
-    "2fa31e5add2b",
-    "3ddb711befba",
-    "3ed631af5b07"
-   ]
-  },
-  {
-   "titulo": "Gabriel Galípolo depõe à PF como testemunha no caso Master",
-   "resumo": "O presidente do Banco Central, Gabriel Galípolo, prestou depoimento à Polícia Federal como testemunha no caso Banco Master.",
-   "ids": [
-    "b20cbf56c37a",
-    "e3baf2cff2f1",
-    "18c1e9cc7e89"
-   ]
-  },
-  {
-   "titulo": "TSE define horário eleitoral e entrevistas de Lula e Flávio",
-   "resumo": "O TSE definiu o horário eleitoral do segundo turno e a Globo agendou entrevistas com Lula e Flávio Bolsonaro.",
-   "ids": [
-    "d228300eaed8",
-    "8005912ede71",
-    "d1e86d04c3d1",
-    "8a63432823a2"
-   ]
-  },
-  {
-   "titulo": "Celina Leão recebe apoio e critica ataques extremistas",
-   "resumo": "Celina Leão afirmou que ataques extremistas aos Três Poderes não voltarão a acontecer e recebeu apoio no DF.",
-   "ids": [
-    "b895a9deeea3",
-    "704445816875",
-    "03a9e5b73d93",
-    "26f7a57aa057",
-    "9db7e28077bc"
-   ]
-  },
-  {
-   "titulo": "Governo bloqueia sites ilegais de bets e cobra devolução de valores",
-   "resumo": "O governo bloqueou 13,2 mil sites ilegais de apostas e cobra a devolução de R$ 1,3 bilhão a apostadores.",
-   "ids": [
-    "244f886c5e64",
-    "4ccdbd139d46",
+    "4f06b7de36da",
     "5cb5bebd5577",
     "cdfaf64b6f1a",
     "6eeb35a6591f",
     "0cb05faed06d",
     "b805beb43a12",
-    "4d63ea2ce4ef",
-    "9c17e07d4f81",
-    "ef3b4f3a7a88",
-    "033ea4aad06f"
+    "4d63ea2ce4ef"
    ]
   },
   {
-   "titulo": "Flávio Bolsonaro busca apoio de Republicanos e Podemos",
-   "resumo": "Flávio Bolsonaro negocia apoio dos partidos Republicanos e Podemos para o segundo turno.",
+   "titulo": "Campanha de Lula muda comunicação e busca associar Flávio a cortes em programas sociais",
+   "resumo": "A campanha de Lula reestruturou a comunicação e pretende associar Flávio Bolsonaro a ameaças a programas sociais.",
    "ids": [
-    "d8c24cd491e2",
+    "bbb6fec7140d",
+    "e2e35ab42628",
+    "d262e296ccac",
+    "8e9cebf6fe07",
+    "426e65086cc2",
+    "280936f6228d",
+    "26bc6c07c4a4",
+    "63c5a00f3793"
+   ]
+  },
+  {
+   "titulo": "OEA elogia eleição no Brasil, mas aponta preocupação com desinformação",
+   "resumo": "A OEA elogiou o pleito brasileiro, mas manifestou preocupação com desinformação e pediu segurança jurídica no segundo turno.",
+   "ids": [
+    "18bb4b86997b",
+    "ebd6df1686eb",
+    "7f53d945824c",
+    "58d929faa31a",
+    "fd07dabbd578",
+    "00ff8a7b51d9",
+    "5d1bacc7f30c"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro perde para Lula em sua seção eleitoral no Rio",
+   "resumo": "Flávio Bolsonaro recebeu menos votos que Lula na seção eleitoral em que vota, no Rio de Janeiro.",
+   "ids": [
+    "80530f669790",
+    "048fa852fb8f",
+    "626db867a762",
+    "ea1d2acd6c5d"
+   ]
+  },
+  {
+   "titulo": "Michelle Bolsonaro e Flávio se reúnem após distanciamento no primeiro turno",
+   "resumo": "Michelle Bolsonaro e Flávio Bolsonaro participaram de reunião do PL após período de distanciamento durante o primeiro turno.",
+   "ids": [
+    "19c6c424c30d",
+    "fe6b69af2b86"
+   ]
+  },
+  {
+   "titulo": "Tarcísio de Freitas articula apoio do MDB a Flávio Bolsonaro",
+   "resumo": "Tarcísio de Freitas tentou atrair apoio do MDB e de outras siglas para a candidatura de Flávio Bolsonaro no segundo turno.",
+   "ids": [
+    "6bd6ced8e7a7",
     "1b2bd9c595ef",
-    "6a4c1f24575b"
+    "a53c09df286b",
+    "f3b198a5e5db",
+    "590e9d4179ed",
+    "9f1a71e8edac"
    ]
   },
   {
-   "titulo": "Michelle Bolsonaro articula ida ao Amazonas para impulsionar candidata",
-   "resumo": "Michelle Bolsonaro planeja viagem ao Amazonas para apoiar candidata do PL no segundo turno.",
+   "titulo": "Ciro Gomes contesta resultado no Ceará e diz ter sido 'roubado'",
+   "resumo": "Ciro Gomes não reconheceu a derrota no Ceará, afirmou ter sido 'roubado' e tentará anular a eleição no estado.",
    "ids": [
-    "d434596a64ca",
-    "663d0cd2f6d0"
+    "012d8fb8d0b0",
+    "e745f9c8619f",
+    "e5202800854c"
    ]
   },
   {
-   "titulo": "Governo de SP quer romper contrato do BRT-ABC",
-   "resumo": "O governo de São Paulo abriu processo para romper o contrato do corredor BRT-ABC após atrasos na obra.",
+   "titulo": "Messi se despede da seleção argentina com gol e assistências",
+   "resumo": "Lionel Messi se despediu da seleção argentina em vitória sobre o Benin, com um gol e duas assistências.",
    "ids": [
-    "80e1641ecb19",
-    "04e350af93d1"
+    "31a37e6551d3",
+    "96e06b837281",
+    "1838a4e2d1a0",
+    "2ec91a1f8f8c",
+    "7ac01a214566"
    ]
   },
   {
-   "titulo": "CNJ e Banco Central assinam acordo sobre precatórios",
-   "resumo": "O CNJ e o Banco Central firmaram acordo para disciplinar e rastrear o pagamento de precatórios.",
+   "titulo": "Rogério Marinho sinaliza veto a radicais em eventual governo Flávio",
+   "resumo": "Rogério Marinho indicou que nomes radicais podem ser vetados em um eventual governo de Flávio Bolsonaro.",
+   "ids": [
+    "220289dff7ca",
+    "c7d6ff1637d7"
+   ]
+  },
+  {
+   "titulo": "Centrão se alinha à direita e defende impeachment de ministro do STF",
+   "resumo": "Lideranças do Centrão passaram a defender o impeachment de ao menos um ministro do STF após as eleições.",
+   "ids": [
+    "87d872f499a9",
+    "68e6be0d7c71"
+   ]
+  },
+  {
+   "titulo": "Bancada evangélica perde cadeiras na Assembleia de São Paulo",
+   "resumo": "A bancada evangélica perdeu força na Alesp, com 12 deputados não reeleitos, enquanto o PL avançou na Câmara de SP.",
+   "ids": [
+    "5dc2782806a1",
+    "5f0b53f7fb7f"
+   ]
+  },
+  {
+   "titulo": "PL conquista uma em cada cinco cadeiras nas assembleias legislativas",
+   "resumo": "O PL elegeu um quinto dos deputados estaduais do país e assumiu liderança em estados como Minas Gerais e Rio Grande do Sul.",
+   "ids": [
+    "6929d198f210",
+    "3044a92254aa"
+   ]
+  },
+  {
+   "titulo": "Heloísa Helena sofre nova derrota eleitoral",
+   "resumo": "Heloísa Helena chegou à sexta eleição seguida sem conseguir se eleger, somando mais um revés eleitoral.",
+   "ids": [
+    "d1005e858dd3",
+    "47ea321eb152"
+   ]
+  },
+  {
+   "titulo": "Zema recebe 13 votos em sua própria seção eleitoral em Minas",
+   "resumo": "O governador Romeu Zema recebeu apenas 13 votos em sua seção eleitoral no interior de Minas Gerais.",
+   "ids": [
+    "b32d6b89d250",
+    "fb60b6680d06"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro critica Moraes em conversa reservada com Gilmar Mendes",
+   "resumo": "Em conversa reservada, Flávio Bolsonaro criticou Alexandre de Moraes durante encontro com Gilmar Mendes.",
+   "ids": [
+    "d082027ba5cc",
+    "b25cabe907ad"
+   ]
+  },
+  {
+   "titulo": "Janones mobiliza 1 milhão em 'Exército de Lula' no WhatsApp",
+   "resumo": "O deputado André Janones reuniu 1 milhão de participantes em canal pró-Lula no WhatsApp e cobrou aproximação com o eleitor.",
+   "ids": [
+    "c410464ec9a8",
+    "fab78767192c",
+    "10e4220b764d"
+   ]
+  },
+  {
+   "titulo": "PL mobiliza influenciadores contra canal 'Exército do Lula' no WhatsApp",
+   "resumo": "O PL organizou influenciadores para derrubar o canal 'Exército do Lula' no WhatsApp, segundo a Revista Oeste.",
+   "ids": [
+    "ba08f9a179fd",
+    "0431643787f8",
+    "e006a7d9ff8f"
+   ]
+  },
+  {
+   "titulo": "Família Sarney fica sem mandato pela primeira vez em 72 anos",
+   "resumo": "Com a derrota de Roseana Sarney, a família Sarney ficou sem mandato eletivo pela primeira vez em 72 anos.",
+   "ids": [
+    "d3ea5b64ada7",
+    "22e4ba2d587b"
+   ]
+  },
+  {
+   "titulo": "Leany Lemos toma posse no Senado na vaga de Leila do Vôlei",
+   "resumo": "Leany Lemos tomou posse como senadora após Leila do Vôlei pedir licença e não retornar ao Senado.",
+   "ids": [
+    "225d617c8750",
+    "984138cfb93b",
+    "aa4116180801",
+    "2fa31e5add2b"
+   ]
+  },
+  {
+   "titulo": "Brasileiro preso nos EUA após votar vestido de agente do ICE",
+   "resumo": "Um brasileiro foi preso nos Estados Unidos após comparecer à votação vestido como agente do ICE e depois liberado sob fiança.",
+   "ids": [
+    "0a7186a8bd89",
+    "6fee56c988d6",
+    "ea77fece63c2",
+    "1823e84f5617"
+   ]
+  },
+  {
+   "titulo": "Governo da Bahia autoriza repasse de ações da Bahiagás ao setor privado",
+   "resumo": "O governo da Bahia autorizou a venda de ações minoritárias da Bahiagás para a iniciativa privada, mantendo o controle estatal.",
+   "ids": [
+    "636e084cf1df",
+    "537fca5adadd"
+   ]
+  },
+  {
+   "titulo": "CNJ e Banco Central assinam acordo para disciplinar precatórios",
+   "resumo": "O CNJ e o Banco Central firmaram acordo para disciplinar e rastrear o pagamento de precatórios no país.",
    "ids": [
     "7b5490280e67",
     "74776969242d",
-    "d2c1ce6a97d1",
-    "226b569cdf52",
-    "5712e6515c0f",
-    "e0f16d86e684"
+    "d2c1ce6a97d1"
    ]
   },
   {
-   "titulo": "Lula articula apoio de partidos do centrão para o segundo turno",
-   "resumo": "A campanha de Lula busca apoio de líderes do PSD, Republicanos e PP para o segundo turno.",
+   "titulo": "Cúpula da Polícia Federal se reúne com Alexandre de Moraes no STF",
+   "resumo": "Chefes da Polícia Federal se reuniram com o ministro Alexandre de Moraes no Supremo Tribunal Federal.",
    "ids": [
-    "58e78f6a2492",
-    "906136e67860",
-    "af78045771f1",
-    "640142fa8dfe"
+    "20e1057cc9de",
+    "141a0d232cf0",
+    "28724341d13a"
    ]
   },
   {
-   "titulo": "PSDB libera filiados e adota posição sobre apoio a Flávio",
-   "resumo": "O PSDB rejeitou apoio institucional a Celina Leão no DF, mas liberou filiados, e tem maioria pró-Flávio.",
+   "titulo": "Conselho do Vasco aprova venda da SAF para Lamacchia",
+   "resumo": "O Conselho Deliberativo do Vasco aprovou a venda da Sociedade Anônima do Futebol para o empresário Marcos Lamacchia.",
    "ids": [
-    "45448a6a8bbe",
-    "1f5429dd48a6"
-   ]
-  },
-  {
-   "titulo": "Flávio Bolsonaro recebe apoio de governadores eleitos",
-   "resumo": "Governadores eleitos, como Dr. Daniel no Pará, declararam apoio a Flávio Bolsonaro no segundo turno.",
-   "ids": [
-    "e23c940bb15b",
-    "92f03462a31a"
+    "9fb2bbe090ea",
+    "5e6362117f13"
    ]
   }
  ]
