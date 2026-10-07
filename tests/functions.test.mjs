@@ -950,3 +950,12 @@ test("proteção: rajada em paralelo (corrida no KV) não passa do limite por IP
   const rs = await Promise.all(Array.from({ length: 30 }, (_, i) => call(resumir, env, "/api/resumir", { ...OK_BODY, url: OK_BODY.url + "?p=" + i })));
   assert.equal(rs.filter((r) => r.status === 200).length, 5);
 });
+
+test("proteção: teto global do serviço bloqueia quando atingido", async () => {
+  const { env } = setup();
+  delete env.IP_DAILY_LIMIT;
+  env.DAILY_CAP = "2"; env.CAP_STEP = "1";
+  const st = [];
+  for (let i = 0; i < 3; i++) st.push((await call(resumir, env, "/api/resumir", { ...OK_BODY, url: OK_BODY.url + "?c=" + i })).status);
+  assert.deepEqual(st, [200, 200, 429]);
+});
