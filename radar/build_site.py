@@ -511,8 +511,9 @@ def build(out_dir: str = "site") -> str:
         "  Strict-Transport-Security: max-age=31536000; includeSubDomains\n"
         "  Cross-Origin-Opener-Policy: same-origin\n  Cross-Origin-Resource-Policy: same-origin\n"
         f"  Content-Security-Policy: {csp}\n"
-        "/*.css\n  Cache-Control: public, max-age=86400\n/*.js\n  Cache-Control: public, max-age=86400\n"
-        "/fonts/*\n  Cache-Control: public, max-age=31536000, immutable\n"
+        "/*.css\n  Cache-Control: public, max-age=86400\n"
+        + "".join(f"/{n}.js\n  Cache-Control: public, max-age=86400\n" for n in ("app", "share", "push", "busca", "assuntos"))  # sw.js fica de fora: só /sw.js (no-cache), sem somar regras
+        + "/fonts/*\n  Cache-Control: public, max-age=31536000, immutable\n"
         "/manifest.webmanifest\n  Content-Type: application/manifest+json\n"
         "/\n  Cache-Control: public, max-age=300, s-maxage=300\n/fonte/*\n  Cache-Control: public, max-age=300, s-maxage=300\n"
         "/data/*\n  Cache-Control: public, max-age=300\n/sw.js\n  Cache-Control: no-cache\n  Service-Worker-Allowed: /\n", encoding="utf-8")
