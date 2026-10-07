@@ -25,6 +25,16 @@
   <h2>Verificador de fake news</h2>
   <p>O <a href="/verificador/">verificador</a> consulta bases públicas de agências de checagem e as manchetes recentes dos nossos veículos. Quando uma agência de checagem já concluiu, mostramos a conclusão dela. Sem agência, o Radar dá uma avaliação própria, identificada como tal, com os motivos.</p>
 
+  <h2 id="destaques">Como o Radar ajuda a conferir</h2>
+  <ul>
+    <li><strong>Resumo com IA.</strong> Mostra o que a matéria diz, atribuindo cada afirmação ao veículo ou à fonte citada. Não garante que seja verdade: confira sempre na fonte.</li>
+    <li><strong>Quantos veículos publicaram.</strong> No resumo, mostramos em quantos veículos monitorados o assunto aparece. Um assunto em um único veículo não é necessariamente errado, só ainda não foi confirmado por outro.</li>
+    <li><strong>Atenção ao título.</strong> Quando a IA leu a matéria inteira e o título afirma algo que o texto não traz, ela avisa. É um apontamento da IA, que pode errar.</li>
+    <li><strong>Fonte oficial e checagem.</strong> Se uma agência oficial (STF, TCU, MPF) ou uma agência de checagem (Lupa, Aos Fatos e outras) tratou do mesmo assunto, mostramos o link.</li>
+    <li><strong>Título alterado.</strong> Se o veículo troca o título de uma matéria depois de publicar, marcamos e mostramos o título anterior. Correções de letra e pontuação não contam.</li>
+    <li><strong>Palavras destacadas.</strong> Na página de assuntos, marcamos palavras que costumam indicar juízo, emoção ou ataque. A lista é a mesma para todos os veículos e só destaca, sem dizer que a notícia é falsa: {% for w in enq_palavras %}{{ w }}{% if not loop.last %}, {% endif %}{% endfor %}.</li>
+  </ul>
+
   <h2>Transparência</h2>
   <ul>
     <li>Não escrevemos opinião nem alteramos títulos.</li>

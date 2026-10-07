@@ -196,6 +196,24 @@ class BuildTests(unittest.TestCase):
             self.assertNotIn(perigoso, js)
         self.assertNotIn("/mini/", (root / "sitemap.xml").read_text(encoding="utf-8"))
 
+    def test_conferencia_titulo_alterado_e_palavras_de_juizo(self):
+        a1 = article(1, url="https://g1.globo.com/a/1", source="g1", title="Ministro acusa governo e provoca escândalo no Senado")
+        a1["anterior"] = "Ministro faz críticas ao governo no Senado"
+        a2 = article(2, url="https://oglobo.globo.com/a/2", source="oglobo", title="Ministro critica governo no Senado <b>x</b>")
+        self.write([a1, a2])
+        b.build(self.out)
+        root = b.ROOT / self.out
+        home = (root / "index.html").read_text(encoding="utf-8")
+        self.assertIn("título alterado", home)
+        self.assertIn("Ministro faz críticas ao governo no Senado", home)
+        sobre = (root / "sobre" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('id="destaques"', sobre)
+        self.assertIn("escandalo", sobre)
+        # a marcação nunca deixa HTML do título passar sem escapar
+        assuntos = (root / "assuntos" / "index.html").read_text(encoding="utf-8")
+        self.assertNotIn("<b>x</b>", assuntos)
+        self.assertIn("frame-note", assuntos)
+
     def test_pessoas_deteccao_e_paginas(self):
         from radar import pessoas
         self.assertEqual(pessoas.detect("Caiado anuncia apoio a Flávio no 2º turno"), ["flavio-bolsonaro", "caiado"])

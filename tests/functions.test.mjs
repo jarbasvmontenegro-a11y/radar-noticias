@@ -120,16 +120,17 @@ const OK_BODY = { url: "https://g1.globo.com/politica/noticia.html", title: "Tí
 // resposta da IA no formato novo: JSON com resumo e contexto
 const resumoJson = (resumo = "Resumo de teste da matéria.", contexto = "") => JSON.stringify({ resumo, contexto });
 
-test("resumir: gera resumo da matéria, guarda em cache (sum2:) e não chama a IA duas vezes", async () => {
+test("resumir: gera resumo da matéria, guarda em cache (sum3:) e não chama a IA duas vezes", async () => {
   const { env, calls } = setup();
   const r1 = await call(resumir, env, "/api/resumir", OK_BODY);
   const d1 = await r1.json();
   assert.equal(r1.status, 200);
   assert.equal(d1.base, "materia");
   assert.match(d1.resumo, /Resumo de teste/);
-  assert.deepEqual(Object.keys(d1).sort(), ["aviso", "base", "contexto", "outros", "resumo"]);
+  assert.deepEqual(Object.keys(d1).sort(), ["aviso", "base", "checagens", "contexto", "nota", "oficiais", "outros", "resumo", "tituloConfere", "veiculos"]);
+  assert.equal(d1.veiculos, null); // índice sem termos suficientes para comparar: a página não afirma nada
   assert.equal(d1.aviso, "");
-  assert.equal(cacheKeys(env, "sum2:").length, 1);
+  assert.equal(cacheKeys(env, "sum3:").length, 1);
   assert.equal(cacheKeys(env, "sum:").length, 0); // a chave antiga não é mais usada
   const r2 = await call(resumir, env, "/api/resumir", OK_BODY);
   assert.equal(r2.status, 200);
@@ -159,7 +160,7 @@ test("resumir: matéria curta (paywall) e sem descrições úteis: base 'nenhuma
   assert.deepEqual(d.outros, []);
   assert.equal(calls.llm, 0);
   assert.deepEqual(await quota(env), [0]);
-  assert.equal(cacheKeys(env, "sum2:").length, 0);
+  assert.equal(cacheKeys(env, "sum3:").length, 0);
 });
 
 // descrição publicada pelo veículo: mais de 200 caracteres e com fatos que o título não traz
@@ -179,7 +180,7 @@ test("resumir: a descrição do CLIENTE só vale quando falta tudo do servidor, 
   const { env } = setup({ pageHtml: "<html><head><title>Senado aprova texto-base da reforma tributária</title></head><body><p>Assine.</p></body></html>" });
   const d = await (await call(resumir, env, "/api/resumir", { ...OK_BODY, desc: DESC_SENADO })).json();
   assert.equal(d.base, "descricoes");
-  assert.equal(cacheKeys(env, "sum2:").length, 0); // veio do cliente: não pode envenenar o cache
+  assert.equal(cacheKeys(env, "sum3:").length, 0); // veio do cliente: não pode envenenar o cache
 });
 
 // índice com a própria matéria e a cobertura de outros veículos
@@ -893,7 +894,7 @@ test("cache com falha no KV não derruba a função", async () => {
   const { env } = setup();
   const kv = env.RADAR_KV;
   const origPut = kv.put.bind(kv);
-  kv.put = async (k, v, o) => { if (k.startsWith("sum2:")) throw new Error("kv fora"); return origPut(k, v, o); };
+  kv.put = async (k, v, o) => { if (k.startsWith("sum3:")) throw new Error("kv fora"); return origPut(k, v, o); };
   const r = await call(resumir, env, "/api/resumir", OK_BODY);
   assert.equal(r.status, 200);
 });
@@ -958,4 +959,40 @@ test("proteção: teto global do serviço bloqueia quando atingido", async () =>
   const st = [];
   for (let i = 0; i < 3; i++) st.push((await call(resumir, env, "/api/resumir", { ...OK_BODY, url: OK_BODY.url + "?c=" + i })).status);
   assert.deepEqual(st, [200, 200, 429]);
+});
+
+test("resumir: o prompt manda atribuir (\"segundo o veículo\") e a resposta traz o aviso de que não garante verdade", async () => {
+  const { env, calls } = setup({ llm: () => resumoJson() });
+  const d = await (await call(resumir, env, "/api/resumir", OK_BODY)).json();
+  const sistema = calls.llmBodies[0].messages[0].content;
+  assert.match(sistema, /ATRIBUA/);
+  assert.match(sistema, /titulo_confere/);
+  assert.match(d.nota, /não garante que seja verdade/);
+});
+
+test("resumir: conta os veículos do mesmo assunto (sem checagem, sem repetir veículo) e traz fonte oficial e checagem do índice", async () => {
+  const indice = [
+    ...INDICE_RESUMO,
+    { t: "STF: Senado aprova reforma tributária e fixa transição de oito anos para estados", s: "STF", u: "https://portal.stf.jus.br/n/1", p: "2026-10-05T12:30", o: 1 },
+    { t: "É falso que Senado aprovou reforma tributária com transição de oito anos para estados", s: "Agência Lupa", u: "https://lupa.uol.com.br/c/1", p: "2026-10-05T13:00", c: 1 },
+  ];
+  const { env } = setup({ index: indice, llm: () => resumoJson("O texto-base foi aprovado por 52 votos a 18.", "A Folha destaca a perda dos estados.") });
+  const d = await (await call(resumir, env, "/api/resumir", OK_BODY)).json();
+  assert.equal(d.veiculos, 3); // g1 (a própria) + Folha + Estadão; o STF e a Lupa não contam como veículo
+  assert.equal(d.oficiais.length, 1);
+  assert.equal(d.oficiais[0].fonte, "STF");
+  assert.ok(d.checagens.length >= 1 && d.checagens[0].agencia === "Agência Lupa" && /^https:\/\//.test(d.checagens[0].url));
+  // os dados do índice não vão para o cache: a segunda resposta (do cache) continua trazendo os dados atuais
+  const d2 = await (await call(resumir, env, "/api/resumir", OK_BODY)).json();
+  assert.equal(d2.veiculos, 3);
+});
+
+test("resumir: 'titulo_confere' só aparece quando a IA leu a matéria e a frase é útil", async () => {
+  const frase = "O título diz que a reforma foi sancionada, mas o texto informa que ela só foi aprovada no Senado.";
+  const a = setup({ llm: () => JSON.stringify({ resumo: "Resumo de teste da matéria.", contexto: "", titulo_confere: frase }) });
+  assert.equal((await (await call(resumir, a.env, "/api/resumir", OK_BODY)).json()).tituloConfere, frase);
+  const b = setup({ llm: () => JSON.stringify({ resumo: "Resumo de teste da matéria.", contexto: "", titulo_confere: "" }) });
+  assert.equal((await (await call(resumir, b.env, "/api/resumir", OK_BODY)).json()).tituloConfere, "");
+  const curta = setup({ llm: () => JSON.stringify({ resumo: "Resumo de teste da matéria.", contexto: "", titulo_confere: "vazio" }) });
+  assert.equal((await (await call(resumir, curta.env, "/api/resumir", OK_BODY)).json()).tituloConfere, "");
 });

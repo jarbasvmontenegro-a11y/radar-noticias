@@ -9,6 +9,7 @@ import json
 import os
 import re
 import shutil
+import unicodedata
 import math
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
@@ -18,6 +19,8 @@ from xml.sax.saxutils import escape
 from zoneinfo import ZoneInfo
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+from markupsafe import Markup
+from markupsafe import escape as html_escape
 
 from . import geo
 from . import destaques as destaques_mod
@@ -248,6 +251,25 @@ def build(out_dir: str = "site") -> str:
         h = hashlib.sha256(f.read_bytes()).hexdigest()[:10] if f.is_file() else "0"
         return f"/{nome.lstrip('/')}?v={h}"
     env.globals["asset"] = asset
+
+    # palavras de juízo/emoção nas manchetes (lista pública em config/enquadramento.json): só destaca, nunca julga
+    enq = json.loads((ROOT / "config" / "enquadramento.json").read_text(encoding="utf-8"))["palavras"]
+    enq_re = re.compile(r"(?<![a-z0-9])(" + "|".join(sorted((re.escape(w) for w in enq), key=len, reverse=True)) + r")(?![a-z0-9])")
+
+    def marcar(texto) -> Markup:
+        """Escapa o texto e envolve em <mark> as palavras da lista (sem diferenciar maiúsculas nem acentos)."""
+        t = str(texto or "")
+        # mesmo tamanho do original: cada letra vira a sua forma sem acento, para casar posições
+        dobrado = "".join(unicodedata.normalize("NFD", c)[0].lower() for c in t)
+        out, pos = [], 0
+        for m in enq_re.finditer(dobrado):
+            out.append(html_escape(t[pos:m.start()]))
+            out.append(Markup('<mark class="frame">') + html_escape(t[m.start():m.end()]) + Markup("</mark>"))
+            pos = m.end()
+        out.append(html_escape(t[pos:]))
+        return Markup("").join(out)
+    env.filters["marcar"] = marcar
+    env.globals["enq_palavras"] = enq
     # JSON dentro de <script>: escapa < > & e separadores de linha para nunca "fechar" a tag
     env.filters["jsonld"] = lambda v: (json.dumps(v, ensure_ascii=False).replace("<", "\\u003c").replace(">", "\\u003e")
                                        .replace("&", "\\u0026").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029"))

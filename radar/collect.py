@@ -13,9 +13,11 @@ import json
 import os
 import re
 import time
+import unicodedata
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
+from difflib import SequenceMatcher
 from email.utils import parsedate_to_datetime
 from functools import lru_cache
 from pathlib import Path
@@ -111,6 +113,36 @@ def canonical_url(url: str) -> str:
 
 def article_id(url: str) -> str:
     return hashlib.sha1(canonical_url(url).encode()).hexdigest()[:12]
+
+
+def _palavras(titulo: str) -> set[str]:
+    sem_acento = unicodedata.normalize("NFD", titulo.lower())
+    sem_acento = "".join(c for c in sem_acento if not unicodedata.combining(c))
+    return set(re.findall(r"[a-z0-9]+", sem_acento))
+
+
+def titulo_mudou(antigo: str, novo: str) -> bool:
+    """O veículo trocou o título de verdade? Maiúsculas, acentos, pontuação e conserto de uma letra não contam."""
+    a, n = _palavras(antigo), _palavras(novo)
+    saiu, entrou = a - n, n - a
+    if len(saiu) + len(entrou) < 2:
+        return False
+    if len(saiu) == 1 and len(entrou) == 1 and SequenceMatcher(None, next(iter(saiu)), next(iter(entrou))).ratio() >= 0.8:
+        return False  # erro de digitação consertado
+    return True
+
+
+def registrar_troca(artigo: dict, novo: str, agora: datetime) -> bool:
+    """Guarda o título original quando o veículo troca o título da mesma matéria. Devolve True se registrou.
+    Voltar ao título original não conta (evita alternar a cada coleta quando o feed oscila)."""
+    atual = artigo["title"]
+    original = artigo.get("anterior") or atual
+    if not titulo_mudou(atual, novo) or not titulo_mudou(original, novo):
+        return False
+    artigo["anterior"] = original
+    artigo["title"] = novo
+    artigo["alterado"] = agora.isoformat(timespec="seconds")
+    return True
 
 
 def title_key(source: str, title: str) -> str:
@@ -361,7 +393,10 @@ def collect(window_days: int = 7, per_source_limit: int = 40, validar: bool = Fa
         for e in usable[:src.get("limite", per_source_limit)]:
             aid = article_id(e["url"])
             tkey = title_key(src["id"], e["title"])
-            if aid in store or aid in pend_ids or tkey in seen_titles:
+            if aid in store:
+                registrar_troca(store[aid], e["title"], now)
+                continue
+            if aid in pend_ids or tkey in seen_titles:
                 continue
             pub = e["published"] or now  # sem data no feed: usamos o momento da coleta
             if pub > now + timedelta(hours=2):

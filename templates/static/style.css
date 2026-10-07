@@ -140,6 +140,9 @@ main { max-width: var(--wrap); margin: 0 auto; padding: 22px 16px 40px; }
 .sum .note { display: block; margin-top: 8px; color: var(--muted); font: 400 .85rem var(--sans); }
 .sum.error { color: var(--bad); font-family: var(--sans); }
 .sum-ctx { display: block; margin-top: 8px; }
+.sum-warn { display: block; margin-top: 8px; padding: 8px 10px; border-left: 4px solid var(--warn); background: color-mix(in srgb, var(--warn) 10%, transparent); font-size: .95rem; }
+.sum-warn em { color: var(--muted); font: 400 .85rem var(--sans); }
+.sum-cov { display: block; margin-top: 8px; color: var(--muted); font: 400 .9rem var(--sans); }
 .sum-h { display: block; margin-top: 12px; font: 700 .92rem var(--sans); }
 .sum-others { margin: 4px 0 0; padding-left: 1.1em; }
 .sum-others li { margin: 3px 0; font-size: .95rem; }
@@ -434,3 +437,11 @@ table.status th[scope="row"] { font-weight: 700; }
   .lg { display: none; }
   .actions { gap: 0 18px; font-size: .9rem; }
 }
+
+/* manchetes: palavras de juízo destacadas e título alterado */
+mark.frame { background: color-mix(in srgb, var(--warn) 22%, transparent); color: inherit; padding: 0 .15em; border-radius: 2px; }
+details.alt { margin: 2px 0 6px; font: 400 .85rem var(--sans); color: var(--muted); }
+details.alt summary { cursor: pointer; display: inline-block; padding: 1px 8px; border: 1px solid var(--warn); border-radius: 999px; color: var(--warn); }
+details.alt p { margin: 6px 0 0; }
+.alt-tag { display: inline-block; margin-left: 4px; padding: 0 7px; border: 1px solid var(--warn); border-radius: 999px; color: var(--warn); font: 400 .78rem var(--sans); white-space: nowrap; }
+.frame-note { margin-top: 18px; }

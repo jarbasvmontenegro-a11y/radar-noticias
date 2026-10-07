@@ -17,6 +17,7 @@
       {% if show_ufs and a.ufs %}<span class="ufs">{% for u in a.ufs %}<a href="/estado/{{ u|lower }}/">{{ uf_nome[u] }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</span>{% endif %}
     </p>
     <h3 class="title"><a href="{{ a.url }}" target="_blank" rel="noopener">{{ a.title }}</a></h3>
+    {% if a.anterior %}<details class="alt"><summary>título alterado</summary><p>O veículo mudou o título depois de publicar. Antes: “{{ a.anterior }}”</p></details>{% endif %}
     {% if a.desc %}<p class="desc">{{ a.desc }}</p>{% endif %}
     {% if a.mais %}
     <details class="mais"><summary>Mais {{ a.mais|length }} {{ "manchete" if a.mais|length == 1 else "manchetes" }} sobre o mesmo assunto</summary>

@@ -189,6 +189,32 @@ class DownloadTests(unittest.TestCase):
             self.assertEqual(len(calls), 2)
 
 
+class TestTrocaDeTitulo(unittest.TestCase):
+    AGORA = datetime(2026, 10, 7, 12, 0, tzinfo=timezone.utc)
+
+    def test_ignora_conserto_de_letra_caixa_e_pontuacao(self):
+        self.assertFalse(c.titulo_mudou("Lulla sanciona a lei", "Lula sanciona a lei"))
+        self.assertFalse(c.titulo_mudou("Câmara aprova projeto", "CAMARA APROVA PROJETO!"))
+        self.assertFalse(c.titulo_mudou("Câmara aprova projeto", "Câmara aprova projeto"))
+
+    def test_detecta_troca_de_palavra_e_acrescimo(self):
+        self.assertTrue(c.titulo_mudou("Ministro acusa governo de fraude", "Ministro diz que governo fraudou"))
+        self.assertTrue(c.titulo_mudou("Senado aprova reforma", "Senado aprova reforma, mas texto volta à Câmara"))
+
+    def test_guarda_o_original_e_nao_alterna(self):
+        a = {"title": "Prefeito é acusado de desvio", "url": "u"}
+        self.assertTrue(c.registrar_troca(a, "Prefeito é investigado por suposto desvio", self.AGORA))
+        self.assertEqual(a["anterior"], "Prefeito é acusado de desvio")
+        self.assertEqual(a["title"], "Prefeito é investigado por suposto desvio")
+        self.assertIn("alterado", a)
+        # o feed oscilou e voltou ao título original: não registra de novo
+        self.assertFalse(c.registrar_troca(a, "Prefeito é acusado de desvio", self.AGORA))
+        self.assertEqual(a["title"], "Prefeito é investigado por suposto desvio")
+        # outra troca depois: o original continua sendo o primeiro título visto
+        self.assertTrue(c.registrar_troca(a, "Prefeito é alvo de operação da PF", self.AGORA))
+        self.assertEqual(a["anterior"], "Prefeito é acusado de desvio")
+
+
 if __name__ == "__main__":
     unittest.main()
 

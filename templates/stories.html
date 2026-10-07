@@ -18,7 +18,7 @@
       <dl class="lead-rows">
         {% for x in h.veiculos %}
         <dt>{{ x.source_name }}</dt>
-        <dd><a href="{{ x.url }}" target="_blank" rel="noopener">{{ x.title }}</a></dd>
+        <dd><a href="{{ x.url }}" target="_blank" rel="noopener">{{ x.title|marcar }}</a>{% if x.anterior %} <span class="alt-tag" title="Antes: {{ x.anterior }}">título alterado</span>{% endif %}</dd>
         {% endfor %}
       </dl>
     </details>
@@ -26,6 +26,7 @@
     <p class="empty">Ainda não há assuntos com vários veículos. A coleta roda de hora em hora.</p>
     {% endfor %}
   </div>
+  <p class="small frame-note"><mark class="frame">Destaque</mark> marca palavras que costumam indicar juízo, emoção ou ataque numa manchete (por exemplo "escândalo", "detona", "heroi"). A lista é pública, igual para todos os veículos, e só destaca: não quer dizer que a notícia é falsa nem que o veículo tem lado. <a href="/sobre/#destaques">Ver a lista</a></p>
   <p class="small">{% if ia_hora %}Os primeiros assuntos foram agrupados por IA às {{ ia_hora }} (duas vezes ao dia); {% endif %}os demais são agrupados por comparação de palavras. Os títulos e links são sempre dos veículos, e a ordem é pelo número de veículos. <a href="/sobre/">Como funciona</a></p>
 </div>
 {% endblock %}

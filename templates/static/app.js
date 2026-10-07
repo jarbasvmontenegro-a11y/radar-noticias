@@ -180,16 +180,25 @@
         .then(function (d) {
           out.textContent = "";
           if (d.resumo) out.appendChild(el("span", { class: "sum-text", text: d.resumo }));
+          if (d.tituloConfere) out.appendChild(el("span", { class: "sum-warn" }, [el("strong", { text: "Atenção ao título. " }), document.createTextNode(d.tituloConfere + " "), el("em", { text: "Apontamento da IA: confira na matéria." })]));
           if (d.contexto) out.appendChild(el("span", { class: "sum-ctx", text: d.contexto }));
-          if (d.outros && d.outros.length) {
-            var ul = el("ul", { class: "sum-others" });
-            d.outros.forEach(function (o) {
-              if (!/^https?:\/\//i.test(o.url || "")) return;
-              ul.appendChild(el("li", {}, [el("a", { href: safeUrl(o.url), target: "_blank", rel: "noopener noreferrer", text: o.titulo }), el("span", { class: "src", text: " " + o.fonte })]));
-            });
-            if (ul.childNodes.length) { out.appendChild(el("span", { class: "sum-h", text: "Como outros veículos noticiaram" })); out.appendChild(ul); }
+          if (typeof d.veiculos === "number") {
+            out.appendChild(el("span", { class: "sum-cov", text: d.veiculos > 1
+              ? "Este assunto aparece em " + d.veiculos + " veículos monitorados."
+              : "Só encontramos este veículo publicando sobre o assunto até agora. Isso não significa erro: pode ser notícia nova ou exclusiva." }));
           }
-          var tail = (d.aviso ? d.aviso + " " : "") + (d.resumo ? "Resumo gerado por IA, pode conter erros. Confirme na fonte." : "");
+          function lista(titulo, itens, rotulo) {
+            var ul = el("ul", { class: "sum-others" });
+            (itens || []).forEach(function (o) {
+              if (!/^https?:\/\//i.test(o.url || "")) return;
+              ul.appendChild(el("li", {}, [el("a", { href: safeUrl(o.url), target: "_blank", rel: "noopener noreferrer", text: o.titulo }), el("span", { class: "src", text: " " + rotulo(o) })]));
+            });
+            if (ul.childNodes.length) { out.appendChild(el("span", { class: "sum-h", text: titulo })); out.appendChild(ul); }
+          }
+          lista("Como outros veículos noticiaram", d.outros, function (o) { return o.fonte; });
+          lista("Fonte oficial sobre o assunto", d.oficiais, function (o) { return o.fonte; });
+          lista("Checagem relacionada", d.checagens, function (o) { return o.agencia + (o.avaliacao ? ": " + o.avaliacao : ""); });
+          var tail = (d.aviso ? d.aviso + " " : "") + (d.resumo ? (d.nota || "Resumo gerado por IA, pode conter erros. Confirme na fonte.") : "");
           if (tail) out.appendChild(el("span", { class: "note", text: tail }));
           btn.dataset.done = "1"; btn.textContent = d.resumo ? "Ocultar resumo" : "Fechar";
         })
