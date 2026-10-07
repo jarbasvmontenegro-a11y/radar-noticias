@@ -214,6 +214,18 @@ class BuildTests(unittest.TestCase):
         self.assertNotIn("<b>x</b>", assuntos)
         self.assertIn("frame-note", assuntos)
 
+    def test_politica_editorial(self):
+        self.write([article(1)])
+        b.build(self.out)
+        root = b.ROOT / self.out
+        pag = (root / "politica-editorial" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("Política editorial", pag)
+        self.assertIn("Nenhuma correção registrada", pag)
+        self.assertNotIn("noindex", pag)
+        self.assertIn("/politica-editorial/", (root / "sitemap.xml").read_text(encoding="utf-8"))
+        self.assertIn('href="/politica-editorial/"', (root / "index.html").read_text(encoding="utf-8"))
+        self.assertIn('id="fontes"', (root / "sobre" / "index.html").read_text(encoding="utf-8"))  # âncora usada pela política
+
     def test_pessoas_deteccao_e_paginas(self):
         from radar import pessoas
         self.assertEqual(pessoas.detect("Caiado anuncia apoio a Flávio no 2º turno"), ["flavio-bolsonaro", "caiado"])

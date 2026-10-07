@@ -103,7 +103,7 @@ def verify_site(path: Path, min_items: int = 0) -> list[str]:
     """Confere o site gerado antes de publicar. Devolve a lista de problemas (vazia = ok)."""
     problems: list[str] = []
     required = ["index.html", "404.html", "sitemap.xml", "robots.txt", "verificador/index.html", "sobre/index.html",
-                "privacidade/index.html", "notificacoes/index.html", "pessoas/index.html", "busca/index.html", "assuntos/index.html", "estados/index.html", "fontes/index.html", "data/search-index.json", "data/allowed-hosts.json", "data/municipios.json", "data/destaques.json", "data/ultimas.json", "mini/index.html", "style.css", "app.js", "share.js", "push.js", "busca.js", "assuntos.js", "mini.js", "mini.css", "sw.js",
+                "privacidade/index.html", "politica-editorial/index.html", "notificacoes/index.html", "pessoas/index.html", "busca/index.html", "assuntos/index.html", "estados/index.html", "fontes/index.html", "data/search-index.json", "data/allowed-hosts.json", "data/municipios.json", "data/destaques.json", "data/ultimas.json", "mini/index.html", "style.css", "app.js", "share.js", "push.js", "busca.js", "assuntos.js", "mini.js", "mini.css", "sw.js",
                 "manifest.webmanifest"]
     for f in required:
         if not (path / f).is_file():
@@ -450,6 +450,10 @@ def build(out_dir: str = "site") -> str:
            description="Como o Radar de Notícias funciona: quais fontes usa, como coleta, o que a IA faz e o que não faz.",
            status=status)
     pages.append(("/sobre/", None))
+    render("/politica-editorial/", "editorial.html", path="/politica-editorial/", title=f"Política editorial | {cfg['name']}",
+           description="Como o Radar de Notícias escolhe fontes, ordena as manchetes, usa inteligência artificial, confere fatos e corrige erros.",
+           correcoes=load_json(ROOT / "config" / "correcoes.json", []))
+    pages.append(("/politica-editorial/", None))
     render("/privacidade/", "privacy.html", path="/privacidade/", title=f"Política de privacidade | {cfg['name']}",
            description="Como tratamos dados, cookies e anúncios no Radar de Notícias, em linha com a LGPD.")
     pages.append(("/privacidade/", None))

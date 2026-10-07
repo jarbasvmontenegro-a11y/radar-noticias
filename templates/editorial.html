@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page prose">
+  <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a> / <span>Política editorial</span></nav>
+  <h1>Política editorial</h1>
+  <p class="lead">O que o {{ cfg.name }} faz, o que não faz e como corrigimos erros. Última revisão: 7 de outubro de 2026.</p>
+
+  <h2>O que somos</h2>
+  <p>Somos um agregador de notícias de política. Não produzimos reportagem nem artigos de opinião. Mostramos o título, uma descrição curta e o link de cada matéria, e quem lê a matéria completa é levado ao site do veículo que a produziu. O texto e os direitos são sempre dos veículos.</p>
+
+  <h2>Como escolhemos as fontes</h2>
+  <ul>
+    <li>Entram veículos que publicam feed público (RSS ou mapa de notícias): veículos nacionais, agências oficiais, agências de checagem e veículos de cada estado.</li>
+    <li>Misturamos perfis editoriais diferentes de propósito, para você comparar como cada um conta o mesmo assunto. Estar aqui não é um aval ao conteúdo, e não tiramos uma fonte por causa da posição política dela.</li>
+    <li>A lista completa e o estado de cada fonte estão em <a href="/fontes/">Fontes</a> e em <a href="/sobre/#fontes">Situação das fontes</a>.</li>
+    <li>Para sugerir uma fonte ou pedir a remoção de uma, escreva para {% if cfg.contact_email %}<a href="mailto:{{ cfg.contact_email }}">{{ cfg.contact_email }}</a>{% else %}o contato do rodapé{% endif %}.</li>
+  </ul>
+
+  <h2>Como as notícias são ordenadas</h2>
+  <ul>
+    <li>A lista principal vai da publicação mais recente para a mais antiga.</li>
+    <li>Os assuntos em alta são ordenados pelo número de veículos que publicaram sobre eles.</li>
+    <li>Nenhum veículo, pessoa ou anunciante paga para aparecer ou para subir na lista. Anúncios, quando existirem, ficam separados e levam o rótulo "Publicidade".</li>
+  </ul>
+
+  <h2>Títulos</h2>
+  <p>Mostramos o título como o veículo o publicou, sem reescrever. Se o veículo troca o título depois de publicar, marcamos "título alterado" e mostramos o título anterior.</p>
+
+  <h2>Uso de inteligência artificial</h2>
+  <ul>
+    <li>A coleta das notícias não usa IA.</li>
+    <li>Usamos IA em três coisas: o resumo de uma matéria, quando você pede; o agrupamento dos assuntos do topo, duas vezes ao dia; e a análise do Verificador. Todo conteúdo de IA aparece identificado como tal.</li>
+    <li>A IA pode errar. O resumo mostra o que a matéria diz, atribui as afirmações a quem as fez e não garante que sejam verdadeiras. Quando a IA lê a matéria inteira e vê que o título afirma algo que o texto não traz, ela avisa, e esse aviso também é só um apontamento dela.</li>
+    <li>O texto enviado ao resumo e ao Verificador é processado por um provedor externo de IA. Veja os detalhes na <a href="/privacidade/">política de privacidade</a>.</li>
+    <li>Não usamos IA para escolher fontes nem para escrever notícias.</li>
+  </ul>
+
+  <h2>Conferência de fatos</h2>
+  <ul>
+    <li>Não decidimos o que é verdadeiro ou falso por conta própria. Quando uma agência de checagem (Lupa, Aos Fatos e outras) analisou o assunto, mostramos o link e o que ela concluiu. Quando existe fonte oficial sobre o assunto, mostramos também.</li>
+    <li>Sem checagem de agência, o Verificador diz apenas que não deu para confirmar e sugere o que você pode conferir.</li>
+    <li>Na página de assuntos destacamos palavras que costumam indicar juízo, emoção ou ataque numa manchete. A lista é pública, igual para todos os veículos, e o destaque não quer dizer que a notícia é falsa. Veja a lista em <a href="/sobre/#destaques">Como o Radar ajuda a conferir</a>.</li>
+  </ul>
+
+  <h2>Erros e correções</h2>
+  <p>Se algo estiver errado, como um link quebrado, um título atribuído ao veículo errado ou um resumo que distorce a matéria, escreva para {% if cfg.contact_email %}<a href="mailto:{{ cfg.contact_email }}">{{ cfg.contact_email }}</a>{% else %}o contato do rodapé{% endif %} com o endereço da página. Quando o erro é nosso, corrigimos e registramos aqui. Erros que estão na matéria do veículo precisam ser corrigidos por ele.</p>
+  <h3>Correções registradas</h3>
+  {% if correcoes %}
+  <ul>
+    {% for c in correcoes %}<li><strong>{{ c.data }}.</strong> {{ c.o_que }} {{ c.correcao }}</li>{% endfor %}
+  </ul>
+  {% else %}
+  <p>Nenhuma correção registrada até agora.</p>
+  {% endif %}
+
+  <h2>Independência e anúncios</h2>
+  <p>O {{ cfg.name }} é um projeto independente. Ele pode ser mantido por anúncios simples, sempre identificados como "Publicidade" e separados das notícias, e os anunciantes não influenciam o que é mostrado.</p>
+</div>
+{% endblock %}
