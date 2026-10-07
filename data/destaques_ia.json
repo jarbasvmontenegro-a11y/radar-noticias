@@ -1,19 +1,21 @@
 {
- "gerado": "2026-10-07T16:29:00+00:00",
+ "gerado": "2026-10-07T17:04:05+00:00",
  "assuntos": [
   {
-   "titulo": "Flávio Bolsonaro propõe mudanças na Constituição e gera reações",
-   "resumo": "Flávio Bolsonaro defende alterações constitucionais, incluindo fim da reeleição e reforma do Judiciário, provocando críticas e esclarecimentos.",
+   "titulo": "Flávio Bolsonaro propõe mudanças na Constituição",
+   "resumo": "Flávio Bolsonaro defende alterações constitucionais para reformar Judiciário, reduzir maioridade penal e acabar com reeleição.",
    "ids": [
     "00f05b4e2f49",
-    "83aa5adf76d0",
+    "052765f72dab",
+    "c5f2ebfb5c4c",
+    "113ccff57411",
+    "00769d56b76f",
+    "f2fcb5ab2730",
     "66d9895afaff",
     "da5168e8dfef",
     "a243ba0d4940",
-    "eba214d17ebb",
     "0dfd8738545a",
     "64d654006fcf",
-    "ec3c1babd17e",
     "170a0704dc3c",
     "1c256bed6778",
     "b09ffabe5ee7",
@@ -25,13 +27,8 @@
     "e9b6640582d4",
     "b4efc111f86e",
     "9598c997c202",
-    "6b7c824f8917",
-    "d98405ecb466",
     "e3d74c3dc31a",
     "d65d82918b11",
-    "0111caf34f13",
-    "312ec79ebbbc",
-    "e9ce15787ec8",
     "e768a2187dbd",
     "8af42c8e44c1",
     "9e4ca0fb23c4",
@@ -42,6 +39,7 @@
     "2178722918dd",
     "d92953bebcc4",
     "7432f6ab6fc4",
+    "57645825ec8c",
     "5b55de0f65ed",
     "a5f6677b3433",
     "9cb9ee97d9ac",
@@ -49,14 +47,69 @@
     "987b441f6a1e",
     "df28b8dc39c8",
     "d6c133c167c1",
-    "9081d5289f78",
-    "f8e98bd43520"
+    "9081d5289f78"
    ]
   },
   {
-   "titulo": "Partidos declaram apoio a Flávio Bolsonaro no segundo turno",
-   "resumo": "Novo, União Brasil, PP, Republicanos e MDB-RS anunciam apoio a Flávio Bolsonaro para o segundo turno das eleições presidenciais.",
+   "titulo": "Lula admite campanha desorganizada e busca virada",
+   "resumo": "Lula reconhece que campanha foi a menos organizada desde 1989 e adota nova estratégia para o segundo turno.",
    "ids": [
+    "70aa496c54b1",
+    "3dc13ceedfe7",
+    "56d04f624df0",
+    "d2ac3f4946b6",
+    "09a7696ad370",
+    "0f3071607dda",
+    "4994b97fde22",
+    "aeb21464849c",
+    "c6addf6a8f7f",
+    "49263d5b854b",
+    "1a6f0ed13831",
+    "20fd2e107d49",
+    "5d10aca571fb",
+    "f9437915d480",
+    "a9999e81d025",
+    "97afc1915768",
+    "a043f11ed464",
+    "b3492c2e1a1f",
+    "126630c3750a",
+    "d9baacdae4bd",
+    "d7500afee0e3",
+    "ec316175efef",
+    "918dad342c52",
+    "aa73718ab7c3",
+    "ebb69ca09b36",
+    "26d7ad3610f8",
+    "66f78919fd29",
+    "05691b497458",
+    "4dd4eecd56ff",
+    "050fb35e376f",
+    "bd30b04b85b8",
+    "450bd46eb944",
+    "de5d99a1ecbe",
+    "3dc37f6b9326",
+    "3094c57717f5",
+    "13679af1cbde",
+    "6312a1dbe5da",
+    "51b87e4b087b",
+    "2a3f10154090",
+    "d3dd622dfcc7",
+    "b61353028549",
+    "ef976f098e58",
+    "7ea6ddd6f5cc",
+    "c235f91f08b1",
+    "ebaef78f4ad3"
+   ]
+  },
+  {
+   "titulo": "Partidos declaram apoio a Flávio Bolsonaro",
+   "resumo": "Novo, União Brasil, PP, Republicanos e MDB-RS anunciam apoio a Flávio Bolsonaro no segundo turno.",
+   "ids": [
+    "8956a6935251",
+    "09f0ac82be9a",
+    "7b454c5de025",
+    "cdf0fd196660",
+    "751e8b7bd2e1",
     "ddd2deeb9090",
     "43f0c193d6a0",
     "7411cabd6d49",
@@ -66,64 +119,91 @@
     "9be17a600bac",
     "23d846176be1",
     "a1cf3982610b",
+    "b30685793f1d",
     "27f03b9ab3fc",
+    "63f937c9f995",
+    "cf59cca4e72c",
     "cfc17526ea92",
     "3ccf18e7e1a9",
     "a192d55e22ff",
     "cc8ca9e870b7",
     "c04106ecc3e2",
+    "3b1213926ac0",
     "25492adf085e",
     "b6af52bb1457",
     "b6c383cb351e",
     "988ed75cfd9b",
     "4ed50d139f27",
+    "a9c41956a03d",
     "e88f81344f8f",
     "1709f196b533",
     "8cf34554c7ec",
     "16bba21e295a",
+    "f209eb0e2404",
+    "bf9931648abd",
     "e535533bddf3",
+    "f1c4fa2f74a6",
+    "07c8ae31981a",
     "0069897ff267",
     "16728168d76e",
     "3d432f3b8f7a",
     "95af7b5d987b",
+    "2089bbfb067f",
+    "398c79071fa0",
     "7e625f5e6623",
     "369c1197faed",
-    "4d37a8943809",
-    "998b3b73e281",
-    "b8b609e5f5ab",
-    "852e898243bf"
+    "4d37a8943809"
    ]
   },
   {
-   "titulo": "Lula adota vídeos selfie e convoca apoiadores contra retrocesso",
-   "resumo": "Lula grava vídeos em formato selfie e convoca eleitores às ruas para impedir o retrocesso no segundo turno.",
+   "titulo": "Lula e Flávio divergem sobre fim da escala 6x1",
+   "resumo": "Lula cobra posição de Flávio sobre a escala 6x1; Flávio diz que folga não resolve se trabalhador está endividado.",
    "ids": [
-    "aeb21464849c",
-    "107cbf965287",
-    "1a6f0ed13831",
-    "5d10aca571fb",
-    "f9437915d480",
+    "ec299c7c2cc6",
+    "3c6934e28cdc",
+    "2307b0139f13",
+    "3b8b6f3f2ec3",
+    "bdcafa971e13",
+    "d55e0b7bc1f8",
+    "d0aac99141b7",
+    "0e3fa8efe7d9",
+    "82813baaa3d4",
     "eb12024a33b0",
-    "a043f11ed464",
+    "32600d014788",
+    "5a0dfa93d195",
+    "42cdfcc6ffee",
+    "9db1992a60d7",
     "9350708ea875",
-    "8ef87fdb9d95",
-    "1986bccb4935",
-    "e8bc0f4decba",
-    "d9baacdae4bd",
-    "fd065aaf2860",
-    "918dad342c52",
-    "aa73718ab7c3",
-    "66f78919fd29",
-    "7b0e0d701f5d",
-    "4dd4eecd56ff",
-    "de5d99a1ecbe"
+    "0f06886bc2b5",
+    "ef2809387235",
+    "8e631728d516",
+    "59622ee4891f",
+    "00da6a92bfaa",
+    "8cc0f9f8ad31",
+    "64fe7ea45074",
+    "fb4df0e8ccc7",
+    "472dc3f59ea4",
+    "db28471db347",
+    "6b9fe6b74f0c",
+    "bad658c9622e",
+    "0f0b70cf50b0",
+    "e82a300ed53a",
+    "ad47f016cb9f",
+    "cfbe60740893",
+    "017e4d6ccf87",
+    "5f25663e2a5c",
+    "5b9fc4ef1eda",
+    "3cdd66fa9258",
+    "e73577e03573",
+    "14518c1b4429"
    ]
   },
   {
    "titulo": "Rogério Marinho é internado e recebe alta",
-   "resumo": "Coordenador da campanha de Flávio Bolsonaro, Rogério Marinho foi internado por mal-estar e recebeu alta hospitalar.",
+   "resumo": "Coordenador da campanha de Flávio, Rogério Marinho foi internado por mal-estar e recebeu alta hospitalar.",
    "ids": [
     "60f6615f81bf",
+    "94921fa9a656",
     "1376ec242fc9",
     "0219e797611c",
     "d243aad48232",
@@ -131,21 +211,31 @@
    ]
   },
   {
-   "titulo": "TSE julga pedido de Garotinho que pode definir eleição no Rio",
-   "resumo": "TSE analisa pedido de desistência de Garotinho que pode anular votos e definir a eleição no Rio ainda no primeiro turno.",
+   "titulo": "Nikolas Ferreira critica Moraes e defende anistia",
+   "resumo": "Nikolas Ferreira diz que Moraes deveria estar na cadeia e defende que não haverá acordo sem anistia.",
    "ids": [
-    "bec527572586",
-    "4be7bac23c7d",
+    "cbfd785898f5",
+    "016fdf1d316a",
+    "3bfdc70319a0",
+    "1369b136310a",
+    "6925a2c96c67",
+    "6325da241017",
+    "e8bc0f4decba",
+    "7c507b4a26a2"
+   ]
+  },
+  {
+   "titulo": "Advogado de Garotinho aparece como autor de parecer no TSE",
+   "resumo": "Advogado de Garotinho consta como autor de parecer do MP Eleitoral que embasa desistência de candidatura no Rio.",
+   "ids": [
+    "677f0f9b6cf6",
     "74c56b3254f3",
-    "8a6f4b4ccfe1",
-    "946207467be2",
     "b9810e24a63d",
     "36f0424bba9d",
     "10f4f2b726e6",
     "6733fe47182e",
     "cce9e8d3142d",
     "7334c4ce4b30",
-    "c43cace76d23",
     "d7d79076e029",
     "759a2d0713a9",
     "ddaf4c618eb3",
@@ -158,34 +248,144 @@
     "6f8ee8e93a43",
     "65570560d911",
     "ae80645b02f4",
-    "aacdc59cf39a",
-    "b1fdc3730984",
-    "01ce4dff156b"
+    "aacdc59cf39a"
    ]
   },
   {
-   "titulo": "Flávio Bolsonaro defende fim da escala 6x1 e critica Lula",
-   "resumo": "Flávio Bolsonaro afirma que folga não resolve desemprego e compara PEC do fim da 6x1 a promessa de picanha de Lula.",
+   "titulo": "Lula adota vídeos selfie e convoca apoiadores",
+   "resumo": "Lula grava vídeos selfie e convoca eleitores às ruas contra o retrocesso no segundo turno.",
    "ids": [
-    "2307b0139f13",
-    "3b8b6f3f2ec3",
-    "bdcafa971e13",
-    "d0aac99141b7",
-    "32600d014788",
-    "5a0dfa93d195",
-    "42cdfcc6ffee",
-    "0f06886bc2b5",
-    "59622ee4891f",
-    "00da6a92bfaa",
-    "fb4df0e8ccc7",
-    "e82a300ed53a",
-    "017e4d6ccf87",
-    "c235f91f08b1"
+    "46860bbc556b",
+    "40aec258f48d",
+    "107cbf965287",
+    "8ef87fdb9d95",
+    "1986bccb4935",
+    "7b0e0d701f5d"
    ]
   },
   {
-   "titulo": "Bancada do Agro organiza caravana em apoio a Flávio Bolsonaro",
-   "resumo": "Bancada do Agro organiza caravana nacional para impulsionar a candidatura de Flávio Bolsonaro no segundo turno.",
+   "titulo": "Tarcísio comenta fala de Flávio sobre mudar Constituição",
+   "resumo": "Tarcísio de Freitas minimiza declaração de Flávio sobre mudar a Constituição e diz que algumas mudanças são necessárias.",
+   "ids": [
+    "5cce36e56d4c",
+    "ec3c1babd17e",
+    "6b7c824f8917",
+    "0111caf34f13",
+    "312ec79ebbbc",
+    "e9ce15787ec8"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro defende revisão da reforma tributária",
+   "resumo": "Flávio Bolsonaro promete rever o split payment e alterar pontos da reforma tributária se eleito.",
+   "ids": [
+    "894b59f98bc6",
+    "7921e13b238d",
+    "eba214d17ebb",
+    "53033e40a2ab"
+   ]
+  },
+  {
+   "titulo": "Bets: Flávio defende discussão com calma e veto gera reações",
+   "resumo": "Flávio Bolsonaro diz que proibição às bets agride segurança jurídica e defende debate fora das eleições.",
+   "ids": [
+    "f9c97b6933eb",
+    "351c83b6a9f2",
+    "337fda154d96",
+    "a729a8925e88",
+    "de387812be62",
+    "103efe822a03",
+    "ef7651a170bd",
+    "c163141ef228",
+    "c328df8c75d1",
+    "2458621d779f",
+    "4424b8173038",
+    "498f8c50ea2a",
+    "e70f794e4e14",
+    "06cbe3a6cd1d"
+   ]
+  },
+  {
+   "titulo": "Nunes Marques decide sobre revisão criminal de Bolsonaro",
+   "resumo": "Nunes Marques afirma que revisão criminal de Bolsonaro só será analisada após o segundo turno e deve ir ao plenário.",
+   "ids": [
+    "92c07671cd3e",
+    "60c275bcdd8f",
+    "5666609d0ac5",
+    "85738dd8ca20",
+    "4ac9aa2781c7",
+    "ed9178354699"
+   ]
+  },
+  {
+   "titulo": "Moraes recebe diretor-geral da PF no STF",
+   "resumo": "Moraes se reúne com diretor-geral da PF e chefes da corporação dois dias após a eleição.",
+   "ids": [
+    "d4b6520a6502",
+    "f23812ca07bf",
+    "f38553aaaf09"
+   ]
+  },
+  {
+   "titulo": "Ana Elisa e Janones ganham destaque na campanha de Lula",
+   "resumo": "Núcleo mineiro com Ana Elisa, Janones e Pedro Rousseff assume protagonismo na campanha digital de Lula.",
+   "ids": [
+    "0e393e30d76a",
+    "40f7632a04c2",
+    "44699e9b8885",
+    "68978788d3cf",
+    "62fbc29cd89c",
+    "18ccb3f56134"
+   ]
+  },
+  {
+   "titulo": "Kátia Abreu pede menos Janja e mais Alckmin na campanha",
+   "resumo": "Kátia Abreu critica excesso de Janja e pede mais Alckmin na campanha de Lula, sendo aplaudida em reunião.",
+   "ids": [
+    "6eb22c4780ff",
+    "85c198c02901"
+   ]
+  },
+  {
+   "titulo": "Eduarda Campopiano é criticada por falas e projetos copiados",
+   "resumo": "Deputada mais votada de SP é criticada por fala sobre feminicídio e por apresentar projetos copiados.",
+   "ids": [
+    "fd5eba541825",
+    "e46651ecba5f",
+    "e63ac6c5dce9",
+    "c63904bf9690",
+    "9ef27a4a49ee",
+    "8db1d7c001d4"
+   ]
+  },
+  {
+   "titulo": "Diretora da COP30 acusa EUA de travar políticas climáticas",
+   "resumo": "Diretora da COP30 em Belém acusa Estados Unidos de frear políticas climáticas de outros países.",
+   "ids": [
+    "9fcf8a9990e5",
+    "bc51d7d8a449"
+   ]
+  },
+  {
+   "titulo": "Filha de Luiz Fux é cotada para o STF em governo Flávio",
+   "resumo": "Filha do ministro Luiz Fux é apontada como possível indicação de Flávio Bolsonaro para o STF.",
+   "ids": [
+    "4f12fae83f05",
+    "497514d2399d"
+   ]
+  },
+  {
+   "titulo": "Renan Santos nega apoio a Lula e diz odiar o PT",
+   "resumo": "Renan Santos nega que cortina vermelha signifique apoio a Lula e afirma odiar o PT.",
+   "ids": [
+    "5bfaa5454476",
+    "e08f5e21222a",
+    "9f27c3fa433b"
+   ]
+  },
+  {
+   "titulo": "Bancada do agro organiza caravana em apoio a Flávio",
+   "resumo": "Bancada do Agro prepara caravana nacional para impulsionar a candidatura de Flávio Bolsonaro.",
    "ids": [
     "3a47ccc9aee5",
     "47bdef38d5a1",
@@ -195,210 +395,37 @@
    ]
   },
   {
-   "titulo": "Flávio Bolsonaro defende mudanças na Reforma Tributária",
-   "resumo": "Flávio Bolsonaro promete rever o split payment e defende alterações na reforma tributária se eleito.",
+   "titulo": "TSE julga recurso sobre inelegibilidade de Deltan Dallagnol",
+   "resumo": "TSE marca para quinta-feira julgamento sobre registro de candidatura de Deltan Dallagnol.",
    "ids": [
-    "894b59f98bc6",
-    "7921e13b238d",
-    "53033e40a2ab"
+    "4be7bac23c7d",
+    "8a6f4b4ccfe1",
+    "946207467be2"
    ]
   },
   {
-   "titulo": "Lula e Flávio Bolsonaro disputam segundo turno com apoios e estratégias",
-   "resumo": "Lula e Flávio Bolsonaro articulam alianças e estratégias para o segundo turno das eleições presidenciais.",
+   "titulo": "Alckmin defende envio da reforma do Judiciário antes do 2º turno",
+   "resumo": "Alckmin defende que governo envie reforma do Judiciário ao Congresso antes do segundo turno.",
    "ids": [
-    "e1b2146acd0c",
-    "27038aa8132e",
-    "45ae0ca16dd9",
-    "a9999e81d025",
-    "68fcd5f17689",
-    "d7500afee0e3",
-    "ec316175efef",
-    "05691b497458",
-    "86c5683f8fef",
-    "050fb35e376f",
-    "adac6d8507d7",
-    "11183088342f",
-    "b29e9379f536",
-    "2089bbfb067f",
-    "d3dd622dfcc7",
-    "ef976f098e58",
-    "7ea6ddd6f5cc",
-    "581a51ba9e27",
-    "41d344e35c3b"
+    "405aa20a6504",
+    "0f8d6e7d10ee"
    ]
   },
   {
-   "titulo": "Pesquisas Datafolha e Quaest para o segundo turno",
-   "resumo": "Pesquisas Datafolha e Quaest são divulgadas ou registradas para o segundo turno entre Lula e Flávio Bolsonaro.",
-   "ids": [
-    "16c275c084ba",
-    "177fb1ef81d9",
-    "8959ae1bcaf6",
-    "171eea44b3f8",
-    "550168c0066f"
-   ]
-  },
-  {
-   "titulo": "Flávio Bolsonaro defende discussão sobre bets fora das eleições",
-   "resumo": "Flávio Bolsonaro defende debate calmo sobre bets e diz que fim das apostas agride segurança jurídica.",
-   "ids": [
-    "337fda154d96",
-    "a729a8925e88",
-    "de387812be62"
-   ]
-  },
-  {
-   "titulo": "Nikolas Ferreira e Moraes: declarações e investigações",
-   "resumo": "Nikolas Ferreira diz que não haverá acordo com Moraes e é alvo de investigação por divulgação de documento falso.",
-   "ids": [
-    "1369b136310a",
-    "6925a2c96c67",
-    "6325da241017",
-    "7c507b4a26a2"
-   ]
-  },
-  {
-   "titulo": "Renan Santos nega apoio a Lula após polêmica com cortina vermelha",
-   "resumo": "Renan Santos nega que cortina vermelha signifique apoio a Lula e afirma odiar o PT.",
-   "ids": [
-    "5bfaa5454476",
-    "e08f5e21222a",
-    "9f27c3fa433b",
-    "ba53362c0867"
-   ]
-  },
-  {
-   "titulo": "Anitta recusa pedido para gravar vídeo para Lula",
-   "resumo": "Anitta diz que não fará vídeo para Lula e critica cobrança de fãs por posicionamento político.",
-   "ids": [
-    "bbeddaf1ee2e",
-    "f73fcd431872",
-    "112a6732d705",
-    "d07919484c7c"
-   ]
-  },
-  {
-   "titulo": "Kátia Abreu critica campanha de Lula com 'menos Janja e mais Alckmin'",
-   "resumo": "Kátia Abreu pede menos Janja e mais Alckmin na campanha de Lula e é aplaudida em reunião.",
-   "ids": [
-    "49263d5b854b",
-    "126630c3750a",
-    "20a816e93156",
-    "3dc37f6b9326",
-    "b61353028549"
-   ]
-  },
-  {
-   "titulo": "Moraes recebe diretor-geral da PF e chefes da PF no STF",
-   "resumo": "Alexandre de Moraes recebe diretor-geral e chefes da PF no STF após o primeiro turno.",
-   "ids": [
-    "d4b6520a6502",
-    "f23812ca07bf",
-    "f38553aaaf09"
-   ]
-  },
-  {
-   "titulo": "Nunes Marques e revisão criminal de Bolsonaro",
-   "resumo": "Nunes Marques diz que revisão criminal de Bolsonaro só será analisada após segundo turno e deve ir ao plenário.",
-   "ids": [
-    "60c275bcdd8f",
-    "5666609d0ac5",
-    "85738dd8ca20",
-    "4ac9aa2781c7",
-    "ed9178354699"
-   ]
-  },
-  {
-   "titulo": "ACM Neto anuncia apoio a Flávio Bolsonaro na Bahia",
-   "resumo": "ACM Neto declara apoio a Flávio Bolsonaro no segundo turno e promete mobilização na Bahia.",
-   "ids": [
-    "cf59cca4e72c",
-    "f209eb0e2404",
-    "bf9931648abd"
-   ]
-  },
-  {
-   "titulo": "Eduardo Paes diz que fará campanha para Lula, mas não será vassalo",
-   "resumo": "Eduardo Paes afirma que fará campanha para Lula, mas rejeita posição de vassalo.",
-   "ids": [
-    "a62163e0d5a4",
-    "9ad99207928e",
-    "4c18672821b8",
-    "410f3c472796"
-   ]
-  },
-  {
-   "titulo": "Ciro Gomes contesta derrota no Ceará e diz que foi roubado",
-   "resumo": "Ciro Gomes não reconhece derrota para Elmano no Ceará e anuncia contestação judicial.",
-   "ids": [
-    "4271ac7e163c",
-    "7cc289f2aac8",
-    "045b08ef2613",
-    "b28998bc7789",
-    "154efa6d9fd4",
-    "d91a9df7662a"
-   ]
-  },
-  {
-   "titulo": "Alcolumbre garante votação do fim da escala 6x1 no Senado",
-   "resumo": "Alcolumbre garante ao Planalto votação da PEC do fim da escala 6x1 sem atropelos.",
-   "ids": [
-    "8e631728d516",
-    "ec6ef223433e",
-    "64fe7ea45074",
-    "472dc3f59ea4",
-    "cfbe60740893"
-   ]
-  },
-  {
-   "titulo": "Senado realiza sessões de debate sobre fim da escala 6x1",
-   "resumo": "Senado promove sessões de discussão sobre a PEC que prevê o fim da escala 6x1.",
-   "ids": [
-    "d55e0b7bc1f8",
-    "9db1992a60d7",
-    "bad658c9622e",
-    "ad47f016cb9f",
-    "5f25663e2a5c",
-    "5b9fc4ef1eda",
-    "3cdd66fa9258",
-    "e73577e03573"
-   ]
-  },
-  {
-   "titulo": "PGR dá parecer favorável à visita de Flávio a Bolsonaro",
-   "resumo": "PGR emite parecer favorável à retomada das visitas de Flávio Bolsonaro ao pai na prisão.",
+   "titulo": "PGR dá parecer favorável a visitas de Flávio a Bolsonaro",
+   "resumo": "PGR emite parecer favorável à retomada de visitas de Flávio Bolsonaro ao pai, preso.",
    "ids": [
     "ac9251c378c8",
     "c33b2490ce6c",
-    "7de9540337e1",
-    "cea3f0376a1e"
+    "7de9540337e1"
    ]
   },
   {
-   "titulo": "Gilmar Mendes arquiva pedido de investigação contra vice de Flávio",
-   "resumo": "Gilmar Mendes arquiva pedido de investigação por estupro contra Alfredo Gaspar, vice de Flávio Bolsonaro.",
+   "titulo": "Lula e Flávio montam tropas no Nordeste para 2º turno",
+   "resumo": "Lula e Flávio Bolsonaro concentram esforços de campanha no Nordeste para o segundo turno.",
    "ids": [
-    "1080f9605a06",
-    "459add5f40ee",
-    "90129e6ebc5b",
-    "d5e683af88fd"
-   ]
-  },
-  {
-   "titulo": "Flávio Bolsonaro promete Ministério da Agricultura para FPA",
-   "resumo": "Flávio Bolsonaro promete entregar o Ministério da Agricultura à Frente Parlamentar da Agropecuária se eleito.",
-   "ids": [
-    "57645825ec8c",
-    "8b2c216d32b8"
-   ]
-  },
-  {
-   "titulo": "Flávio Bolsonaro evita confirmar Caiado como ministro",
-   "resumo": "Flávio Bolsonaro não confirma se indicaria Caiado para ministério em eventual governo.",
-   "ids": [
-    "09ae2ee1b46c",
-    "21bf5c8bef05"
+    "adac6d8507d7",
+    "b29e9379f536"
    ]
   }
  ]
