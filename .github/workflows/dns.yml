@@ -1,0 +1,32 @@
+name: Diagnóstico de DNS
+# Roda sob demanda: mostra como o domínio está resolvendo (servidores de nomes, registros e resposta HTTPS). Só leitura.
+on:
+  workflow_dispatch:
+    inputs:
+      dominio:
+        description: "Domínio a conferir"
+        default: "radarnoticias.top"
+
+permissions:
+  contents: read
+
+jobs:
+  dns:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      DOMINIO: ${{ inputs.dominio }}
+    steps:
+      - name: Conferir DNS e HTTPS
+        run: |
+          set -u
+          case "$DOMINIO" in *[!a-zA-Z0-9.-]*|"") echo "domínio inválido"; exit 1;; esac
+          echo "== NS (resolvedor padrão)";  dig +short NS "$DOMINIO"
+          echo "== NS (8.8.8.8)";            dig +short NS "$DOMINIO" @8.8.8.8
+          echo "== NS (1.1.1.1)";            dig +short NS "$DOMINIO" @1.1.1.1
+          echo "== A (8.8.8.8)";             dig +short A "$DOMINIO" @8.8.8.8
+          echo "== A (1.1.1.1)";             dig +short A "$DOMINIO" @1.1.1.1
+          echo "== www (8.8.8.8)";           dig +short "www.$DOMINIO" @8.8.8.8
+          echo "== Delegação no registro (+trace, final)"; dig +trace NS "$DOMINIO" | tail -n 12
+          echo "== HTTPS"; curl -sS -o /dev/null -D - --max-time 20 "https://$DOMINIO/" | head -n 12 || true
+          echo "== Conteúdo (primeiras linhas)"; curl -sS --max-time 20 "https://$DOMINIO/" | head -c 300 || true
