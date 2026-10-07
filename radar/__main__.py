@@ -6,7 +6,7 @@
   build         gera o site em site/ (só substitui o anterior se passar na verificação)
   verify        confere o site já gerado (HTML, JSON-LD, sitemap, links perigosos)
   update        collect + build (o que o monitoramento roda de hora em hora)
-  discover      testa candidatos de feed/sitemap (config/candidatos.json) e mostra quais funcionam; roda no Actions
+  discover      testa candidatos de feed/sitemap (canais/<canal>/candidatos.json) e mostra quais funcionam; roda no Actions
   demo          dados fictícios + site em site-demo/ (não mexe em data/ nem em site/)
 """
 import argparse

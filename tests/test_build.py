@@ -226,6 +226,39 @@ class BuildTests(unittest.TestCase):
         self.assertIn('href="/politica-editorial/"', (root / "index.html").read_text(encoding="utf-8"))
         self.assertIn('id="fontes"', (root / "sobre" / "index.html").read_text(encoding="utf-8"))  # âncora usada pela política
 
+    def test_canal_sem_recursos_de_politica(self):
+        """A base de canais: um canal novo, sem estados, pessoas nem verificador, gera um site válido sem essas páginas."""
+        from radar import canal, pessoas
+        pasta = b.ROOT / "canais" / "teste-canal"
+        pasta.mkdir(parents=True, exist_ok=True)
+        self.addCleanup(lambda: shutil.rmtree(pasta, ignore_errors=True))
+        (pasta / "canal.json").write_text(json.dumps({"id": "teste-canal", "nome": "Teste", "recursos": {}}), encoding="utf-8")
+        shutil.copy(canal.arquivo("sources.json", "politica"), pasta / "sources.json")
+        shutil.copy(canal.arquivo("topics.json", "politica"), pasta / "topics.json")
+        limpar = lambda: (canal._info.cache_clear(), pessoas.config.cache_clear(), pessoas._compiled.cache_clear())
+        limpar()
+        self.addCleanup(limpar)
+        with mock.patch.dict(os.environ, {"RADAR_CANAL": "teste-canal"}):
+            self.assertFalse(canal.tem("pessoas"))
+            self.assertEqual(pessoas.config(), {"pessoas": []})
+            self.write([article(i) for i in range(3)])
+            b.build(self.out)
+            root = b.ROOT / self.out
+            for pagina in ("estados", "pessoas", "verificador"):
+                self.assertFalse((root / pagina).exists(), pagina)
+            home = (root / "index.html").read_text(encoding="utf-8")
+            self.assertNotIn('href="/verificador/"', home)
+            self.assertNotIn('href="/pessoas/"', home)
+            self.assertEqual(b.verify_site(root, 3), [])
+        limpar()
+        self.assertTrue(canal.tem("verificador"))  # de volta ao canal padrão (Política)
+
+    def test_canal_invalido_e_recusado(self):
+        from radar import canal
+        with mock.patch.dict(os.environ, {"RADAR_CANAL": "../config"}):
+            with self.assertRaises(ValueError):
+                canal.ativo()
+
     def test_pessoas_deteccao_e_paginas(self):
         from radar import pessoas
         self.assertEqual(pessoas.detect("Caiado anuncia apoio a Flávio no 2º turno"), ["flavio-bolsonaro", "caiado"])

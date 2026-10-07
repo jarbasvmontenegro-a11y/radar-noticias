@@ -25,6 +25,7 @@ from markupsafe import escape as html_escape
 from . import geo
 from . import destaques as destaques_mod
 from . import destaques_ia as ia_mod
+from . import canal as canal_mod
 from . import pessoas as pessoas_mod
 from .cluster import cluster, story_groups, topic_of
 from .collect import DATA, ROOT, load_json, load_sources, safe_url
@@ -102,9 +103,11 @@ _BAD_HREF = re.compile(r'<a\b[^>]*\bhref="\s*(?:javascript|data|vbscript):', re.
 def verify_site(path: Path, min_items: int = 0) -> list[str]:
     """Confere o site gerado antes de publicar. Devolve a lista de problemas (vazia = ok)."""
     problems: list[str] = []
-    required = ["index.html", "404.html", "sitemap.xml", "robots.txt", "verificador/index.html", "sobre/index.html",
-                "privacidade/index.html", "politica-editorial/index.html", "notificacoes/index.html", "pessoas/index.html", "busca/index.html", "assuntos/index.html", "estados/index.html", "fontes/index.html", "data/search-index.json", "data/allowed-hosts.json", "data/municipios.json", "data/destaques.json", "data/ultimas.json", "mini/index.html", "style.css", "app.js", "share.js", "push.js", "busca.js", "assuntos.js", "mini.js", "mini.css", "sw.js",
+    required = ["index.html", "404.html", "sitemap.xml", "robots.txt", "sobre/index.html",
+                "privacidade/index.html", "politica-editorial/index.html", "notificacoes/index.html", "busca/index.html", "assuntos/index.html", "fontes/index.html", "data/search-index.json", "data/allowed-hosts.json", "data/municipios.json", "data/destaques.json", "data/ultimas.json", "mini/index.html", "style.css", "app.js", "share.js", "push.js", "busca.js", "assuntos.js", "mini.js", "mini.css", "sw.js",
                 "manifest.webmanifest"]
+    required += [pagina for recurso, pagina in (("verificador", "verificador/index.html"), ("pessoas", "pessoas/index.html"),
+                                                 ("estados", "estados/index.html")) if canal_mod.tem(recurso)]
     for f in required:
         if not (path / f).is_file():
             problems.append(f"arquivo ausente: {f}")
@@ -184,7 +187,7 @@ def build(out_dir: str = "site") -> str:
     checks = [a for a in items if a["kind"] == "checagem"]
 
     # temas e assuntos cobertos por vários veículos: comparação de palavras, sem IA
-    topics = json.loads((ROOT / "config" / "topics.json").read_text(encoding="utf-8"))
+    topics = json.loads((canal_mod.arquivo("topics.json")).read_text(encoding="utf-8"))
     for a in all_news:
         a["topics"] = topic_of(a, topics)
         a["also"] = []
@@ -251,6 +254,7 @@ def build(out_dir: str = "site") -> str:
         h = hashlib.sha256(f.read_bytes()).hexdigest()[:10] if f.is_file() else "0"
         return f"/{nome.lstrip('/')}?v={h}"
     env.globals["asset"] = asset
+    env.globals["canal"] = canal_mod.info()  # nome e recursos do canal: os menus mostram só o que o canal tem
 
     # palavras de juízo/emoção nas manchetes (lista pública em config/enquadramento.json): só destaca, nunca julga
     enq = json.loads((ROOT / "config" / "enquadramento.json").read_text(encoding="utf-8"))["palavras"]
@@ -364,34 +368,36 @@ def build(out_dir: str = "site") -> str:
     pages.append(("/", last))
 
     # --- por estado ---------------------------------------------------------------------
-    for e in estados:
-        lst = uf_news[e["uf"]]
-        if not lst:
-            continue
-        nfontes = len({a["source"] for a in lst})
-        listing(f"/estado/{e['uf'].lower()}/", lst, max_pages=8, active=None, active_uf=e["uf"],
-                title=f"Política em {e['nome']}: últimas notícias | {cfg['name']}",
-                description=f"Manchetes de política de {e['nome']} e do que o país noticia sobre o estado, de {nfontes} fontes, com link para ler no veículo.",
-                heading=f"Política em {e['nome']}", subheading="Veículos locais e nacionais que citam o estado")
-        pages.append((f"/estado/{e['uf'].lower()}/", lst[0]["dt"].strftime("%Y-%m-%d")))
-    render("/estados/", "states.html", path="/estados/", title=f"Notícias de política por estado | {cfg['name']}",
-           description="Escolha um estado e veja as manchetes de política de veículos locais e nacionais.")
-    pages.append(("/estados/", last))
+    if canal_mod.tem("estados"):
+        for e in estados:
+            lst = uf_news[e["uf"]]
+            if not lst:
+                continue
+            nfontes = len({a["source"] for a in lst})
+            listing(f"/estado/{e['uf'].lower()}/", lst, max_pages=8, active=None, active_uf=e["uf"],
+                    title=f"Política em {e['nome']}: últimas notícias | {cfg['name']}",
+                    description=f"Manchetes de política de {e['nome']} e do que o país noticia sobre o estado, de {nfontes} fontes, com link para ler no veículo.",
+                    heading=f"Política em {e['nome']}", subheading="Veículos locais e nacionais que citam o estado")
+            pages.append((f"/estado/{e['uf'].lower()}/", lst[0]["dt"].strftime("%Y-%m-%d")))
+        render("/estados/", "states.html", path="/estados/", title=f"Notícias de política por estado | {cfg['name']}",
+               description="Escolha um estado e veja as manchetes de política de veículos locais e nacionais.")
+        pages.append(("/estados/", last))
 
     # --- por pessoa ---------------------------------------------------------------------
-    for pe in pessoas_info:
-        lst = [a for a in all_news if pe["id"] in a["pessoas"]]
-        if not lst:
-            continue
-        listing(f"/pessoa/{pe['id']}/", lst, max_pages=5, active=None, active_pessoa=pe["id"], pessoa=pe,
-                title=f"{pe['nome']}: últimas notícias | {cfg['name']}",
-                description=f"Manchetes de política que citam {pe['nome']} ({pe['cargo']}), de {len({a['source'] for a in lst})} veículos, com link para ler na fonte.",
-                heading=pe["nome"], subheading=f"{pe['cargo']}. Manchetes que citam o nome")
-        pages.append((f"/pessoa/{pe['id']}/", lst[0]["dt"].strftime("%Y-%m-%d")))
-    render("/pessoas/", "people.html", path="/pessoas/", title=f"Quem aparece nas notícias de política | {cfg['name']}",
-           description="Quantas manchetes e quantos veículos citam cada político e autoridade, nas últimas 24 horas e na semana.",
-           pessoas_todas=pessoas_info)
-    pages.append(("/pessoas/", last))
+    if canal_mod.tem("pessoas"):
+        for pe in pessoas_info:
+            lst = [a for a in all_news if pe["id"] in a["pessoas"]]
+            if not lst:
+                continue
+            listing(f"/pessoa/{pe['id']}/", lst, max_pages=5, active=None, active_pessoa=pe["id"], pessoa=pe,
+                    title=f"{pe['nome']}: últimas notícias | {cfg['name']}",
+                    description=f"Manchetes de política que citam {pe['nome']} ({pe['cargo']}), de {len({a['source'] for a in lst})} veículos, com link para ler na fonte.",
+                    heading=pe["nome"], subheading=f"{pe['cargo']}. Manchetes que citam o nome")
+            pages.append((f"/pessoa/{pe['id']}/", lst[0]["dt"].strftime("%Y-%m-%d")))
+        render("/pessoas/", "people.html", path="/pessoas/", title=f"Quem aparece nas notícias de política | {cfg['name']}",
+               description="Quantas manchetes e quantos veículos citam cada político e autoridade, nas últimas 24 horas e na semana.",
+               pessoas_todas=pessoas_info)
+        pages.append(("/pessoas/", last))
 
     # --- por fonte ----------------------------------------------------------------------
     for s in all_sources:
@@ -429,10 +435,11 @@ def build(out_dir: str = "site") -> str:
         pages.append((f"/dia/{d}/", d))
 
     # --- páginas fixas ------------------------------------------------------------------
-    render("/verificador/", "verifier.html", path="/verificador/",
-           title=f"Verificador de fake news: confira boatos sobre política | {cfg['name']}",
-           description="Cole um texto ou link suspeito e veja se agências de checagem já analisaram, quais notícias confiáveis tratam do assunto e quais sinais de alerta merecem atenção.")
-    pages.append(("/verificador/", last))
+    if canal_mod.tem("verificador"):
+        render("/verificador/", "verifier.html", path="/verificador/",
+               title=f"Verificador de fake news: confira boatos sobre política | {cfg['name']}",
+               description="Cole um texto ou link suspeito e veja se agências de checagem já analisaram, quais notícias confiáveis tratam do assunto e quais sinais de alerta merecem atenção.")
+        pages.append(("/verificador/", last))
     render("/notificacoes/", "notifications.html", path="/notificacoes/",
            title=f"Notificações de notícias de política | {cfg['name']}",
            description="Receba no celular ou no computador só as notícias de política que importam: escolha temas, estados e pessoas e veja só os assuntos mais cobertos pela imprensa.",

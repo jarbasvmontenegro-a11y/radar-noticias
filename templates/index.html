@@ -25,7 +25,7 @@
 
 {% endset %}
 {% set zap_html %}
-    {% if path == "/" %}
+    {% if path == "/" and canal.recursos.verificador %}
     <section class="zap-band" aria-labelledby="zap-h">
       <div>
         <h2 id="zap-h">Recebeu um boato no WhatsApp?</h2>
@@ -93,11 +93,13 @@
   </section>
 
   <aside class="side" aria-label="Complementos">
+    {% if canal.recursos.verificador %}
     <section class="side-sec side-verify">
       <h2>Recebeu um boato?</h2>
       <p>Cole o texto ou o link no verificador e veja o que as agências de checagem e os veículos dizem.</p>
       <a class="btn btn-zapbtn" href="/verificador/">Verificar agora</a>
     </section>
+    {% endif %}
     {% if checks %}
     <section class="side-sec">
       <h2>Checagens recentes</h2>

@@ -75,8 +75,9 @@ def load_store() -> dict:
         raise StoreCorrupted(f"articles.json inválido ({exc}); cópia em {backup.name}. Restaure pelo histórico do Git.") from exc
 
 
-def load_sources(path: Path = ROOT / "config" / "sources.json") -> list[dict]:
-    return load_json(path, {"sources": []})["sources"]
+def load_sources(path: Path | None = None) -> list[dict]:
+    from . import canal  # import tardio: canal não depende do coletor
+    return load_json(path or canal.arquivo("sources.json"), {"sources": []})["sources"]
 
 
 # ---------------------------------------------------------------- texto e URLs
@@ -312,7 +313,8 @@ def fetch_feed(source: dict) -> list[dict]:
 @lru_cache(maxsize=1)
 def _noise():
     """Manchetes de modelo repetidas aos montes (uma por município, por exemplo): não ajudam o leitor e inundam a lista."""
-    cfg = load_json(ROOT / "config" / "ruido.json", {})
+    from . import canal
+    cfg = load_json(canal.arquivo("ruido.json"), {})
     pats = [re.compile(p, re.I) for p in cfg.get("titulos", [])]
     return pats
 
@@ -322,7 +324,7 @@ def keep_entry(src: dict, e: dict) -> bool:
     "include": trechos de URL que já indicam política (seção);
     "politica": true  -> o que não casar com "include" só entra se a manchete tiver cara de política (palavras-chave);
     "exclude": trechos de URL a descartar.
-    Sem "include" nem "politica", tudo entra. Manchetes de modelo (config/ruido.json) são sempre descartadas."""
+    Sem "include" nem "politica", tudo entra. Manchetes de modelo (canais/<canal>/ruido.json) são sempre descartadas."""
     url, title = e["url"], e["title"]
     if any(p.search(title) for p in _noise()):
         return False

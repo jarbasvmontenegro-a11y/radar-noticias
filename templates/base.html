@@ -56,11 +56,11 @@
     <nav class="mainnav" aria-label="Principal">
       <a href="/" {% if path == "/" %}aria-current="page"{% endif %}>Últimas</a>
       <a href="/assuntos/" {% if path == "/assuntos/" %}aria-current="page"{% endif %}>Assuntos</a>
-      <a href="/estados/" {% if path.startswith("/estado") %}aria-current="page"{% endif %}>Estados</a>
-      <a href="/pessoas/" {% if path == "/pessoas/" or path.startswith("/pessoa/") %}aria-current="page"{% endif %}>Pessoas</a>
+      {% if canal.recursos.estados %}<a href="/estados/" {% if path.startswith("/estado") %}aria-current="page"{% endif %}>Estados</a>{% endif %}
+      {% if canal.recursos.pessoas %}<a href="/pessoas/" {% if path == "/pessoas/" or path.startswith("/pessoa/") %}aria-current="page"{% endif %}>Pessoas</a>{% endif %}
       <a href="/fontes/" {% if path == "/fontes/" %}aria-current="page"{% endif %}>Fontes</a>
       <a href="/notificacoes/" {% if path == "/notificacoes/" %}aria-current="page"{% endif %}>Notificações</a>
-      <a href="/verificador/" {% if path == "/verificador/" %}aria-current="page"{% endif %}>Verificador</a>
+      {% if canal.recursos.verificador %}<a href="/verificador/" {% if path == "/verificador/" %}aria-current="page"{% endif %}>Verificador</a>{% endif %}
       <a href="/sobre/" {% if path == "/sobre/" %}aria-current="page"{% endif %}>Como funciona</a>
       <span class="dateline">{{ weekday_long }}</span>
     </nav>
@@ -73,7 +73,7 @@
   </main>
 
   <footer class="footer">
-    <p><a href="/estados/">Estados</a> <a href="/fontes/">Fontes monitoradas</a> <a href="/sobre/">Como funciona</a> <a href="/politica-editorial/">Política editorial</a> <a href="/privacidade/">Privacidade</a>{% if cfg.contact_email %} <a href="mailto:{{ cfg.contact_email }}">Contato</a>{% endif %}</p>
+    <p>{% if canal.recursos.estados %}<a href="/estados/">Estados</a> {% endif %}<a href="/fontes/">Fontes monitoradas</a> <a href="/sobre/">Como funciona</a> <a href="/politica-editorial/">Política editorial</a> <a href="/privacidade/">Privacidade</a>{% if cfg.contact_email %} <a href="mailto:{{ cfg.contact_email }}">Contato</a>{% endif %}</p>
     <p class="small">Mostramos só o título, uma descrição curta e o link. Os textos e os direitos são dos veículos. Resumos de IA podem conter erros: confirme sempre na fonte.</p>
     <p class="small">© {{ now.year }} {{ cfg.name }}</p>
   </footer>

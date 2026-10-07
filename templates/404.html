@@ -3,6 +3,6 @@
 {% block content %}
 <div class="page prose">
   <h1>Página não encontrada</h1>
-  <p class="lead">O endereço pode ter mudado. Volte para as <a href="/">últimas notícias</a> ou use o <a href="/verificador/">verificador de fake news</a>.</p>
+  <p class="lead">O endereço pode ter mudado. Volte para as <a href="/">últimas notícias</a>{% if canal.recursos.verificador %} ou use o <a href="/verificador/">verificador de fake news</a>{% endif %}.</p>
 </div>
 {% endblock %}

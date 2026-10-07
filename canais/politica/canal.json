@@ -1,0 +1,10 @@
+{
+ "_nota": "Configuração do canal. O motor (radar/) é o mesmo para todos os canais; aqui fica só o que é deste assunto.",
+ "id": "politica",
+ "nome": "Política",
+ "recursos": {
+  "estados": true,
+  "pessoas": true,
+  "verificador": true
+ }
+}

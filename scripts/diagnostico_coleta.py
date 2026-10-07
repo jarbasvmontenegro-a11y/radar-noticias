@@ -1,5 +1,5 @@
 """Ensaio de coleta (não grava nada em data/): para cada fonte mostra quantos itens vieram, quantos passaram nos filtros,
-exemplos do que entrou e do que foi barrado, e manchetes de modelo que se repetem (candidatas a config/ruido.json)."""
+exemplos do que entrou e do que foi barrado, e manchetes de modelo que se repetem (candidatas a canais/<canal>/ruido.json)."""
 import json
 import re
 import sys

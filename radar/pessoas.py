@@ -8,12 +8,15 @@ import re
 from functools import lru_cache
 
 from .cluster import fold
-from .collect import ROOT
+from . import canal
 
 
 @lru_cache(maxsize=1)
 def config() -> dict:
-    return json.loads((ROOT / "config" / "pessoas.json").read_text(encoding="utf-8"))
+    p = canal.arquivo("pessoas.json")
+    if not canal.tem("pessoas") or not p.exists():
+        return {"pessoas": []}  # canal sem o recurso: ninguém é reconhecido
+    return json.loads(p.read_text(encoding="utf-8"))
 
 
 @lru_cache(maxsize=1)

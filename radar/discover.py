@@ -1,6 +1,6 @@
 """Diagnóstico de fontes: descobre quais endereços de feed ou sitemap de notícias funcionam de verdade.
 
-Roda no GitHub Actions (rede livre). Para cada candidato de config/candidatos.json testa:
+Roda no GitHub Actions (rede livre). Para cada candidato de canais/<canal>/candidatos.json testa:
 - os endereços listados, mais variações comuns (/feed/, /rss, /rss.xml);
 - a home (procura <link rel="alternate"> de RSS/Atom e links que parecem feed);
 - o robots.txt (linhas "Sitemap:") e, nos índices de sitemap, os arquivos de notícias.
@@ -16,6 +16,7 @@ from urllib.parse import urljoin, urlsplit
 import requests
 
 from .collect import ILLEGAL_XML, ROOT, UA, _local, parse_entries, parse_xml
+from . import canal
 from .geo import states
 
 MAX_BYTES = 2_000_000
@@ -134,7 +135,7 @@ def usable(r: dict, now: datetime) -> bool:
 
 
 def run(out_json: str, out_md: str) -> None:
-    cfg = json.loads((ROOT / "config" / "candidatos.json").read_text(encoding="utf-8"))["grupos"] + g1_groups()
+    cfg = json.loads((canal.arquivo("candidatos.json")).read_text(encoding="utf-8"))["grupos"] + g1_groups()
     now = datetime.now(timezone.utc)
     work = {g["id"]: candidates(g) for g in cfg}
     results: dict[str, dict] = {}
