@@ -1,0 +1,43 @@
+/* Mini janela do Radar de Notícias (janela flutuante e página /mini/). Mesmas fontes e cores do site. */
+@font-face { font-family: "Newsreader"; font-style: normal; font-weight: 700; font-display: swap; src: url("/fonts/newsreader-700-text.woff2") format("woff2"); }
+@font-face { font-family: "Newsreader"; font-style: normal; font-weight: 800; font-display: swap; src: url("/fonts/newsreader-800-display.woff2") format("woff2"); }
+@font-face { font-family: "Atkinson Hyperlegible"; font-style: normal; font-weight: 400; font-display: swap; src: url("/fonts/atkinson-400.woff2") format("woff2"); }
+@font-face { font-family: "Atkinson Hyperlegible"; font-style: normal; font-weight: 700; font-display: swap; src: url("/fonts/atkinson-700.woff2") format("woff2"); }
+:root {
+  --bg: #f6f1e7; --paper: #fffdf8; --ink: #1b1a17; --muted: #5f5a4f; --rule: #d9d0bd; --accent: #8c1c13; --focus: #0b57d0;
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --sans: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #14120e; --paper: #1c1a15; --ink: #efe9db; --muted: #b1aa9a; --rule: #3a352b; --accent: #e8735c; --focus: #8ab4f8; }
+}
+:root[data-theme="dark"] { --bg: #14120e; --paper: #1c1a15; --ink: #efe9db; --muted: #b1aa9a; --rule: #3a352b; --accent: #e8735c; --focus: #8ab4f8; }
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 .95rem/1.4 var(--sans); }
+a { color: inherit; text-decoration: none; }
+a:hover .t, a:focus-visible .t { text-decoration: underline; text-decoration-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.m { display: flex; flex-direction: column; height: 100%; min-width: 260px; }
+.m-head { flex: 0 0 auto; display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 10px 14px 8px; border-bottom: 3px solid var(--ink); }
+.m-brand { font: 800 1.15rem/1.1 var(--serif); letter-spacing: -.01em; }
+.m-stat { font-size: .78rem; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+.m-body { flex: 1 1 auto; overflow-y: auto; padding: 0 14px 6px; }
+.m h2 { font: 800 1rem/1.2 var(--serif); margin: 14px 0 2px; padding-bottom: 4px; border-bottom: 1px solid var(--ink); }
+.m ol, .m ul { list-style: none; margin: 0; padding: 0; }
+.m li { border-bottom: 1px solid var(--rule); }
+.m li a { display: grid; gap: 0 8px; padding: 9px 0; }
+.m-trend a { grid-template-columns: 1.1rem minmax(0, 1fr); }
+.m-trend .n { font: 700 .95rem/1.3 var(--sans); color: var(--accent); }
+.m-last a { grid-template-columns: 2.7rem minmax(0, 1fr); }
+.m-last .h { font-size: .8rem; color: var(--muted); font-variant-numeric: tabular-nums lining-nums; padding-top: .18rem; }
+.m .t { font: 700 .98rem/1.28 var(--serif); }
+.m .s { display: block; margin-top: 2px; font-size: .78rem; color: var(--muted); }
+.m .s b { color: var(--accent); }
+.m li.novo a { box-shadow: inset 3px 0 0 var(--accent); padding-left: 8px; }
+.m-foot { flex: 0 0 auto; display: flex; justify-content: space-between; gap: 10px; padding: 8px 14px; border-top: 1px solid var(--rule); font-size: .8rem; color: var(--muted); }
+.m-foot a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+.m-foot a:hover { color: var(--accent); }
+.m-msg { margin: 18px 14px; color: var(--muted); }
+.m-warn { margin: 8px 0 0; font-size: .8rem; color: var(--accent); }

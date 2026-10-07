@@ -173,6 +173,29 @@ class BuildTests(unittest.TestCase):
         home = (b.ROOT / self.out / "index.html").read_text(encoding="utf-8")
         self.assertIn('href="/notificacoes/"', home)
 
+    def test_mini_janela(self):
+        arts = [article(1, url="https://g1.globo.com/a/1", source="g1", title="Lula sanciona projeto sobre reforma tributária"),
+                article(2, url="https://oglobo.globo.com/a/2", source="oglobo", title="Flávio Bolsonaro critica Lula em entrevista javascript:alert(1)")]
+        self.write(arts)
+        b.build(self.out)
+        root = b.ROOT / self.out
+        dados = json.loads((root / "data" / "ultimas.json").read_text(encoding="utf-8"))
+        self.assertEqual(set(dados), {"gerado", "assuntos", "itens"})
+        self.assertEqual(len(dados["itens"]), 2)
+        self.assertEqual(set(dados["itens"][0]), {"t", "s", "u", "d", "n"})
+        self.assertLess(len(json.dumps(dados)), 20000)  # leve: a janela confere de 5 em 5 minutos
+        mini = (root / "mini" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("noindex", mini)
+        self.assertIn("/mini.js", mini)
+        self.assertIn("/mini.css", mini)
+        home = (root / "index.html").read_text(encoding="utf-8")
+        self.assertIn('id="mini-open"', home)
+        self.assertIn("/mini.js?v=", home)
+        js = (root / "mini.js").read_text(encoding="utf-8")
+        for perigoso in ("innerHTML", "outerHTML", "insertAdjacentHTML", "document.write", "eval("):
+            self.assertNotIn(perigoso, js)
+        self.assertNotIn("/mini/", (root / "sitemap.xml").read_text(encoding="utf-8"))
+
     def test_pessoas_deteccao_e_paginas(self):
         from radar import pessoas
         self.assertEqual(pessoas.detect("Caiado anuncia apoio a Flávio no 2º turno"), ["flavio-bolsonaro", "caiado"])

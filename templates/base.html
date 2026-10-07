@@ -50,6 +50,7 @@
         <button type="button" id="size-down" aria-label="Diminuir letra">A−</button>
         <button type="button" id="size-up" aria-label="Aumentar letra">A+</button>
         <button type="button" id="theme" aria-label="Alternar tema claro e escuro">Tema</button>
+        <button type="button" id="mini-open" data-css="{{ asset('mini.css') }}" aria-pressed="false" aria-label="Abrir mini janela com as últimas notícias, que fica por cima das outras janelas" title="Mini janela: fica no canto da tela, por cima de outros programas" hidden>Mini janela</button>
       </span>
     </div>
     <nav class="mainnav" aria-label="Principal">
@@ -84,6 +85,7 @@
 
   <script src="{{ asset('share.js') }}" defer></script>
   <script src="{{ asset('app.js') }}" defer></script>
+  <script src="{{ asset('mini.js') }}" defer></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

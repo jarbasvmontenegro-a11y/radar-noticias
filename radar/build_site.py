@@ -100,7 +100,7 @@ def verify_site(path: Path, min_items: int = 0) -> list[str]:
     """Confere o site gerado antes de publicar. Devolve a lista de problemas (vazia = ok)."""
     problems: list[str] = []
     required = ["index.html", "404.html", "sitemap.xml", "robots.txt", "verificador/index.html", "sobre/index.html",
-                "privacidade/index.html", "notificacoes/index.html", "pessoas/index.html", "busca/index.html", "assuntos/index.html", "estados/index.html", "fontes/index.html", "data/search-index.json", "data/allowed-hosts.json", "data/municipios.json", "data/destaques.json", "style.css", "app.js", "share.js", "push.js", "busca.js", "assuntos.js", "sw.js",
+                "privacidade/index.html", "notificacoes/index.html", "pessoas/index.html", "busca/index.html", "assuntos/index.html", "estados/index.html", "fontes/index.html", "data/search-index.json", "data/allowed-hosts.json", "data/municipios.json", "data/destaques.json", "data/ultimas.json", "mini/index.html", "style.css", "app.js", "share.js", "push.js", "busca.js", "assuntos.js", "mini.js", "mini.css", "sw.js",
                 "manifest.webmanifest"]
     for f in required:
         if not (path / f).is_file():
@@ -111,7 +111,7 @@ def verify_site(path: Path, min_items: int = 0) -> list[str]:
         ET.parse(path / "sitemap.xml")
     except ET.ParseError as exc:
         problems.append(f"sitemap.xml inválido: {exc}")
-    for f in ("data/search-index.json", "data/allowed-hosts.json", "data/destaques.json"):
+    for f in ("data/search-index.json", "data/allowed-hosts.json", "data/destaques.json", "data/ultimas.json"):
         try:
             json.loads((path / f).read_text(encoding="utf-8"))
         except json.JSONDecodeError as exc:
@@ -423,6 +423,8 @@ def build(out_dir: str = "site") -> str:
            description="Os assuntos mais noticiados de política, com a manchete de cada veículo lado a lado, e busca para achar o assunto que você quer.",
            historias=historias)
     pages.append(("/assuntos/", last))
+    render("/mini/", "mini.html", path="/mini/", noindex=True, title=f"Mini janela | {cfg['name']}",
+           description="Janela pequena com os assuntos em alta e as últimas manchetes de política, que se atualiza sozinha.")
     render("/sobre/", "about.html", path="/sobre/", title=f"Sobre e metodologia | {cfg['name']}",
            description="Como o Radar de Notícias funciona: quais fontes usa, como coleta, o que a IA faz e o que não faz.",
            status=status)
@@ -475,6 +477,15 @@ def build(out_dir: str = "site") -> str:
     (out / "data" / "search-index.json").write_text(json.dumps(index, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     (out / "data" / "destaques.json").write_text(
         json.dumps(destaques_mod.montar(all_news, checks, now), ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    # dados leves da mini janela (assuntos em alta + últimas manchetes sem repetir assunto); a janela confere de 5 em 5 minutos
+    ultimas = {
+        "gerado": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "assuntos": [{"t": (h["titulo"] if h.get("ia") else h["lead"]["title"]), "n": h["n"], "u": f"/assuntos/#a{i}"}
+                     for i, h in enumerate(highlights, 1)],
+        "itens": [{"t": a["title"], "s": a["source_name"], "u": a["url"], "d": a["dt"].isoformat(timespec="seconds"), "n": len(a["mais"])}
+                  for a in colapsar(news)[:20]],
+    }
+    (out / "data" / "ultimas.json").write_text(json.dumps(ultimas, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     hosts = {urlsplit(s["home"]).hostname for s in all_sources} | {urlsplit(a["url"]).hostname for a in items}
     (out / "data" / "allowed-hosts.json").write_text(
         json.dumps(sorted(h.removeprefix("www.") for h in hosts if h)), encoding="utf-8")
