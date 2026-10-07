@@ -8,7 +8,7 @@ on:
         default: "radarnoticias.top"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   dns:
@@ -20,6 +20,7 @@ jobs:
       - name: Conferir DNS e HTTPS
         run: |
           set -u
+          exec > >(tee dns.txt) 2>&1
           case "$DOMINIO" in *[!a-zA-Z0-9.-]*|"") echo "domínio inválido"; exit 1;; esac
           echo "== NS (resolvedor padrão)";  dig +short NS "$DOMINIO"
           echo "== NS (8.8.8.8)";            dig +short NS "$DOMINIO" @8.8.8.8
@@ -30,3 +31,11 @@ jobs:
           echo "== Delegação no registro (+trace, final)"; dig +trace NS "$DOMINIO" | tail -n 12
           echo "== HTTPS"; curl -sS -o /dev/null -D - --max-time 20 "https://$DOMINIO/" | head -n 12 || true
           echo "== Conteúdo (primeiras linhas)"; curl -sS --max-time 20 "https://$DOMINIO/" | head -c 300 || true
+      - name: Guardar resultado na branch dns-resultado
+        if: always()
+        run: |
+          mkdir -p /tmp/res && cp dns.txt /tmp/res/dns.txt && cd /tmp/res
+          git init -q -b dns-resultado
+          git config user.name radar-bot && git config user.email radar-bot@users.noreply.github.com
+          git add dns.txt && git commit -q -m "dns $(date -u +%FT%TZ)"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" dns-resultado
