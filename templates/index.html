@@ -6,33 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="layout">
-  {{ rail(active_uf, active, news_sources) }}
-
-  <section class="feed" aria-labelledby="h1">
-    <header class="feed-head">
-      {% if active_uf or source is defined or active_topic or day is defined or active_pessoa is defined %}<p class="crumbs"><a href="/">Últimas</a>{% if active_uf %} / <a href="/estados/">Estados</a>{% endif %}{% if active_pessoa is defined %} / <a href="/pessoas/">Pessoas</a>{% endif %}</p>{% endif %}
-      <h1 id="h1">{{ heading }}</h1>
-      <p class="sub">{{ subheading }}. Atualizado às {{ updated_label[-5:] }}. {{ "{:,}".format(total).replace(",", ".") }} manchetes{% if assuntos and assuntos < total %} em {{ "{:,}".format(assuntos).replace(",", ".") }} assuntos{% endif %}{% if pages > 1 %}, página {{ page }} de {{ pages }}{% endif %}.</p>
-      {% if pessoa is defined %}<p class="sub">Últimas 24 horas: {{ pessoa.n24 }} manchetes com o nome no título, em {{ pessoa.v24 }} veículos. Na semana: {{ pessoa.n7 }}.</p>{% endif %}
-      {% if source is defined %}<p class="sub"><a href="{{ source.home }}" target="_blank" rel="noopener">Abrir o site de {{ source.name }}</a></p>{% endif %}
-    </header>
-
-    {% if path == "/" and highlights %}
-    <section class="trending" aria-labelledby="trend-h">
-      <h2 id="trend-h">Assuntos em alta</h2>
-      <ol>
-        {% for h in highlights %}
-        <li>
-          <a href="/assuntos/#a{{ loop.index }}">{{ h.titulo if h.ia else h.lead.title }}</a>
-          <span class="src">{{ h.n }} veículos</span>
-        </li>
-        {% endfor %}
-      </ol>
-      <p class="small"><a href="/assuntos/">Ver como cada veículo contou cada assunto e buscar um específico</a>{% if highlights[0].ia and ia_hora %}. Agrupados por IA às {{ ia_hora }}, duas vezes ao dia{% endif %}.</p>
-    </section>
-    {% endif %}
-
+{% set placar_html %}
     {% if path == "/" and placar %}
     <section class="placar" aria-labelledby="placar-h">
       <h2 id="placar-h">Quem mais aparece nas manchetes <span class="placar-when">últimas 24 horas</span></h2>
@@ -49,6 +23,8 @@
     </section>
     {% endif %}
 
+{% endset %}
+{% set zap_html %}
     {% if path == "/" %}
     <section class="zap-band" aria-labelledby="zap-h">
       <div>
@@ -59,6 +35,34 @@
     </section>
     {% endif %}
 
+{% endset %}
+<div class="layout">
+  {{ rail(active_uf, active, news_sources) }}
+
+  <section class="feed" aria-labelledby="h1">
+    <header class="feed-head">
+      {% if active_uf or source is defined or active_topic or day is defined or active_pessoa is defined %}<p class="crumbs"><a href="/">Últimas</a>{% if active_uf %} / <a href="/estados/">Estados</a>{% endif %}{% if active_pessoa is defined %} / <a href="/pessoas/">Pessoas</a>{% endif %}</p>{% endif %}
+      <h1 id="h1">{{ heading }}</h1>
+      {% if path == "/" %}<p class="sub">Atualizado às {{ updated_label[-5:] }} · {{ "{:,}".format(total).replace(",", ".") }} manchetes{% if assuntos and assuntos < total %} em {{ "{:,}".format(assuntos).replace(",", ".") }} assuntos{% endif %}</p>
+      {% else %}<p class="sub">{{ subheading }}. Atualizado às {{ updated_label[-5:] }}. {{ "{:,}".format(total).replace(",", ".") }} manchetes{% if assuntos and assuntos < total %} em {{ "{:,}".format(assuntos).replace(",", ".") }} assuntos{% endif %}{% if pages > 1 %}, página {{ page }} de {{ pages }}{% endif %}.</p>{% endif %}
+      {% if pessoa is defined %}<p class="sub">Últimas 24 horas: {{ pessoa.n24 }} manchetes com o nome no título, em {{ pessoa.v24 }} veículos. Na semana: {{ pessoa.n7 }}.</p>{% endif %}
+      {% if source is defined %}<p class="sub"><a href="{{ source.home }}" target="_blank" rel="noopener">Abrir o site de {{ source.name }}</a></p>{% endif %}
+    </header>
+
+    {% if path == "/" and highlights %}
+    <section class="trending" aria-labelledby="trend-h">
+      <h2 id="trend-h">Assuntos em alta</h2>
+      <ol>
+        {% for h in highlights %}
+        <li>
+          <a href="/assuntos/#a{{ loop.index }}"><span class="t">{{ h.titulo if h.ia else h.lead.title }}</span><span class="src">{{ h.n }} veículos</span></a>
+        </li>
+        {% endfor %}
+      </ol>
+      <p class="small"><a href="/assuntos/">Ver todos os assuntos e buscar um</a>{% if highlights[0].ia and ia_hora %} <span class="ia-note">Agrupados por IA às {{ ia_hora }}</span>{% endif %}</p>
+    </section>
+    {% endif %}
+
     {{ ad("topo", "ad-top") }}
 
     <nav class="topics" aria-label="Filtrar por tema">
@@ -66,7 +70,7 @@
       {% for t in topic_links if t.n %}<a href="/tema/{{ t.id }}/" {% if active_topic == t.id %}aria-current="page"{% endif %}>{{ t.name }}</a>{% endfor %}
     </nav>
 
-    {% if pessoas_links and (path == "/" or active_pessoa is defined) %}
+    {% if pessoas_links and active_pessoa is defined %}
     <nav class="people" aria-label="Filtrar por pessoa">
       <span class="people-h">Quem está na notícia</span>
       {% for p in pessoas_links %}<a href="/pessoa/{{ p.id }}/" {% if active_pessoa is defined and active_pessoa == p.id %}aria-current="page"{% endif %}>{{ p.nome }}</a>{% endfor %}
@@ -78,6 +82,8 @@
     {% for a in articles %}
       {% if a.day_label != ns.day %}{% set ns.day = a.day_label %}<h2 class="day">{{ a.day_label }}</h2>{% endif %}
       {{ item(a, show_source_link=(active is none), show_ufs=(active_uf is none)) }}
+      {% if path == "/" and page == 1 and (loop.index == 6 or (loop.last and loop.index < 6)) %}{{ placar_html|safe }}{% endif %}
+      {% if path == "/" and page == 1 and (loop.index == 14 or (loop.last and loop.index < 14)) %}{{ zap_html|safe }}{% endif %}
       {% if loop.index in (8, 28) %}{{ ad("lista", "ad-feed") }}{% endif %}
     {% else %}
       <p class="empty">Ainda não há manchetes aqui. A coleta roda de hora em hora.</p>

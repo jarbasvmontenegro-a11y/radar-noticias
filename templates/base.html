@@ -26,7 +26,7 @@
   <link rel="preload" href="/fonts/newsreader-400-text.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/newsreader-700-text.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="{{ asset('style.css') }}">
   <meta name="built" content="{{ built_iso }}">
   <script>document.documentElement.className+=" js";try{var s=localStorage.getItem("radar-size");if(s)document.documentElement.dataset.size=s;var th=localStorage.getItem("radar-theme");if(th)document.documentElement.dataset.theme=th}catch(e){}</script>
   {% block jsonld %}
@@ -59,7 +59,7 @@
       <a href="/pessoas/" {% if path == "/pessoas/" or path.startswith("/pessoa/") %}aria-current="page"{% endif %}>Pessoas</a>
       <a href="/fontes/" {% if path == "/fontes/" %}aria-current="page"{% endif %}>Fontes</a>
       <a href="/notificacoes/" {% if path == "/notificacoes/" %}aria-current="page"{% endif %}>Notificações</a>
-      <a href="/verificador/" {% if path == "/verificador/" %}aria-current="page"{% endif %}>Verificador de fake news</a>
+      <a href="/verificador/" {% if path == "/verificador/" %}aria-current="page"{% endif %}>Verificador</a>
       <a href="/sobre/" {% if path == "/sobre/" %}aria-current="page"{% endif %}>Como funciona</a>
       <span class="dateline">{{ weekday_long }}</span>
     </nav>
@@ -82,8 +82,8 @@
     <div><button type="button" class="btn" id="consent-no">Só não personalizados</button> <button type="button" class="btn btn-primary" id="consent-yes">Aceitar</button></div>
   </div>
 
-  <script src="/share.js" defer></script>
-  <script src="/app.js" defer></script>
+  <script src="{{ asset('share.js') }}" defer></script>
+  <script src="{{ asset('app.js') }}" defer></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

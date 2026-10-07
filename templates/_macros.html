@@ -26,7 +26,7 @@
     <p class="actions">
       {% if a.kind == "noticia" %}<button type="button" class="lnk btn-sum" data-url="{{ a.url }}" data-title="{{ a.title }}" data-source="{{ a.source_name }}" data-desc="{{ a.desc }}">Resumir com IA</button>{% endif %}
       <a class="lnk" href="{{ a.url }}" target="_blank" rel="noopener" aria-label="Ler na fonte: {{ a.title }}">Ler na fonte</a>
-      <a class="lnk lnk-zap" href="{{ a.wa }}" target="_blank" rel="noopener noreferrer" aria-label="Enviar no WhatsApp: {{ a.title }}">{% if a.kind == "checagem" %}Enviar checagem no WhatsApp{% else %}Enviar no WhatsApp{% endif %}</a>
+      <a class="lnk lnk-zap" href="{{ a.wa }}" target="_blank" rel="noopener noreferrer" aria-label="Enviar no WhatsApp: {{ a.title }}">{% if a.kind == "checagem" %}Enviar checagem no WhatsApp{% else %}<span class="lg">Enviar no </span>WhatsApp{% endif %}</a>
     </p>
     <div class="sum" hidden aria-live="polite"></div>
   </div>
@@ -46,7 +46,7 @@
 {% macro rail(active_uf, active, news_sources) %}
 <nav class="rail" aria-label="Filtrar por estado ou fonte">
   <details class="rail-sec" open>
-    <summary>Estados</summary>
+    <summary>Estados{% if active_uf %}<span class="rail-now">{{ uf_nome[active_uf] }}</span>{% endif %}</summary>
     {% for r in regioes %}
     <p class="rail-reg">{{ r.nome }}</p>
     <ul>
@@ -57,7 +57,7 @@
     {% endfor %}
   </details>
   <details class="rail-sec">
-    <summary>Fontes</summary>
+    <summary>Fontes{% if active %}{% for s in news_sources if s.id == active %}<span class="rail-now">{{ s.name }}</span>{% endfor %}{% endif %}</summary>
     <ul>
       {% for s in news_sources %}
       <li><a href="/fonte/{{ s.id }}/" {% if active == s.id %}aria-current="page"{% endif %}>{{ s.name }} <span class="n">{{ counts.get(s.id, 0) }}</span></a></li>

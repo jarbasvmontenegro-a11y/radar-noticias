@@ -241,6 +241,13 @@ def build(out_dir: str = "site") -> str:
     out.mkdir(parents=True)
 
     env = Environment(loader=FileSystemLoader(ROOT / "templates"), autoescape=select_autoescape(["html", "xml"]))
+
+    def asset(nome: str) -> str:
+        """URL do arquivo estático com a versão (hash do conteúdo): CSS/JS novos nunca ficam presos no cache do celular."""
+        f = ROOT / "templates" / "static" / nome.lstrip("/")
+        h = hashlib.sha256(f.read_bytes()).hexdigest()[:10] if f.is_file() else "0"
+        return f"/{nome.lstrip('/')}?v={h}"
+    env.globals["asset"] = asset
     # JSON dentro de <script>: escapa < > & e separadores de linha para nunca "fechar" a tag
     env.filters["jsonld"] = lambda v: (json.dumps(v, ensure_ascii=False).replace("<", "\\u003c").replace(">", "\\u003e")
                                        .replace("&", "\\u0026").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029"))
