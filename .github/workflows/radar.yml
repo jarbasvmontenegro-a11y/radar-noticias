@@ -78,9 +78,10 @@ jobs:
         run: |
           git config user.name "radar-bot"
           git config user.email "radar-bot@users.noreply.github.com"
-          git commit -m "dados: $(date -u +%FT%TZ)"
+          git commit -m "dados: $(date -u +%FT%TZ)" > /tmp/commit.log 2>&1 || { echo "::warning title=commit falhou::$(tr '\n' ' ' < /tmp/commit.log | cut -c1-900)"; exit 1; }
           for i in 1 2 3; do
-            git push && exit 0
+            git push 2> /tmp/push.log && exit 0
+            echo "::warning title=push falhou (tentativa $i)::$(tr '\n' ' ' < /tmp/push.log | cut -c1-900)"
             # outra execução guardou dados antes: descarta o commit local, refaz a coleta em cima dos dados mais novos
             cp data/destaques_ia.json /tmp/destaques_ia.json 2>/dev/null || true
             git fetch -q origin main
