@@ -790,6 +790,39 @@
    "urls": [],
    "uf": "SP",
    "grupo": "regional"
+  },
+  {
+   "id": "stj",
+   "nome": "STJ",
+   "home": "https://www.stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias.aspx",
+   "urls": [
+    "https://www.stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias.aspx?rss=1",
+    "https://res.stj.jus.br/hrestp-c-portalp/RSS.xml",
+    "https://www.stj.jus.br/sites/portalp/RSS"
+   ],
+   "uf": ""
+  },
+  {
+   "id": "pf",
+   "nome": "Polícia Federal",
+   "home": "https://www.gov.br/pf/pt-br/assuntos/noticias",
+   "urls": [
+    "https://www.gov.br/pf/pt-br/assuntos/noticias/RSS",
+    "https://www.gov.br/pf/pt-br/assuntos/noticias/rss",
+    "https://www.gov.br/pf/pt-br/RSS"
+   ],
+   "uf": ""
+  },
+  {
+   "id": "cgu",
+   "nome": "CGU",
+   "home": "https://www.gov.br/cgu/pt-br/assuntos/noticias",
+   "urls": [
+    "https://www.gov.br/cgu/pt-br/assuntos/noticias/RSS",
+    "https://www.gov.br/cgu/pt-br/assuntos/noticias/rss",
+    "https://www.gov.br/cgu/pt-br/RSS"
+   ],
+   "uf": ""
   }
  ]
 }
