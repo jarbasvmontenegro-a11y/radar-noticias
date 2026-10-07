@@ -15,7 +15,7 @@
   <script>document.documentElement.className+=" js";try{var s=localStorage.getItem("radar-size");if(s)document.documentElement.dataset.size=s;var th=localStorage.getItem("radar-theme");if(th)document.documentElement.dataset.theme=th}catch(e){}</script>
 </head>
 <body class="mini" data-mini="1">
-  <div id="mini-root" class="m" aria-live="polite"><p class="m-msg">Carregando as últimas notícias.</p></div>
+  <div id="mini-root" class="m" role="main" aria-live="polite"><p class="m-msg">Carregando as últimas notícias.</p></div>
   <noscript><p class="m-msg">Esta janela precisa de JavaScript. As notícias estão em <a href="/">{{ cfg.name }}</a>.</p></noscript>
   <script src="{{ asset('mini.js') }}" defer></script>
 </body>

@@ -358,9 +358,8 @@ def build(out_dir: str = "site") -> str:
 
     listing("/", news, active=None, highlights=highlights,
             title=f"Notícias de política hoje, {long_date(now)} | {cfg['name']}",
-            description=(f"As últimas notícias de política do Brasil, {long_date(now)}: títulos e resumos curtos de "
-                         f"{len(news_sources)} veículos, atualizados de hora em hora, com link direto para a fonte. "
-                         "Resumo com IA sob demanda e verificador de fake news."),
+            description=(f"Notícias de política do Brasil, {long_date(now)}: manchetes de {len(news_sources)} veículos de hora em hora, "
+                         "com resumo por IA e verificador de fake news."),
             heading="Notícias de política hoje", subheading="Manchetes dos principais veículos")
     pages.append(("/", last))
 
@@ -440,7 +439,7 @@ def build(out_dir: str = "site") -> str:
            pessoas_todas=pessoas_info)
     pages.append(("/notificacoes/", None))
     render("/busca/", "search.html", path="/busca/", noindex=True, title=f"Buscar nas manchetes | {cfg['name']}",
-           description="Busque nas manchetes de política guardadas pelo Radar de Notícias.", pessoas_todas=pessoas_info)
+           description="Busque nas manchetes de política guardadas pelo Radar de Notícias: digite um nome, tema ou assunto e veja o que cada veículo publicou.", pessoas_todas=pessoas_info)
     render("/assuntos/", "stories.html", path="/assuntos/", title=f"Como cada veículo contou o mesmo assunto | {cfg['name']}",
            description="Os assuntos mais noticiados de política, com a manchete de cada veículo lado a lado, e busca para achar o assunto que você quer.",
            historias=historias)

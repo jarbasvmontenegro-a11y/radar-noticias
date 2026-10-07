@@ -8,7 +8,7 @@
 
 :root {
   --bg: #f6f1e7; --paper: #fffdf8; --ink: #1b1a17; --muted: #5f5a4f; --rule: #d9d0bd;
-  --accent: #8c1c13; --accent-ink: #fff; --zap: #128c4a; --zap-ink: #fff; --zap-text: #0f6d3a; --focus: #0b57d0; --ok: #1d6b34; --warn: #8a5a00; --bad: #a3231a;
+  --accent: #8c1c13; --accent-ink: #fff; --zap: #0f7d43; --zap-ink: #fff; --zap-text: #0f6d3a; --focus: #0b57d0; --ok: #1d6b34; --warn: #8a5a00; --bad: #a3231a;
   --wrap: 1240px; --col-l: 200px; --col-r: 280px; --gap: 36px; --feed: 760px;
   --serif: "Newsreader", Georgia, "Times New Roman", serif;
   --sans: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
@@ -77,7 +77,7 @@ main { max-width: var(--wrap); margin: 0 auto; padding: 22px 16px 40px; }
 .n { color: var(--muted); font-size: .8rem; font-variant-numeric: tabular-nums; }
 
 .crumbs { font: 400 .88rem var(--sans); color: var(--muted); margin: 0 0 6px; }
-.crumbs a { text-decoration: none; }
+.crumbs a { text-decoration: none; display: inline-block; padding: 6px 0; }
 .crumbs a:hover { text-decoration: underline; }
 .feed-head h1 { font: 800 clamp(1.8rem, 4.6vw, 2.5rem)/1.08 var(--serif); letter-spacing: -.01em; margin: 0 0 6px; }
 .sub { margin: 0 0 4px; color: var(--muted); font: italic 400 1.05rem var(--serif); font-variant-numeric: lining-nums; }
@@ -287,7 +287,7 @@ table.status th[scope="row"] { font-weight: 700; }
 .nform fieldset { border: 0; border-top: 1px solid var(--rule); margin: 0; padding: 14px 0 8px; }
 .nform legend { font: 800 1.2rem var(--serif); padding: 0 12px 0 0; }
 .chk { display: flex; align-items: center; gap: 9px; font: 400 1rem var(--sans); padding: 6px 0; min-height: 40px; cursor: pointer; }
-.chk input { width: 20px; height: 20px; accent-color: var(--accent); flex: none; }
+.chk input { width: 24px; height: 24px; accent-color: var(--accent); flex: none; }
 .chk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0 18px; }
 .sel { display: flex; align-items: center; gap: 10px; font: 700 1rem var(--sans); padding: 10px 0; }
 .sel select { font: 400 1rem var(--sans); padding: 8px 10px; border: 1px solid var(--ink); border-radius: 4px; background: var(--paper); color: var(--ink); min-height: 40px; }
@@ -312,7 +312,7 @@ table.status th[scope="row"] { font-weight: 700; }
 @media (max-width: 560px) { .placar-list a { grid-template-columns: minmax(0, 1fr) auto; } .placar-list .bar { grid-column: 1 / -1; order: 3; } }
 .people { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; margin: 12px 0 0; padding: 8px 0; border-bottom: 1px solid var(--rule); font: 400 .95rem var(--sans); }
 .people-h { color: var(--muted); font-style: italic; font-family: var(--serif); }
-.people a { text-decoration: none; padding: 4px 0; border-bottom: 2px solid transparent; font-weight: 700; }
+.people a { text-decoration: none; padding: 7px 0; border-bottom: 2px solid transparent; font-weight: 700; }
 .people a:hover { border-bottom-color: var(--accent); }
 .people a[aria-current="page"] { border-bottom-color: var(--accent); }
 .ptable { width: 100%; border-collapse: collapse; margin: 18px 0; font: 400 1rem var(--sans); }
@@ -441,7 +441,7 @@ table.status th[scope="row"] { font-weight: 700; }
 /* manchetes: palavras de juízo destacadas e título alterado */
 mark.frame { background: color-mix(in srgb, var(--warn) 22%, transparent); color: inherit; padding: 0 .15em; border-radius: 2px; }
 details.alt { margin: 2px 0 6px; font: 400 .85rem var(--sans); color: var(--muted); }
-details.alt summary { cursor: pointer; display: inline-block; padding: 1px 8px; border: 1px solid var(--warn); border-radius: 999px; color: var(--warn); }
+details.alt summary { cursor: pointer; display: inline-block; padding: 5px 12px; border: 1px solid var(--warn); border-radius: 999px; color: var(--warn); }
 details.alt p { margin: 6px 0 0; }
 .alt-tag { display: inline-block; margin-left: 4px; padding: 0 7px; border: 1px solid var(--warn); border-radius: 999px; color: var(--warn); font: 400 .78rem var(--sans); white-space: nowrap; }
 .frame-note { margin-top: 18px; }

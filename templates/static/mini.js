@@ -34,7 +34,7 @@
     root = vazio;
 
     var cab = el(doc, "header", "m-head");
-    cab.appendChild(el(doc, "div", "m-brand", "Radar de Notícias"));
+    cab.appendChild(el(doc, "h1", "m-brand", "Radar de Notícias"));
     var st = el(doc, "div", "m-stat");
     st.appendChild(doc.createTextNode("site de " + hora(dados.gerado)));
     st.appendChild(doc.createElement("br"));
