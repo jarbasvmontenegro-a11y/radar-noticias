@@ -31,7 +31,7 @@
     <li><strong>Resumo com IA.</strong> Mostra o que a matéria diz, atribuindo cada afirmação ao veículo ou à fonte citada. Não garante que seja verdade: confira sempre na fonte.</li>
     <li><strong>Quantos veículos publicaram.</strong> No resumo, mostramos em quantos veículos monitorados o assunto aparece. Um assunto em um único veículo não é necessariamente errado, só ainda não foi confirmado por outro.</li>
     <li><strong>Atenção ao título.</strong> Quando a IA leu a matéria inteira e o título afirma algo que o texto não traz, ela avisa. É um apontamento da IA, que pode errar.</li>
-    <li><strong>Fonte oficial e checagem.</strong> Se uma agência oficial (STF, TCU, MPF) ou uma agência de checagem (Lupa, Aos Fatos e outras) tratou do mesmo assunto, mostramos o link.</li>
+    <li><strong>Fonte oficial e checagem.</strong> Se uma fonte oficial (STF, TCU, MPF, CGU, Agência Câmara ou Agência Senado) ou uma agência de checagem (Lupa, Aos Fatos e outras) tratou do mesmo assunto, mostramos o link.</li>
     <li><strong>Título alterado.</strong> Se o veículo troca o título de uma matéria depois de publicar, marcamos e mostramos o título anterior. Correções de letra e pontuação não contam.</li>
     <li><strong>Palavras destacadas.</strong> Na página de assuntos, marcamos palavras que costumam indicar juízo, emoção ou ataque. A lista é a mesma para todos os veículos e só destaca, sem dizer que a notícia é falsa: {% for w in enq_palavras %}{{ w }}{% if not loop.last %}, {% endif %}{% endfor %}.</li>
   </ul>
