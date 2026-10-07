@@ -30,6 +30,7 @@ jobs:
           echo "== www (8.8.8.8)";           dig +short "www.$DOMINIO" @8.8.8.8
           echo "== Delegação no registro (+trace, final)"; dig +trace NS "$DOMINIO" | tail -n 12
           echo "== HTTPS"; curl -sS -o /dev/null -D - --max-time 20 "https://$DOMINIO/" | head -n 12 || true
+          for h in "$DOMINIO" radar-noticias.pages.dev; do echo "== sw.js em $h"; curl -sS -o /dev/null -D - --max-time 20 "https://$h/sw.js" | grep -i -E "^HTTP|cache-control|content-type|cf-cache|age:" || true; done
           echo "== Conteúdo (primeiras linhas)"; curl -sS --max-time 20 "https://$DOMINIO/" | head -c 300 || true
       - name: Guardar resultado na branch dns-resultado
         if: always()
