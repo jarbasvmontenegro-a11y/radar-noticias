@@ -106,7 +106,12 @@ main { max-width: var(--wrap); margin: 0 auto; padding: 22px 16px 40px; }
 .zap-band h2 { margin: 0 0 2px; font: 800 1.2rem var(--serif); }
 .zap-band p { margin: 0; font: 400 .95rem/1.45 var(--sans); color: var(--muted); max-width: 46ch; }
 
-.topics { display: flex; gap: 4px 20px; overflow-x: auto; margin: 14px 0 0; padding: 0 0 2px; scrollbar-width: thin; border-bottom: 1px solid var(--ink); }
+.topics { display: flex; flex-wrap: wrap; gap: 0 20px; margin: 14px 0 0; padding: 0; border-bottom: 1px solid var(--ink); }
+/* no celular: uma linha que desliza com o dedo, sem barra de rolagem; o esmaecido na direita mostra que tem mais */
+@media (max-width: 760px) {
+  .topics { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
+  .topics::-webkit-scrollbar { display: none; }
+}
 .topics a { flex: 0 0 auto; font: 700 .95rem var(--sans); text-decoration: none; padding: 10px 0 8px; border-bottom: 3px solid transparent; margin-bottom: -1px; color: var(--muted); }
 .topics a:hover { color: var(--ink); }
 .topics a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
