@@ -166,6 +166,36 @@
 
   window.RadarPost = post; // usado por push.js (notificações)
 
+  // ---- barra de temas: uma linha que rola; setas no computador só do lado em que há mais ---
+  (function () {
+    var bar = document.querySelector(".topics");
+    if (!bar) return;
+    var wrap = document.createElement("div");
+    wrap.className = "topics-wrap";
+    bar.parentNode.insertBefore(wrap, bar);
+    wrap.appendChild(bar);
+    function seta(cls, txt, rotulo, dir) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "tscroll " + cls; b.hidden = true; b.tabIndex = -1;
+      b.setAttribute("aria-label", rotulo);
+      var s = document.createElement("span"); s.textContent = txt; s.setAttribute("aria-hidden", "true");
+      b.appendChild(s);
+      b.addEventListener("click", function () { bar.scrollBy({ left: dir * Math.max(160, bar.clientWidth * 0.7), behavior: "smooth" }); });
+      wrap.appendChild(b);
+      return b;
+    }
+    var prev = seta("prev", "\u2039", "Ver temas anteriores", -1), next = seta("next", "\u203a", "Ver mais temas", 1);
+    function atualizar() {
+      prev.hidden = bar.scrollLeft < 4;
+      next.hidden = bar.scrollLeft + bar.clientWidth >= bar.scrollWidth - 4;
+    }
+    var atual = bar.querySelector('[aria-current="page"]');
+    if (atual && atual.offsetLeft + atual.offsetWidth > bar.clientWidth) bar.scrollLeft = atual.offsetLeft - 24;
+    bar.addEventListener("scroll", atualizar, { passive: true });
+    window.addEventListener("resize", atualizar);
+    atualizar();
+  })();
+
   // ---- resumo sob demanda -----------------------------------------------------------
   // delegado: vale também para os resultados que a página de busca monta depois de carregada
   document.addEventListener("click", function (ev) {

@@ -106,15 +106,24 @@ main { max-width: var(--wrap); margin: 0 auto; padding: 22px 16px 40px; }
 .zap-band h2 { margin: 0 0 2px; font: 800 1.2rem var(--serif); }
 .zap-band p { margin: 0; font: 400 .95rem/1.45 var(--sans); color: var(--muted); max-width: 46ch; }
 
-.topics { display: flex; flex-wrap: wrap; gap: 0 20px; margin: 14px 0 0; padding: 0; border-bottom: 1px solid var(--ink); }
-/* no celular: uma linha que desliza com o dedo, sem barra de rolagem; o esmaecido na direita mostra que tem mais */
-@media (max-width: 760px) {
-  .topics { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
-  .topics::-webkit-scrollbar { display: none; }
+/* temas: uma linha só de botões que rola; no computador, setas aparecem só do lado em que há mais (app.js) */
+.topics-wrap { position: relative; margin: 14px 0 0; border-bottom: 1px solid var(--rule); }
+.topics { display: flex; flex-wrap: nowrap; gap: 8px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; padding: 0 0 14px; margin: 0; }
+.topics::-webkit-scrollbar { display: none; }
+.topics a { flex: 0 0 auto; font: 700 .86rem/1.2 var(--sans); text-decoration: none; padding: 7px 13px; border: 1px solid var(--rule); border-radius: 999px; background: var(--paper); color: var(--muted); white-space: nowrap; }
+.topics a:hover { color: var(--ink); border-color: var(--ink); }
+.topics a[aria-current="page"] { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+.tscroll { position: absolute; top: 0; bottom: 14px; width: 56px; border: 0; padding: 0; cursor: pointer; color: var(--ink); font: 700 1.3rem/1 var(--sans); display: flex; align-items: center; }
+.tscroll[hidden] { display: none; }
+.tscroll.prev { left: 0; justify-content: flex-start; background: linear-gradient(90deg, var(--bg) 55%, transparent); }
+.tscroll.next { right: 0; justify-content: flex-end; background: linear-gradient(270deg, var(--bg) 55%, transparent); }
+.tscroll span { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--rule); background: var(--paper); }
+.tscroll:hover span { border-color: var(--ink); }
+/* toque: sem setas; o esmaecido na direita mostra que tem mais */
+@media (pointer: coarse) {
+  .tscroll { display: none !important; }
+  .topics { -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
 }
-.topics a { flex: 0 0 auto; font: 700 .95rem var(--sans); text-decoration: none; padding: 10px 0 8px; border-bottom: 3px solid transparent; margin-bottom: -1px; color: var(--muted); }
-.topics a:hover { color: var(--ink); }
-.topics a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
 
 /* lista: horário na margem, agrupada por dia */
 .day { font: 800 1.2rem var(--serif); margin: 26px 0 0; padding-bottom: 6px; border-bottom: 1px solid var(--ink); }
@@ -418,7 +427,8 @@ table.status th[scope="row"] { font-weight: 700; }
   .mainnav a { padding: 13px 0 10px; }
   main { padding-top: 14px; }
   .desc { -webkit-line-clamp: 2; }
-  .topics { margin-top: 10px; margin-right: -16px; padding-right: 16px; }
+  .topics-wrap { margin-top: 10px; margin-right: -16px; }
+  .topics { padding-right: 16px; }
 }
 .trending .ia-note { display: block; margin: 4px 0 0; font-size: .85rem; }
 @media (max-width: 1020px) { .rail { margin-bottom: 14px; } }
