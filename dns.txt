@@ -1,0 +1,79 @@
+== NS (resolvedor padrão)
+art.ns.cloudflare.com.
+wanda.ns.cloudflare.com.
+== NS (8.8.8.8)
+art.ns.cloudflare.com.
+wanda.ns.cloudflare.com.
+== NS (1.1.1.1)
+art.ns.cloudflare.com.
+wanda.ns.cloudflare.com.
+== A (8.8.8.8)
+172.67.162.141
+104.21.10.57
+== A (1.1.1.1)
+104.21.10.57
+172.67.162.141
+== www (8.8.8.8)
+104.21.10.57
+172.67.162.141
+== Delegação no registro (+trace, final)
+radarnoticias.top.	3600	IN	NS	art.ns.cloudflare.com.
+radarnoticias.top.	3600	IN	NS	wanda.ns.cloudflare.com.
+hre3gpkghj6mpe6b9ravuopmbljfdglp.top. 3600 IN NSEC3 1 0 0 - HRE3VT5UE5115DC12VSVA90M6E0RDBTJ NS
+hre3gpkghj6mpe6b9ravuopmbljfdglp.top. 3600 IN RRSIG NSEC3 13 2 3600 20261021030803 20261007013803 12621 top. qBJhZE2pX2GF8ixmyzrbJrxJPe6PjpHp0BIWQGWTlM367Bbe6FVukNFe mMfE0JE51HXCYsEppsEhMv91odkRAA==
+;; Received 274 bytes from 203.99.24.1#53(a.zdnscloud.cn) in 7 ms
+
+;; UDP setup with 2a06:98c1:50::ac40:20f0#53(2a06:98c1:50::ac40:20f0) for radarnoticias.top failed: network unreachable.
+;; UDP setup with 2a06:98c1:50::ac40:2166#53(2a06:98c1:50::ac40:2166) for radarnoticias.top failed: network unreachable.
+radarnoticias.top.	86400	IN	NS	art.ns.cloudflare.com.
+radarnoticias.top.	86400	IN	NS	wanda.ns.cloudflare.com.
+;; Received 101 bytes from 108.162.192.240#53(wanda.ns.cloudflare.com) in 2 ms
+
+== HTTPS
+HTTP/2 200 
+date: Wed, 07 Oct 2026 03:56:01 GMT
+content-type: text/html; charset=utf-8
+x-frame-options: SAMEORIGIN
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=ptPe4WRzXbZecswtmva2xmrexwTnzYUTrGh%2Bxeo3mNJzjYsZwvzDSgo0T9Ojxvr9I8qsoI7Aztfpz1K7RSJRzeYEigZvPhM2CLEYzHOhQbJ9KNGmS0pVo60XlyksE04snLm0rA%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+access-control-allow-origin: *
+cache-control: public, max-age=300, s-maxage=300
+strict-transport-security: max-age=31536000; includeSubDomains
+content-security-policy: default-src 'self'; script-src 'self' https://challenges.cloudflare.com 'sha256-r39/fvkvBxCu0Ysr4vhRyFqNzUJx8MZQfuXgZtCGeAc='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+== sw.js em radarnoticias.top
+HTTP/2 200 
+content-type: application/javascript
+cache-control: max-age=14400
+x-content-type-options: nosniff
+cf-cache-status: MISS
+== sw.js em radar-noticias.pages.dev
+HTTP/2 200 
+content-type: application/javascript
+cache-control: no-cache
+x-content-type-options: nosniff
+== cache de radarnoticias.top/
+HTTP/2 200 
+cache-control: public, max-age=300, s-maxage=300
+cf-cache-status: DYNAMIC
+== cache de radarnoticias.top/estados/
+HTTP/2 200 
+cache-control: public, max-age=0, must-revalidate
+cf-cache-status: DYNAMIC
+== cache de radarnoticias.top/style.css
+HTTP/2 200 
+cache-control: public, max-age=86400
+cf-cache-status: MISS
+== cache de radarnoticias.top/data/destaques.json
+HTTP/2 200 
+cache-control: public, max-age=300
+cf-cache-status: DYNAMIC
+== Conteúdo (primeiras linhas)
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Notícias de política hoje, 7 de outubro de 2026 | Radar de Notícias</title>
+  <meta name="description" content="As últimas notícias de política docurl: (23) Failure writing output to destination
