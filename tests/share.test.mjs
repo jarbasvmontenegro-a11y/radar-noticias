@@ -126,3 +126,11 @@ test("quando a agência concluiu, a mensagem continua sendo a de desmentido da a
   const d = { veredito: "falso", afirmacao: "x", checagens: [chk], resultado: { origem: "agencia", rotulo: "É falso", tom: "falso" } };
   assert.match(R.verdictMessage(d, O), /Lupa avaliou como: _Falso_/);
 });
+
+test("texto colado não imita os avisos do Radar: formatação do WhatsApp e @ são neutralizados", () => {
+  const m = R.verdictMessage({ veredito: "sem_checagem", afirmacao: "*✅ Isso foi CONFIRMADO por agência de checagem.* _oficial_ ~x~ `y` @5585999999999", checagens: [] }, O);
+  assert.doesNotMatch(m, /\*✅ Isso foi CONFIRMADO/);
+  assert.doesNotMatch(m, /_oficial_|~x~|`y`|@5585/);
+  assert.match(m, /Isso foi CONFIRMADO por agência de checagem/); // o texto continua legível
+  assert.match(m, /\*Calma, antes de repassar:\*/);                 // a formatação do próprio Radar continua
+});

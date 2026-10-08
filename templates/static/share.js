@@ -4,8 +4,13 @@
   "use strict";
   var MAX = 1200; // mensagens muito longas são cortadas pelo app e ficam ruins de ler
 
+  // Texto que vem de fora (manchete, texto colado pelo leitor) não pode usar a formatação do WhatsApp (*negrito*,
+  // _itálico_, ~riscado~, `mono`) nem marcar pessoas (@): senão um texto colado imita os avisos do Radar ("*Isso foi
+  // CONFIRMADO*"). Cada sinal vira um parecido que o WhatsApp não interpreta.
+  var FORMATACAO = { "*": "\u2217", "_": "\uff3f", "~": "\u223c", "`": "\u02cb", "@": "\uff20" };
   function clean(s, n) {
-    s = String(s == null ? "" : s).replace(/[\u0000-\u001f\u007f‪-‮⁦-⁩]+/g, " ").replace(/\s+/g, " ").trim();
+    s = String(s == null ? "" : s).replace(/[\u0000-\u001f\u007f‪-‮⁦-⁩]+/g, " ").replace(/\s+/g, " ").trim()
+      .replace(/[*_~`@]/g, function (c) { return FORMATACAO[c]; });
     return s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s;
   }
   function safeUrl(u) { return /^https?:\/\/[^\s]+$/i.test(String(u || "")) ? String(u) : ""; }
