@@ -304,3 +304,7 @@ class TestTituloNaDescricao(unittest.TestCase):
         rotulo = {"title": "Daniela Lima", "desc": "Bolsonarismo reage com deboche", "url": "u"}
         self.assertEqual(c.ajustar_entrada({}, rotulo), rotulo)
         self.assertEqual(c.ajustar_entrada({"titulo_na_descricao": True}, {**rotulo, "desc": ""})["title"], "Daniela Lima")
+
+    def test_so_o_uol_usa_a_troca(self):
+        com = sorted(s["id"] for s in c.load_sources() if s.get("titulo_na_descricao"))
+        self.assertEqual(com, ["uol"])
