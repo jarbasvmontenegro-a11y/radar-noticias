@@ -174,7 +174,7 @@ test("extrator: carrossel de colunistas fora da matéria (Oeste) não vence o co
   const html = pagina(
     `<main><article class="entry-single post-1 post"><h1>Polícia prende suspeitos</h1>
        <div class="entry-content"><section class="ais-summary"><div class="ais-summary__body"><p>Resumo automático do próprio veículo, com algumas frases sobre a operação.</p></div></section>
-       ${paragrafos(25)}</div>
+       ${paragrafos(12)}</div>
        <div class="card-author"><p class="card-author__description">Autor da matéria é jornalista e escreve sobre segurança pública há muitos anos no veículo.</p></div></article>
      <section class="content-aside"><div id="our-columnists-widget" class="swiper-columnist-archive columnist-archive__content"><div class="swiper-wrapper columnist-archive__content-columnists">${Array.from({ length: 30 }, (_, i) => bio(i)).join("")}</div></div></section></main>`);
   const r = extractText(html);
