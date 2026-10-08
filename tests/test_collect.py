@@ -288,3 +288,19 @@ class ValidacaoTests(Base):
         aceitos, descartados, cont = v.validar_novas(novas, orcamento_s=-1, checar=lambda u: ("morto", "x"))
         self.assertEqual(len(aceitos), 5)
         self.assertEqual(cont["sem_tempo"], 5)
+
+
+class TestTituloNaDescricao(unittest.TestCase):
+    def test_uol_poe_o_colunista_no_titulo_e_a_manchete_na_descricao(self):
+        src = {"id": "uol", "titulo_na_descricao": True}
+        e = {"title": "Thais Bilenky", "desc": "Flávio repete velha tática da ambiguidade nas falas", "url": "u"}
+        out = c.ajustar_entrada(src, e)
+        self.assertEqual(out["title"], "Flávio repete velha tática da ambiguidade nas falas")
+        self.assertEqual(out["desc"], "Thais Bilenky")
+
+    def test_nao_troca_quando_o_titulo_ja_e_manchete_ou_sem_a_opcao(self):
+        certo = {"title": "Senado aprova PEC que reduz a jornada de trabalho", "desc": "Texto vai à Câmara.", "url": "u"}
+        self.assertEqual(c.ajustar_entrada({"titulo_na_descricao": True}, certo), certo)
+        rotulo = {"title": "Daniela Lima", "desc": "Bolsonarismo reage com deboche", "url": "u"}
+        self.assertEqual(c.ajustar_entrada({}, rotulo), rotulo)
+        self.assertEqual(c.ajustar_entrada({"titulo_na_descricao": True}, {**rotulo, "desc": ""})["title"], "Daniela Lima")

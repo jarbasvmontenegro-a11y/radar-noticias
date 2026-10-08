@@ -319,6 +319,18 @@ def _noise():
     return pats
 
 
+def ajustar_entrada(src: dict, e: dict) -> dict:
+    """Fontes cujo feed põe um rótulo no título (nome do colunista, "AO VIVO") e a manchete na descrição, como o UOL:
+    com "titulo_na_descricao": true, a manchete vira o título e o rótulo vira a descrição. Só troca quando o título é
+    curto (até 5 palavras) e a descrição é mais longa que ele, para não estragar um item que já venha certo."""
+    if not src.get("titulo_na_descricao"):
+        return e
+    titulo, desc = e["title"], e["desc"]
+    if desc and len(titulo.split()) <= 5 and len(desc.split()) > len(titulo.split()):
+        return {**e, "title": short(desc, MAX_TITLE), "desc": titulo}
+    return e
+
+
 def keep_entry(src: dict, e: dict) -> bool:
     """Feeds gerais trazem de tudo (esporte, polícia...). Cada fonte pode pedir:
     "include": trechos de URL que já indicam política (seção);
@@ -391,7 +403,7 @@ def collect(window_days: int = 7, per_source_limit: int = 40, validar: bool = Fa
     for src in sources:
         entries, err = results[src["id"]]
         added = 0
-        usable = [e for e in _newest_first(entries) if e["url"] and e["title"] and keep_entry(src, e)]
+        usable = [e for e in (ajustar_entrada(src, x) for x in _newest_first(entries)) if e["url"] and e["title"] and keep_entry(src, e)]
         for e in usable[:src.get("limite", per_source_limit)]:
             aid = article_id(e["url"])
             tkey = title_key(src["id"], e["title"])
