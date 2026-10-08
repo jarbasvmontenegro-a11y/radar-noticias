@@ -158,6 +158,16 @@ def source_groups(all_sources: list[dict], counts: dict) -> list[dict]:
     return out
 
 
+def minificar(out: Path) -> None:
+    """Tira comentários e espaços dos .js/.css publicados (scripts/minificar.mjs). Sem node/esbuild, publica como está."""
+    import shutil as _sh, subprocess
+    if not _sh.which("node"):
+        print("aviso: node não encontrado, js/css publicados sem minificar")
+        return
+    r = subprocess.run(["node", str(ROOT / "scripts" / "minificar.mjs"), str(out)], capture_output=True, text=True, timeout=120)
+    print((r.stdout or "").strip() or (r.stderr or "").strip())
+
+
 def build(out_dir: str = "site") -> str:
     cfg = json.loads((ROOT / "config" / "site.json").read_text(encoding="utf-8"))
     cfg["site_url"] = (os.environ.get("SITE_URL") or cfg["site_url"]).rstrip("/")
@@ -324,6 +334,7 @@ def build(out_dir: str = "site") -> str:
             kw["ld_items"] = [{"@type": "ListItem", "position": i + 1, "url": a["url"], "name": a["title"]}
                               for i, a in enumerate(kw["articles"][:10])]
         html = env.get_template(template).render(**{**ctx, **kw})
+        html = re.sub(r"<!--(?!\[if).*?-->", "", html, flags=re.S)  # comentários do HTML não vão para o ar
         dest = out / page_path.strip("/") / "index.html" if page_path != "/" else out / "index.html"
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(html, encoding="utf-8")
@@ -577,6 +588,7 @@ def build(out_dir: str = "site") -> str:
             shutil.copytree(f, out / f.name)
         else:
             shutil.copy(f, out / f.name)
+    minificar(out)
     problems = verify_site(out, min_items=min(len(colapsar(news)), page_size))
     if problems:
         raise BuildError("site gerado não passou na verificação:\n  - " + "\n  - ".join(problems))

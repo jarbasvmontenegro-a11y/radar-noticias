@@ -168,3 +168,18 @@ test("extrator: entrada acima de 1 MB é cortada, não processada inteira", () =
   assert.match(r.text, /Parágrafo número 6/);
   assert.ok(performance.now() - t0 < 1000);
 });
+
+test("extrator: carrossel de colunistas fora da matéria (Oeste) não vence o corpo da matéria", () => {
+  const bio = (n) => `<p>Colunista ${n} é jornalista, integrante do conselho editorial, foi um dos criadores de uma revista que dirigiu por quinze anos e escreve semanalmente.</p>`;
+  const html = pagina(
+    `<main><article class="entry-single post-1 post"><h1>Polícia prende suspeitos</h1>
+       <div class="entry-content"><section class="ais-summary"><div class="ais-summary__body"><p>Resumo automático do próprio veículo, com algumas frases sobre a operação.</p></div></section>
+       ${paragrafos(25)}</div>
+       <div class="card-author"><p class="card-author__description">Autor da matéria é jornalista e escreve sobre segurança pública há muitos anos no veículo.</p></div></article>
+     <section class="content-aside"><div id="our-columnists-widget" class="swiper-columnist-archive columnist-archive__content"><div class="swiper-wrapper columnist-archive__content-columnists">${Array.from({ length: 30 }, (_, i) => bio(i)).join("")}</div></div></section></main>`);
+  const r = extractText(html);
+  assert.match(r.text, /Parágrafo número 1\b/);
+  assert.doesNotMatch(r.text, /Colunista \d+ é jornalista/);
+  assert.doesNotMatch(r.text, /Autor da matéria é jornalista/);
+  assert.doesNotMatch(r.text, /Resumo automático do próprio veículo/);
+});

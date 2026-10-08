@@ -37,7 +37,7 @@ jobs:
       - name: Testes
         run: |
           python -m unittest discover -s tests
-          node --test tests/functions.test.mjs tests/share.test.mjs tests/push.test.mjs tests/pote.test.mjs
+          node --test tests/functions.test.mjs tests/share.test.mjs tests/push.test.mjs tests/pote.test.mjs tests/extract.test.mjs tests/verify.test.mjs
 
       # Coleta é só RSS: sem IA e sem custo. Falha (e avisa) se nenhuma fonte responder.
       - name: Coletar notícias
@@ -60,6 +60,12 @@ jobs:
           git add -f data/articles.json data/health.json
           if [ -f data/destaques_ia.json ]; then git add -f data/destaques_ia.json; fi
           if git diff --staged --quiet; then echo "changed=false" >> "$GITHUB_OUTPUT"; else echo "changed=true" >> "$GITHUB_OUTPUT"; fi
+
+      # esbuild só tira comentários e espaços do js/css publicados; se não instalar, o site sai sem minificar
+      - name: Instalar minificador
+        if: steps.changes.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        continue-on-error: true
+        run: npm install --no-save --no-audit --no-fund --ignore-scripts esbuild@0.25.10
 
       - name: Gerar e verificar o site
         if: steps.changes.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'

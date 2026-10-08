@@ -54,7 +54,7 @@ export async function onRequestPost({ request, env }) {
     const hosts = await allowedHosts(env, origin);
     if (!hosts.has(hostKey(url.hostname))) return fail("Só resumimos matérias das fontes monitoradas.", 403);
 
-    const key = "sum3:" + (await sha256(url.href)); // chave nova: os resumos antigos (sum:, sum2:) não têm atribuição nem o apontamento do título
+    const key = "sum4:" + (await sha256(url.href)); // chave nova: sum4 descarta resumos feitos com texto errado (carrossel de colunistas da Oeste)
     const cached = await cacheGet(env, key);
     if (cached) {
       log("resumir", { cache: true });
