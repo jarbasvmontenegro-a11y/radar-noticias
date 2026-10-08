@@ -259,6 +259,16 @@ class BuildTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 canal.ativo()
 
+    def test_rotas_das_functions_incluem_api_e_armadilhas(self):
+        self.write([article(1)])
+        b.build(self.out)
+        rotas = json.loads((b.ROOT / self.out / "_routes.json").read_text(encoding="utf-8"))
+        self.assertEqual(rotas["include"][0], "/api/*")
+        self.assertIn("/.env*", rotas["include"])
+        self.assertIn("/wp-*", rotas["include"])
+        self.assertLessEqual(len(rotas["include"]) + len(rotas["exclude"]), 100)
+        self.assertFalse(any(r in ("/*", "/") for r in rotas["include"]))  # o site em si nunca passa pelas Functions
+
     def test_pessoas_deteccao_e_paginas(self):
         from radar import pessoas
         self.assertEqual(pessoas.detect("Caiado anuncia apoio a Flávio no 2º turno"), ["flavio-bolsonaro", "caiado"])

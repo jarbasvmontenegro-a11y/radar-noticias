@@ -105,7 +105,7 @@ def verify_site(path: Path, min_items: int = 0) -> list[str]:
     problems: list[str] = []
     required = ["index.html", "404.html", "sitemap.xml", "robots.txt", "sobre/index.html",
                 "privacidade/index.html", "politica-editorial/index.html", "notificacoes/index.html", "busca/index.html", "assuntos/index.html", "fontes/index.html", "data/search-index.json", "data/allowed-hosts.json", "data/municipios.json", "data/destaques.json", "data/ultimas.json", "mini/index.html", "style.css", "app.js", "share.js", "push.js", "busca.js", "assuntos.js", "mini.js", "mini.css", "sw.js",
-                "manifest.webmanifest"]
+                "manifest.webmanifest", "_routes.json"]
     required += [pagina for recurso, pagina in (("verificador", "verificador/index.html"), ("pessoas", "pessoas/index.html"),
                                                  ("estados", "estados/index.html")) if canal_mod.tem(recurso)]
     for f in required:
@@ -504,6 +504,9 @@ def build(out_dir: str = "site") -> str:
         if i < 1200 and a.get("desc"):
             e["d"] = short_desc(a["desc"], 110)
         index.append(e)
+    # rotas das Functions: a API e as armadilhas do pote de mel (lib/pote.js); o resto é arquivo estático, sem custo
+    armadilhas = json.loads("[" + re.search(r"ARMADILHAS = \[(.*?)\];", (ROOT / "lib" / "pote.js").read_text(encoding="utf-8"), re.S).group(1).strip().rstrip(",") + "]")
+    (out / "_routes.json").write_text(json.dumps({"version": 1, "include": ["/api/*", *armadilhas], "exclude": []}), encoding="utf-8")
     (out / "data").mkdir()
     shutil.copy(ROOT / "config" / "municipios.json", out / "data" / "municipios.json")  # lista do IBGE, usada pelo verificador
     (out / "data" / "search-index.json").write_text(json.dumps(index, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")

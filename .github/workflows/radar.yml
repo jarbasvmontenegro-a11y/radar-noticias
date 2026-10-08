@@ -37,7 +37,7 @@ jobs:
       - name: Testes
         run: |
           python -m unittest discover -s tests
-          node --test tests/functions.test.mjs tests/share.test.mjs tests/push.test.mjs
+          node --test tests/functions.test.mjs tests/share.test.mjs tests/push.test.mjs tests/pote.test.mjs
 
       # Coleta é só RSS: sem IA e sem custo. Falha (e avisa) se nenhuma fonte responder.
       - name: Coletar notícias
