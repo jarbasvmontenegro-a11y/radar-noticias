@@ -75,7 +75,8 @@ jobs:
           TURNSTILE_SITEKEY: ${{ vars.TURNSTILE_SITEKEY }}
           CONTACT_EMAIL: ${{ vars.CONTACT_EMAIL }}
         run: |
-          python -m radar build
+          python -m radar build | tee /tmp/build.log
+          echo "::notice title=Minificação::$(grep -h minificar /tmp/build.log | head -1) | app.js=$(wc -c < site/app.js)B"
           python -m radar verify
 
       # Só guarda os dados depois que o site foi gerado e verificado com sucesso.
