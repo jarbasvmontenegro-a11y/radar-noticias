@@ -63,14 +63,16 @@ jobs:
         run: node scripts/diagnostico_extracao.mjs diag
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
-        if: inputs.tarefa == 'texto'
+        if: startsWith(inputs.tarefa, 'texto')
         with:
           node-version: "22"
 
       - name: Texto lido de uma fonte (ver scripts/diagnostico_texto.mjs)
-        if: inputs.tarefa == 'texto'
+        if: startsWith(inputs.tarefa, 'texto')
         continue-on-error: true
-        run: node scripts/diagnostico_texto.mjs diag oeste 12
+        env:
+          TAREFA: ${{ inputs.tarefa }}
+        run: node scripts/diagnostico_texto.mjs diag "$(echo "${TAREFA#texto}" | sed 's/^-//;s/^$/oeste/')" 8
 
       - name: Guardar resultado na branch diagnostico
         if: always()
