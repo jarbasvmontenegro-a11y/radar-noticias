@@ -1,18 +1,18 @@
 {
- "gerado": "2026-10-08T00:36:12+00:00",
+ "gerado": "2026-10-08T03:02:39+00:00",
  "assuntos": [
   {
-   "titulo": "Republicanos declara apoio a Flávio Bolsonaro no 2º turno",
-   "resumo": "O partido Republicanos anunciou apoio à candidatura de Flávio Bolsonaro no segundo turno da eleição presidencial.",
+   "titulo": "Republicanos declara apoio a Flávio Bolsonaro no segundo turno",
+   "resumo": "O partido Republicanos anunciou apoio à candidatura de Flávio Bolsonaro no segundo turno das eleições presidenciais.",
    "ids": [
+    "fba01b2bb72b",
     "90d6ac9f701b",
     "6ad0f608ac80",
     "762cea6f263b",
+    "576134ad48c1",
     "e12d3d31a25b",
     "f66bf6d3756a",
     "cbb6e5e666de",
-    "0055c95bf3f9",
-    "a827ad063280",
     "22c348c5d972",
     "23da1153631c",
     "96d3a99c56f0",
@@ -20,38 +20,111 @@
     "8c497af43829",
     "c4c27736ab5b",
     "61aea9db63d1",
-    "1a145c87655f",
     "1bea47d34280",
     "a4985c2c6927",
     "79cf9f6eab03",
     "8cb6700a3c19",
-    "d9a5ad936bc6",
-    "c43986e77ed1",
     "9fdaaff84d75",
     "242cbca4ba9e",
     "776781d2cfa7",
     "7bc1c0759de5",
-    "ce3191267193",
     "ef2b7288a047",
+    "b482cb42e64c",
     "1568ed1684a0",
     "bc9055c494ea",
-    "d6647bd47384",
-    "26fc26f21251",
-    "d5504022f618",
-    "f4c94aefcded",
     "ef3e38dab393",
-    "592cb5109604",
     "d47539898fd0",
-    "f93fe16af9ba",
-    "3c95244e55c5",
-    "309f357d82ea",
-    "924242f5c24f",
-    "84b36f2beffc"
+    "f93fe16af9ba"
    ]
   },
   {
-   "titulo": "Fachin dá prazo para PGR avaliar arquivamento de inquérito sobre Bolsonaro",
-   "resumo": "O ministro Fachin deu cinco dias para a PGR revisar pedido de arquivamento do inquérito sobre Bolsonaro na pandemia.",
+   "titulo": "Valdemar admite discussão sobre golpe no governo Bolsonaro",
+   "resumo": "O presidente do PL, Valdemar Costa Neto, admitiu que houve discussão sobre tentativa de golpe no fim do governo Bolsonaro, mas negou crime.",
+   "ids": [
+    "a50284719154",
+    "f73ee1c39760",
+    "1a651b8355b5",
+    "bdf05be07412",
+    "63f068ebb168",
+    "6a6f3924a4cb",
+    "2511dbec2e52",
+    "454a9175ddd4"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro defende mudar a Constituição",
+   "resumo": "Flávio Bolsonaro afirmou que pretende mudar a Constituição com maioria no Congresso, incluindo alterações no STF e maioridade penal.",
+   "ids": [
+    "a51aa43e286a",
+    "1b703035fd23",
+    "f6f69528005b",
+    "f0ea113fd140",
+    "23c4fc726f52",
+    "9a03a8e37855",
+    "af549ba6f3fe",
+    "e338fbcdfa89",
+    "57abe97e428b",
+    "c5aee836a7d1",
+    "965b0c4e7042",
+    "0e9cb06f0be3",
+    "660f72560a51",
+    "feb09e9e5489"
+   ]
+  },
+  {
+   "titulo": "Augusto Cury promete pronunciamento sobre apoio no segundo turno",
+   "resumo": "Augusto Cury disse que falará em breve sobre seu apoio no segundo turno, mantendo sigilo sobre a decisão.",
+   "ids": [
+    "87e3a43f310f",
+    "48f66f2e2dec",
+    "0142bd8bdec4",
+    "a3236aebfa0b",
+    "e92189bb77a2",
+    "ac1155d9d252",
+    "ea2a2f8f59e5",
+    "77deb01eddf2",
+    "9f690e2f0a9b",
+    "e5f2268b20b9"
+   ]
+  },
+  {
+   "titulo": "Tereza Cristina comenta reunião sobre adiamento da PEC 6x1",
+   "resumo": "Tereza Cristina afirmou que não houve decisão sobre adiar a votação da PEC que acaba com a escala 6x1.",
+   "ids": [
+    "7b8c73f4cb28",
+    "d02a7ec9e312",
+    "3cf5e76b47a0",
+    "705694d5dfe1",
+    "5d7a50c55872"
+   ]
+  },
+  {
+   "titulo": "Alcolumbre diz que PEC 6x1 pode ser votada antes do segundo turno",
+   "resumo": "O presidente do Senado, Davi Alcolumbre, afirmou que a PEC do fim da escala 6x1 pode ser votada antes do segundo turno se houver requerimento.",
+   "ids": [
+    "6bdaecf9bf02",
+    "a15298a63c9e",
+    "ab514c56f62b",
+    "adf85aa31bec",
+    "f6aef422bd7b",
+    "e8ad9526f5bf",
+    "55593e3f0cf0",
+    "c4060e6285b0",
+    "3cc4e9b945c0",
+    "329fbb9fc0e5",
+    "9e840458d822",
+    "d88e0a716881",
+    "4e1707f69c75",
+    "a476eb7056d4",
+    "d2bc7a6b8140",
+    "f1caf9b4cfe0",
+    "2668780d3438",
+    "e427db141205"
+   ]
+  },
+  {
+   "titulo": "Fachin dá prazo para PGR avaliar arquivamento de inquérito contra Bolsonaro",
+   "resumo": "O ministro Fachin deu cinco dias para a PGR revisar o pedido de arquivamento do inquérito sobre Bolsonaro na pandemia.",
    "ids": [
     "68ed9a5e9ed0",
     "87c24bd79c35",
@@ -64,8 +137,33 @@
    ]
   },
   {
+   "titulo": "Moraes manda intimar Bolsonaro sobre caso das joias sauditas",
+   "resumo": "O ministro Alexandre de Moraes determinou a intimação de Jair Bolsonaro no caso das joias sauditas.",
+   "ids": [
+    "4001b86cdff4",
+    "3d8bac64374c",
+    "feb65b2d1f24",
+    "5f7d59e7d2dd",
+    "5ab9e7569e8a",
+    "faab3afd745b"
+   ]
+  },
+  {
+   "titulo": "TRE-MG pede dados a Meta e X sobre post de Nikolas com documento falso",
+   "resumo": "O TRE de Minas Gerais solicitou à Meta e ao X dados sobre publicação de Nikolas Ferreira que mostrava documento falso.",
+   "ids": [
+    "751a2d45b7fc",
+    "47f0fa71c617",
+    "12df30a1b4e0",
+    "8fbc5dc15237",
+    "43a8349bfc33",
+    "0fe9cce896ce",
+    "9ebd56df4c29"
+   ]
+  },
+  {
    "titulo": "PF arquiva investigação sobre interferência estrangeira nas eleições",
-   "resumo": "A Polícia Federal arquivou apuração sobre suposta interferência dos EUA nas eleições brasileiras.",
+   "resumo": "A Polícia Federal arquivou a apuração sobre suposta interferência dos EUA nas eleições brasileiras de 2026.",
    "ids": [
     "e1b5397e4962",
     "5bea78a4beff",
@@ -85,11 +183,13 @@
    ]
   },
   {
-   "titulo": "STF exclui crédito presumido de ICMS da base do PIS/Cofins",
-   "resumo": "O STF decidiu excluir créditos presumidos de ICMS da base de cálculo do PIS e da Cofins, com impacto bilionário.",
+   "titulo": "STF exclui créditos de ICMS da base do PIS/Cofins",
+   "resumo": "O STF decidiu excluir os créditos presumidos de ICMS da base de cálculo do PIS e da Cofins, com impacto de R$ 16,5 bilhões.",
    "ids": [
+    "c0806c3b6769",
     "2a88708fabd3",
     "e203e2c2d900",
+    "a8cc9baf01b1",
     "5c5ef6187732",
     "40bde9c19f67",
     "84dc7e267ddb",
@@ -97,65 +197,33 @@
     "476c49cdd703",
     "2008adbde531",
     "d8336e4cbdd3",
-    "8d8f3c20d3ca",
-    "14732950c501",
-    "fff701715094",
-    "88d2438796b9",
-    "e0cb4e1d33b3"
+    "8d8f3c20d3ca"
    ]
   },
   {
-   "titulo": "Alcolumbre diz que PEC do fim da escala 6x1 pode ser votada antes do 2º turno",
-   "resumo": "O presidente do Senado afirmou que a PEC do fim da escala 6x1 pode ser votada antes do segundo turno se houver requerimento.",
+   "titulo": "Dólar volta a R$ 5 após eleições",
+   "resumo": "O dólar voltou a ser cotado acima de R$ 5, influenciado pelo cenário externo e ajustes pós-eleitorais.",
    "ids": [
-    "a15298a63c9e",
-    "ab514c56f62b",
-    "adf85aa31bec",
-    "5d7a50c55872",
-    "f6aef422bd7b",
-    "e8ad9526f5bf",
-    "55593e3f0cf0",
-    "c4060e6285b0",
-    "3cc4e9b945c0",
-    "329fbb9fc0e5",
-    "9e840458d822",
-    "d88e0a716881",
-    "4e1707f69c75",
-    "a476eb7056d4",
-    "d2bc7a6b8140",
-    "f1caf9b4cfe0",
-    "2668780d3438",
-    "e427db141205",
-    "c8d365151e57"
+    "a9e308cd38c0",
+    "24c48a9516a6",
+    "71b086f17682",
+    "06dc84dd351d",
+    "aef91d480e90",
+    "4db86d2d170c",
+    "26d039e9147e",
+    "f167a6e7e3ac",
+    "23a267566e35",
+    "acca5fbd04cf",
+    "0129eedeb886",
+    "ebf9ad43a981"
    ]
   },
   {
-   "titulo": "Lula cobra Flávio sobre posição no fim da escala 6x1",
-   "resumo": "Lula cobrou de Flávio Bolsonaro uma posição clara sobre o fim da escala 6x1.",
+   "titulo": "Nunes Marques analisará revisão criminal de Bolsonaro após segundo turno",
+   "resumo": "O ministro Nunes Marques afirmou que a revisão criminal de Jair Bolsonaro só será analisada após o segundo turno das eleições.",
    "ids": [
-    "81fd31c8a1b5",
-    "860628b0c9a7",
-    "019943cae65d",
-    "96fd3a4bda5f",
-    "dd2a8b6e1573",
-    "018b28c02b41",
-    "03e41c5a2c51",
-    "4254e78a688b",
-    "52f066c96976",
-    "780429e617ee",
-    "1dfaf04cf63a",
-    "4edb6c082563",
-    "f64aeb6757ec"
-   ]
-  },
-  {
-   "titulo": "Nunes Marques levará revisão criminal de Bolsonaro ao plenário após eleição",
-   "resumo": "O ministro Nunes Marques afirmou que a revisão criminal de Bolsonaro será analisada pelo plenário do STF após o segundo turno.",
-   "ids": [
-    "704fb81fd877",
     "98241666f8ea",
     "0ef80da93288",
-    "197ac9f93ed9",
     "93b138418aef",
     "18ca6dbc76e0",
     "47bd75786678",
@@ -167,144 +235,38 @@
     "2b34194469a8",
     "dcffa552ebdd",
     "ee837e5b2413",
-    "7890f3c8e262",
-    "861663b4e818",
-    "90f3602b7a7f",
-    "e876acf757dd",
-    "b1e1cc2266f6",
-    "118d542d1d60",
-    "fafcb7f77088",
-    "fe9f30f94440"
+    "7890f3c8e262"
    ]
   },
   {
-   "titulo": "Flávio Bolsonaro fala em mudar a Constituição",
-   "resumo": "Flávio Bolsonaro defendeu mudanças na Constituição, com foco no STF e na maioridade penal.",
+   "titulo": "Lula admite que campanha de 2026 foi a menos organizada",
+   "resumo": "O presidente Lula disse que a campanha presidencial de 2026 foi a menos organizada desde 1989.",
    "ids": [
-    "f6f69528005b",
-    "5aa18f638f12",
-    "f0ea113fd140",
-    "9a03a8e37855",
-    "af549ba6f3fe",
-    "59c76c152dce",
-    "e338fbcdfa89",
-    "57abe97e428b",
-    "4ade66d61e5d",
-    "c5aee836a7d1",
-    "6e1a09f076e8",
-    "5f18f16bf1a8",
-    "cf7aef37a342",
-    "965b0c4e7042",
-    "0e9cb06f0be3",
-    "00284d359568",
-    "660f72560a51",
-    "3dab7ee621f3",
-    "feb09e9e5489",
-    "8448b6be191f"
+    "bf85de98f2e4",
+    "a17b2b8e5a5f",
+    "e06cce4d9fda",
+    "5a12b8fb9ccc",
+    "289e4751a138"
    ]
   },
   {
-   "titulo": "Valdemar admite tentativa de golpe no fim do governo Bolsonaro",
-   "resumo": "O presidente do PL, Valdemar Costa Neto, admitiu que houve tentativa de golpe no fim do governo Bolsonaro.",
+   "titulo": "Estudantes fazem atos pró-Lula no Rio de Janeiro",
+   "resumo": "Estudantes realizaram manifestações no Rio de Janeiro em apoio à reeleição de Lula.",
    "ids": [
-    "f73ee1c39760",
-    "6a6f3924a4cb",
-    "2511dbec2e52",
-    "454a9175ddd4",
-    "732bcb574762"
-   ]
-  },
-  {
-   "titulo": "TRE-MG pede dados a Meta e X sobre post de Nikolas com documento falso",
-   "resumo": "O TRE de Minas Gerais solicitou à Meta e ao X dados sobre publicação de Nikolas Ferreira com documento falso.",
-   "ids": [
-    "751a2d45b7fc",
-    "47f0fa71c617",
-    "8fbc5dc15237",
-    "43a8349bfc33",
-    "0fe9cce896ce",
-    "9ebd56df4c29"
-   ]
-  },
-  {
-   "titulo": "Estudantes fazem atos no Rio em apoio a Lula",
-   "resumo": "Estudantes organizados pela UNE realizaram atos no Rio de Janeiro em defesa da reeleição de Lula.",
-   "ids": [
+    "e41c3f3e65a9",
     "2f3f653aaba1",
+    "47c850d3fda0",
     "9ba84a164491",
     "09e91b7e9e7b",
     "3493591c9207",
-    "bfc235e3f5ff",
     "0c3ffcf49106",
     "f0e28a8942a0",
     "df39dbd63c93"
    ]
   },
   {
-   "titulo": "Lula admite que campanha foi a menos organizada de sua carreira",
-   "resumo": "Lula declarou que a campanha presidencial de 2026 foi a menos organizada desde 1989.",
-   "ids": [
-    "bf85de98f2e4",
-    "a17b2b8e5a5f",
-    "e06cce4d9fda",
-    "5a12b8fb9ccc",
-    "2876879d154d",
-    "55a482ea08fa"
-   ]
-  },
-  {
-   "titulo": "Janja rebate críticas de Kátia Abreu e diz que seguirá na campanha",
-   "resumo": "Após críticas de Kátia Abreu, Janja afirmou que continuará atuando na campanha de Lula com respaldo do presidente.",
-   "ids": [
-    "c80bb0fb9cb4",
-    "01ac44f39a19",
-    "df219fdda05e",
-    "0d82fb0129bb",
-    "a717dfcaf67e",
-    "d73dc293fab5",
-    "7428e16bcd20",
-    "ead4981e443f",
-    "acbd4bf1e082",
-    "acd4fecad2d3",
-    "e3a205be43b9",
-    "beceffac16a9",
-    "b300272b8b9b",
-    "626ae14185b8",
-    "b0a1c6bb2aa2",
-    "15a241c94ff5",
-    "61d1fcde07d8"
-   ]
-  },
-  {
-   "titulo": "Moraes manda intimar Bolsonaro sobre caso das joias sauditas",
-   "resumo": "O ministro Moraes determinou a intimação de Jair Bolsonaro no caso das joias sauditas.",
-   "ids": [
-    "feb65b2d1f24",
-    "5f7d59e7d2dd",
-    "5ab9e7569e8a",
-    "faab3afd745b"
-   ]
-  },
-  {
-   "titulo": "Dólar sobe e bolsa recua após euforia eleitoral",
-   "resumo": "O dólar voltou a R$ 5 e a bolsa recuou após o primeiro turno, com cautela no exterior.",
-   "ids": [
-    "24c48a9516a6",
-    "71b086f17682",
-    "aef91d480e90",
-    "4db86d2d170c",
-    "f167a6e7e3ac",
-    "4a2783d62a21",
-    "23a267566e35",
-    "acca5fbd04cf",
-    "0129eedeb886",
-    "ebf9ad43a981",
-    "cb2fde954e0a"
-   ]
-  },
-  {
-   "titulo": "Flávio Bolsonaro diz que Bolsonaro subirá a rampa e passará a faixa",
-   "resumo": "Flávio Bolsonaro afirmou que, se eleito, Jair Bolsonaro subirá a rampa do Planalto e lhe entregará a faixa presidencial.",
+   "titulo": "Flávio Bolsonaro diz que Jair Bolsonaro passará a faixa presidencial",
+   "resumo": "Flávio Bolsonaro afirmou que, se eleito, seu pai Jair Bolsonaro subirá a rampa e lhe entregará a faixa presidencial.",
    "ids": [
     "83dca7becbd5",
     "695a80e6e91f",
@@ -314,36 +276,101 @@
    ]
   },
   {
-   "titulo": "Novo declara apoio a Flávio Bolsonaro no 2º turno",
-   "resumo": "O partido Novo anunciou apoio à candidatura de Flávio Bolsonaro no segundo turno.",
+   "titulo": "Cleitinho confirma apoio a Flávio Bolsonaro",
+   "resumo": "O senador Cleitinho confirmou apoio à candidatura de Flávio Bolsonaro no segundo turno.",
    "ids": [
-    "7bc8efff8e17",
-    "625e40744760"
+    "0055c95bf3f9",
+    "1a145c87655f",
+    "61d627018771"
    ]
   },
   {
    "titulo": "Clariana Barão declara apoio a Flávio Bolsonaro",
-   "resumo": "A ex-candidata do DC à Presidência, Clariana Barão, declarou apoio a Flávio Bolsonaro no segundo turno.",
+   "resumo": "A ex-candidata à Presidência Clariana Barão declarou apoio a Flávio Bolsonaro no segundo turno.",
    "ids": [
     "c13db45f5678",
     "413a1fadda9b",
-    "a1ab179e98f5"
+    "a1ab179e98f5",
+    "d6647bd47384",
+    "1a768744dc07",
+    "26fc26f21251",
+    "592cb5109604"
    ]
   },
   {
-   "titulo": "TSE julga caso Deltan Dallagnol",
-   "resumo": "O TSE julga nesta quinta-feira o caso do senador eleito Deltan Dallagnol.",
+   "titulo": "Kátia Abreu critica atuação de Janja na campanha de Lula",
+   "resumo": "Kátia Abreu afirmou que Janja ocupa espaço maior que Alckmin na campanha e que isso é errado.",
+   "ids": [
+    "cb18da5c8eb6",
+    "01ac44f39a19",
+    "df219fdda05e",
+    "a717dfcaf67e",
+    "7428e16bcd20",
+    "ead4981e443f",
+    "acbd4bf1e082",
+    "acd4fecad2d3",
+    "e3a205be43b9",
+    "beceffac16a9",
+    "626ae14185b8"
+   ]
+  },
+  {
+   "titulo": "Lula muda tom nas redes e grava vídeo selfie",
+   "resumo": "Após o primeiro turno, Lula mudou o tom nas redes sociais e gravou vídeo em formato selfie para atrair eleitores.",
+   "ids": [
+    "c9ca9ddd9efd",
+    "753c212edfa4",
+    "44bee50d66eb",
+    "393acc70e612"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro fala em indicar ministros ao STF",
+   "resumo": "Flávio Bolsonaro afirmou que indicará homens e mulheres para o STF, diferente do atual governo.",
+   "ids": [
+    "bccd912963fc",
+    "18a709d7e0e9",
+    "8b2ac645bcd5",
+    "4ade66d61e5d",
+    "9ac420a44627",
+    "5f18f16bf1a8",
+    "00284d359568"
+   ]
+  },
+  {
+   "titulo": "Autor do impeachment de Dilma critica Flávio Bolsonaro",
+   "resumo": "O autor do pedido de impeachment de Dilma Rousseff disse que votar em Flávio é legitimar golpe e pediu cuidado com o precipício.",
+   "ids": [
+    "7b254aee6177",
+    "2c9d84fbdd88",
+    "d1cb1c3bb375",
+    "61bf955ca094",
+    "6781c1bb6a7a"
+   ]
+  },
+  {
+   "titulo": "Van Hattem diz que pedirá impeachment de Gilmar Mendes",
+   "resumo": "O senador eleito Van Hattem afirmou que pedirá o impeachment de Gilmar Mendes no Senado.",
+   "ids": [
+    "9acaedfd6d01",
+    "449ebe399eba",
+    "67654c0e136f",
+    "4696194e7adb"
+   ]
+  },
+  {
+   "titulo": "TSE julga caso de Deltan Dallagnol",
+   "resumo": "O TSE deve julgar o caso de Deltan Dallagnol, que pode afetar sua candidatura ao Senado.",
    "ids": [
     "1350c7c983c0",
     "c64ebdf4545d",
     "4d959ac8d032",
-    "86febabd3fe3",
-    "0ec799b90e53"
+    "86febabd3fe3"
    ]
   },
   {
-   "titulo": "Emissoras definem datas de debates e entrevistas do 2º turno",
-   "resumo": "Emissoras de televisão definiram as datas dos debates e entrevistas com Lula e Flávio Bolsonaro no segundo turno.",
+   "titulo": "Debates presidenciais do segundo turno são agendados",
+   "resumo": "Emissoras definiram as datas dos debates entre Lula e Flávio Bolsonaro no segundo turno.",
    "ids": [
     "276a081913e3",
     "cba5c6fbbaf8",
@@ -353,67 +380,87 @@
     "3e6c23785c06",
     "3239573cde94",
     "24170cd9a20f",
-    "a26f94d5c149",
-    "f10d06153e7c",
-    "344029766703"
+    "a26f94d5c149"
    ]
   },
   {
-   "titulo": "MDB e Podemos articulam apoio a Flávio Bolsonaro",
-   "resumo": "MDB e Podemos articulam apoio à candidatura de Flávio Bolsonaro no segundo turno.",
+   "titulo": "Pesquisas eleitorais para o segundo turno são divulgadas",
+   "resumo": "Novas pesquisas de intenção de voto para o segundo turno entre Lula e Flávio Bolsonaro foram divulgadas.",
    "ids": [
+    "88d1d511bb9b",
+    "cdbfa16c3e02",
+    "663b084b83a0",
+    "9092b19b8649",
+    "b7b9e95de252",
+    "1eb4968ca55a",
+    "e2a9de6a44eb"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro recebe apoio de prefeitos e lideranças",
+   "resumo": "Flávio Bolsonaro recebeu apoio de prefeitos e lideranças políticas em diferentes estados.",
+   "ids": [
+    "29ed98872e0f",
+    "212c40d1d94a",
+    "d88659aea510",
+    "2f5ed375d419",
+    "491a294fb8b3",
+    "3335fd008310",
+    "830dba427fbd",
+    "545e45f3f894",
+    "09d5ef7618d0",
+    "f522922a8bb8",
+    "8df898631806",
+    "f2c92053e7bc",
+    "7dda99c4f41a",
+    "6cdfe41ed543"
+   ]
+  },
+  {
+   "titulo": "Lula reforça campanha com coordenação e jovens eleitos",
+   "resumo": "Lula incorporou Camilo Santana à coordenação e reuniu jovens eleitos para reforçar a campanha digital.",
+   "ids": [
+    "ce3c49ee680e",
+    "57a46e6f6ef7",
+    "58f2c0c6639e",
+    "5cbe8868e32b",
+    "e85aea00eaf7",
+    "47795078bf02",
+    "651d4b14362b",
+    "9ca613c0fe41",
+    "1b2aac3c8278",
+    "3048032c0e5d"
+   ]
+  },
+  {
+   "titulo": "Incêndio atinge universidade federal no Recife",
+   "resumo": "Um incêndio de grandes proporções atingiu um prédio da Universidade Federal de Pernambuco, no Recife.",
+   "ids": [
+    "f7494bad0c21",
+    "7bf85cacc040"
+   ]
+  },
+  {
+   "titulo": "MDB discute apoio a Flávio Bolsonaro",
+   "resumo": "Uma ala do MDB cobrou apoio a Flávio Bolsonaro, mas Baleia Rossi resistiu; a maioria deve anunciar apoio na semana que vem.",
+   "ids": [
+    "658857ec22b9",
     "c5aeec81819f",
-    "db76d2ecbdf6",
-    "82d5f431e8f8"
+    "d5504022f618",
+    "db76d2ecbdf6"
    ]
   },
   {
-   "titulo": "Oposição tenta adiar votação da PEC 6x1 para depois do 2º turno",
-   "resumo": "A oposição tenta evitar a votação da PEC do fim da escala 6x1 antes do segundo turno.",
+   "titulo": "Podemos deve anunciar apoio a Flávio Bolsonaro",
+   "resumo": "O partido Podemos deve anunciar apoio à candidatura de Flávio Bolsonaro no segundo turno.",
    "ids": [
-    "95367486bb45",
-    "4899cb5ed2f0",
-    "69f6fc91cbec",
-    "5faab6532184",
-    "2d78ced3c8f7",
-    "37ab76d36fe9",
-    "1e5073f3a27a",
-    "a3adfc4395b8",
-    "9a7d5808836f",
-    "29d9d3c90eec",
-    "9084e785dcdd",
-    "90e0d0db8835"
-   ]
-  },
-  {
-   "titulo": "Damares apoia fim da escala 6x1, mas chama pauta de eleitoreira",
-   "resumo": "A senadora Damares Alves disse que votará pelo fim da escala 6x1, mas classificou a pauta como eleitoreira.",
-   "ids": [
-    "8a6bd3675622",
-    "60efbe186825",
-    "397c0e8cd2b1"
-   ]
-  },
-  {
-   "titulo": "Moro defende Flávio Bolsonaro em evento do PL",
-   "resumo": "O senador Sergio Moro defendeu Flávio Bolsonaro durante evento do PL em Brasília.",
-   "ids": [
-    "0addcdb262da",
-    "2d30b9336820",
-    "0cf89dc6a093"
-   ]
-  },
-  {
-   "titulo": "Flávio Bolsonaro defende revisão da Reforma Tributária",
-   "resumo": "Flávio Bolsonaro defendeu revisão da Reforma Tributária e criticou a alíquota de 28%.",
-   "ids": [
-    "699bee96bd34",
-    "50d891c8cbe9"
+    "a827ad063280",
+    "f4c94aefcded"
    ]
   },
   {
    "titulo": "Daniella Marques diz que governo Flávio acabaria com split payment",
-   "resumo": "Daniella Marques afirmou que um eventual governo Flávio Bolsonaro acabaria com o split payment.",
+   "resumo": "Daniella Marques afirmou que um eventual governo de Flávio Bolsonaro acabaria com o split payment da reforma tributária.",
    "ids": [
     "3816988ac3e5",
     "b70e1d74306a",
@@ -422,82 +469,78 @@
    ]
   },
   {
-   "titulo": "Vice de Flávio diz que Nordeste será prioridade no 2º turno",
-   "resumo": "O vice de Flávio Bolsonaro afirmou que o Nordeste será prioridade na campanha do segundo turno.",
+   "titulo": "Durigan critica fim do split payment",
+   "resumo": "O secretário Durigan afirmou que ser contra o split payment é beneficiar fraudadores.",
    "ids": [
-    "f106d7556a14",
-    "1768af833acb",
-    "c07e27657cb6"
+    "d7ef2a7bd8e6",
+    "201079994917"
    ]
   },
   {
-   "titulo": "Flávio Bolsonaro diz que não aceita cheque em branco",
-   "resumo": "Flávio Bolsonaro afirmou que não aceita cheque em branco e garantiu respeitar o Congresso e a Constituição.",
+   "titulo": "Lula cobra Flávio sobre voto na PEC da escala 6x1",
+   "resumo": "Lula cobrou de Flávio Bolsonaro uma posição sobre a votação da PEC que acaba com a escala 6x1.",
    "ids": [
-    "1074ff9a45d6",
-    "7aec004345be"
+    "860628b0c9a7",
+    "019943cae65d",
+    "96fd3a4bda5f",
+    "dd2a8b6e1573",
+    "018b28c02b41",
+    "03e41c5a2c51",
+    "4254e78a688b"
    ]
   },
   {
-   "titulo": "Michelle Bolsonaro diz que Bolsonaro é ameaça para si sem supervisão",
-   "resumo": "Michelle Bolsonaro afirmou que Jair Bolsonaro é uma ameaça para si mesmo sem acompanhamento.",
+   "titulo": "Oposição tenta adiar votação da PEC 6x1",
+   "resumo": "A oposição tentou evitar a votação da PEC do fim da escala 6x1 antes do segundo turno.",
    "ids": [
-    "cb9448e5daf7",
-    "a4d451270932",
-    "3e6133b34fc1"
+    "95367486bb45",
+    "4899cb5ed2f0",
+    "69f6fc91cbec",
+    "5faab6532184",
+    "e374bd53728e",
+    "2d78ced3c8f7",
+    "37ab76d36fe9",
+    "1e5073f3a27a",
+    "a3adfc4395b8",
+    "9a7d5808836f"
    ]
   },
   {
-   "titulo": "Nikolas Ferreira diz que quer presidir CCJ da Câmara",
-   "resumo": "O deputado Nikolas Ferreira afirmou que gostaria de presidir a CCJ da Câmara a partir de 2027.",
+   "titulo": "Flávio Bolsonaro recebe apoio do PL e discute estratégias",
+   "resumo": "Flávio Bolsonaro reuniu a bancada do PL para alinhar estratégias de campanha no segundo turno.",
    "ids": [
-    "9f3ee2504e6f",
-    "f729419d0e10",
-    "37488d7a6b95",
-    "f3d2f26a0443"
-   ]
-  },
-  {
-   "titulo": "Van Hattem diz que trabalhará por impeachment de Gilmar Mendes",
-   "resumo": "O senador eleito Van Hattem afirmou que começará o mandato trabalhando pelo impeachment de Gilmar Mendes.",
-   "ids": [
-    "449ebe399eba",
-    "67654c0e136f",
-    "4696194e7adb"
-   ]
-  },
-  {
-   "titulo": "Lula muda tom nas redes e grava vídeo selfie",
-   "resumo": "Lula mudou o tom nas redes sociais e gravou vídeo em formato selfie após o primeiro turno.",
-   "ids": [
-    "c9ca9ddd9efd",
-    "753c212edfa4",
-    "44bee50d66eb",
-    "393acc70e612"
-   ]
-  },
-  {
-   "titulo": "Flávio Bolsonaro reúne bancada do PL para alinhar estratégia do 2º turno",
-   "resumo": "Flávio Bolsonaro se reuniu com a bancada do PL para alinhar estratégias para o segundo turno.",
-   "ids": [
+    "35c695120343",
+    "c0259b5d7d4b",
     "596edc7f1584",
     "0ffe71be9c59",
-    "2ba79edbf43c",
-    "30c68afd4204",
-    "2f0f890635ed"
+    "b2d7feaa9362",
+    "2ba79edbf43c"
    ]
   },
   {
-   "titulo": "Lula publica vídeo com jovens eleitos e influenciadores",
-   "resumo": "Lula publicou vídeo ao lado de deputados jovens eleitos e influenciadores para reforçar campanha digital.",
+   "titulo": "Michelle Bolsonaro participa de reunião com Flávio",
+   "resumo": "Michelle Bolsonaro participou de reunião de Flávio Bolsonaro com a bancada do PL.",
    "ids": [
-    "47795078bf02",
-    "651d4b14362b",
-    "9ca613c0fe41",
-    "345372f721dd",
-    "a9e8fbe23649",
-    "837cb3dae9e3",
-    "043bd6796a7b"
+    "c28aba3b56f4",
+    "cb9448e5daf7"
+   ]
+  },
+  {
+   "titulo": "Tarcísio de Freitas elogia Flávio Bolsonaro",
+   "resumo": "O governador Tarcísio de Freitas elogiou Flávio Bolsonaro e articulou apoio do Republicanos.",
+   "ids": [
+    "4521fec24a64",
+    "0f356814bb7d",
+    "42f7a2683a25"
+   ]
+  },
+  {
+   "titulo": "Moro defende Flávio Bolsonaro em evento do PL",
+   "resumo": "O senador Sergio Moro defendeu Flávio Bolsonaro durante evento do PL em Brasília.",
+   "ids": [
+    "0addcdb262da",
+    "2d30b9336820",
+    "b47fb0430334"
    ]
   }
  ]
