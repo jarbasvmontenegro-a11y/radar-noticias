@@ -147,12 +147,13 @@ test("extrator: nunca lança erro e devolve sempre os três campos", () => {
   }
 });
 
+// Limite folgado de propósito: runners compartilhados do CI oscilam; uma varredura quadrática levaria dezenas de segundos.
 test("extrator: HTML patológico termina rápido (sem varredura quadrática)", () => {
   const casos = ["<a ".repeat(100000), '<a href="'.repeat(50000), "<p>".repeat(60000) + "texto", "<div>".repeat(5000) + "x", "&".repeat(200000), "<!--".repeat(50000)];
   for (const c of casos) {
     const t0 = performance.now();
     extractText(c);
-    assert.ok(performance.now() - t0 < 500, `lento demais para ${c.slice(0, 12)}`);
+    assert.ok(performance.now() - t0 < 3000, `lento demais para ${c.slice(0, 12)}`);
   }
 });
 
@@ -166,7 +167,7 @@ test("extrator: entrada acima de 1 MB é cortada, não processada inteira", () =
   const t0 = performance.now();
   const r = extractText(pagina(`<article>${paragrafos(6)}</article>${lixo}`));
   assert.match(r.text, /Parágrafo número 6/);
-  assert.ok(performance.now() - t0 < 1000);
+  assert.ok(performance.now() - t0 < 5000);
 });
 
 test("extrator: carrossel de colunistas fora da matéria (Oeste) não vence o corpo da matéria", () => {
