@@ -120,7 +120,7 @@ const OK_BODY = { url: "https://g1.globo.com/politica/noticia.html", title: "Tí
 // resposta da IA no formato novo: JSON com resumo e contexto
 const resumoJson = (resumo = "Resumo de teste da matéria.", contexto = "") => JSON.stringify({ resumo, contexto });
 
-test("resumir: gera resumo da matéria, guarda em cache (sum4:) e não chama a IA duas vezes", async () => {
+test("resumir: gera resumo da matéria, guarda em cache (sum5:) e não chama a IA duas vezes", async () => {
   const { env, calls } = setup();
   const r1 = await call(resumir, env, "/api/resumir", OK_BODY);
   const d1 = await r1.json();
@@ -130,7 +130,7 @@ test("resumir: gera resumo da matéria, guarda em cache (sum4:) e não chama a I
   assert.deepEqual(Object.keys(d1).sort(), ["aviso", "base", "checagens", "contexto", "nota", "oficiais", "outros", "resumo", "tituloConfere", "veiculos"]);
   assert.equal(d1.veiculos, null); // índice sem termos suficientes para comparar: a página não afirma nada
   assert.equal(d1.aviso, "");
-  assert.equal(cacheKeys(env, "sum4:").length, 1);
+  assert.equal(cacheKeys(env, "sum5:").length, 1);
   assert.equal(cacheKeys(env, "sum:").length, 0); // a chave antiga não é mais usada
   const r2 = await call(resumir, env, "/api/resumir", OK_BODY);
   assert.equal(r2.status, 200);
@@ -160,7 +160,7 @@ test("resumir: matéria curta (paywall) e sem descrições úteis: base 'nenhuma
   assert.deepEqual(d.outros, []);
   assert.equal(calls.llm, 0);
   assert.deepEqual(await quota(env), [0]);
-  assert.equal(cacheKeys(env, "sum4:").length, 0);
+  assert.equal(cacheKeys(env, "sum5:").length, 0);
 });
 
 // descrição publicada pelo veículo: mais de 200 caracteres e com fatos que o título não traz
@@ -180,7 +180,7 @@ test("resumir: a descrição do CLIENTE só vale quando falta tudo do servidor, 
   const { env } = setup({ pageHtml: "<html><head><title>Senado aprova texto-base da reforma tributária</title></head><body><p>Assine.</p></body></html>" });
   const d = await (await call(resumir, env, "/api/resumir", { ...OK_BODY, desc: DESC_SENADO })).json();
   assert.equal(d.base, "descricoes");
-  assert.equal(cacheKeys(env, "sum4:").length, 0); // veio do cliente: não pode envenenar o cache
+  assert.equal(cacheKeys(env, "sum5:").length, 0); // veio do cliente: não pode envenenar o cache
 });
 
 // índice com a própria matéria e a cobertura de outros veículos
@@ -208,6 +208,16 @@ test("resumir: 'outros' e 'contexto' vêm do índice do servidor (outro veículo
   const prompt = calls.llmBodies[0].messages[1].content;
   assert.ok(prompt.includes("Folha destaca a perda de arrecadação")); // descrição `d` do outro veículo vai para a IA
   assert.ok(!prompt.includes("Site Falso") && !prompt.includes("inventado"));
+});
+
+test("resumir: matéria que não abriu NÃO é resumida com as descrições de outros veículos (outra notícia do mesmo assunto)", async () => {
+  const indice = INDICE_RESUMO.map((a, i) => (i === 0 ? { ...a, d: "" } : i === 1 ? { ...a, d: DESC_SENADO } : a));
+  const { env, calls } = setup({ index: indice, pageHtml: "<html><head><title>Senado aprova texto-base da reforma tributária</title></head><body><p>Assine.</p></body></html>" });
+  const d = await (await call(resumir, env, "/api/resumir", OK_BODY)).json();
+  assert.equal(d.base, "nenhuma");
+  assert.equal(d.resumo, "");
+  assert.equal(calls.llm, 0);
+  assert.ok(d.outros.length >= 1); // os outros veículos continuam listados, só não viram o "resumo"
 });
 
 test("resumir: 'contexto' que não cita nenhum veículo da lista é descartado; sem outros, contexto é sempre vazio", async () => {
@@ -894,7 +904,7 @@ test("cache com falha no KV não derruba a função", async () => {
   const { env } = setup();
   const kv = env.RADAR_KV;
   const origPut = kv.put.bind(kv);
-  kv.put = async (k, v, o) => { if (k.startsWith("sum4:")) throw new Error("kv fora"); return origPut(k, v, o); };
+  kv.put = async (k, v, o) => { if (k.startsWith("sum5:")) throw new Error("kv fora"); return origPut(k, v, o); };
   const r = await call(resumir, env, "/api/resumir", OK_BODY);
   assert.equal(r.status, 200);
 });
