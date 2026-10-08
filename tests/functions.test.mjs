@@ -31,7 +31,7 @@ ${"<p>" + "Outro parágrafo com mais informação relevante para o resumo do lei
  * Opções: llm(body, n, url, init) -> texto ou Response; factchecks, factStatus, factBody; gdelt { status, body } ou função;
  * index (lista ou null = arquivo ausente); municipios (lista ou null); pageHtml, pageStatus, page(url, n).
  */
-function setup({ llm, factchecks = [], factStatus = 200, factBody, pageHtml = ARTICLE_HTML, pageStatus = 200, page, index = SEARCH_INDEX, municipios = MUNICIPIOS, gdelt } = {}) {
+function setup({ llm, factchecks = [], factStatus = 200, factBody, pageHtml = ARTICLE_HTML, pageStatus = 200, page, index = SEARCH_INDEX, municipios = MUNICIPIOS, gdelt, bloqueados = [] } = {}) {
   const calls = { llm: 0, fact: 0, gdelt: 0, page: 0, urls: [], factHeaders: [], llmBodies: [] };
   resetHostsCache(); // também limpa os caches de módulo do índice e dos municípios
   globalThis.fetch = async (input, init) => {
@@ -59,6 +59,7 @@ function setup({ llm, factchecks = [], factStatus = 200, factBody, pageHtml = AR
     }
     if (url.includes("/data/search-index.json")) return index === null ? new Response("", { status: 404 }) : new Response(JSON.stringify(index), { status: 200 });
     if (url.includes("/data/municipios.json")) return municipios === null ? new Response("", { status: 404 }) : new Response(JSON.stringify(municipios), { status: 200 });
+    if (url.includes("/data/bloqueados.json")) return new Response(JSON.stringify({ hosts: bloqueados }), { status: 200 });
     if (url.includes("/data/allowed-hosts.json")) return new Response(JSON.stringify(["g1.globo.com", "folha.uol.com.br"]), { status: 200 });
     calls.page++;
     if (page) return page(url, calls.page);
@@ -218,6 +219,31 @@ test("resumir: matéria que não abriu NÃO é resumida com as descrições de o
   assert.equal(d.resumo, "");
   assert.equal(calls.llm, 0);
   assert.ok(d.outros.length >= 1); // os outros veículos continuam listados, só não viram o "resumo"
+});
+
+test("resumir: veículo da lista de bloqueados: sem IA, sem Turnstile, sem cota, sem cache, mas lista os outros veículos", async () => {
+  const { env, calls } = setup({ index: INDICE_RESUMO, bloqueados: ["g1.globo.com"] });
+  const r = await call(resumir, env, "/api/resumir", OK_BODY);
+  const d = await r.json();
+  assert.equal(r.status, 200);
+  assert.equal(d.base, "bloqueada");
+  assert.equal(d.resumo, "");
+  assert.match(d.aviso, /bloqueia a leitura automática/);
+  assert.equal(calls.llm, 0);
+  assert.equal(calls.page, 0); // nem tentou abrir a página
+  assert.deepEqual(await quota(env), []);
+  assert.equal(cacheKeys(env, "sum5:").length, 0);
+  assert.deepEqual(d.outros.map((o) => o.fonte).sort(), ["Estadão", "Folha"]);
+});
+
+test("resumir: página que responde 403 vira 'bloqueada' (sem IA, cota devolvida) mesmo fora da lista", async () => {
+  const { env, calls } = setup({ index: INDICE_RESUMO, pageStatus: 403 });
+  const d = await (await call(resumir, env, "/api/resumir", OK_BODY)).json();
+  assert.equal(d.base, "bloqueada");
+  assert.equal(d.resumo, "");
+  assert.equal(calls.llm, 0);
+  assert.deepEqual(await quota(env), [0]);
+  assert.equal(cacheKeys(env, "sum5:").length, 0);
 });
 
 test("resumir: 'contexto' que não cita nenhum veículo da lista é descartado; sem outros, contexto é sempre vazio", async () => {

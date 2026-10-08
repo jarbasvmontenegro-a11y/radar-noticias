@@ -230,13 +230,14 @@
           lista("Checagem relacionada", d.checagens, function (o) { return o.agencia + (o.avaliacao ? ": " + o.avaliacao : ""); });
           var tail = (d.aviso ? d.aviso + " " : "") + (d.resumo ? (d.nota || "Resumo gerado por IA, pode conter erros. Confirme na fonte.") : "");
           if (tail) out.appendChild(el("span", { class: "note", text: tail }));
+          if (d.base === "bloqueada") { btn.dataset.off = "1"; btn.classList.add("btn-off"); btn.textContent = "Sem resumo (bloqueado)"; btn.title = "Este veículo bloqueia a leitura automática da matéria"; return; }
           btn.dataset.done = "1"; btn.textContent = d.resumo ? "Ocultar resumo" : "Fechar";
         })
         .catch(function (e) {
           out.className = "sum error"; out.textContent = e.message;
           btn.textContent = "Tentar de novo";
         })
-        .then(function () { btn.disabled = false; });
+        .then(function () { btn.disabled = !!btn.dataset.off; });
     })();
   });
 

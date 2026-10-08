@@ -48,7 +48,8 @@
     var R = window.RadarShare;
     var meta = el("p", { "class": "meta" }, [e.i ? el("a", { "class": "src", href: "/fonte/" + encodeURIComponent(e.i) + "/", text: e.s }) : el("span", { "class": "src", text: e.s })]);
     var actions = el("p", { "class": "actions" });
-    if (!e.c) actions.appendChild(el("button", { type: "button", "class": "lnk btn-sum", "data-url": safeUrl(e.u), "data-title": e.t, "data-source": e.s, "data-desc": e.d || "", text: "Resumir com IA" }));
+    if (!e.c && e.b) actions.appendChild(el("button", { type: "button", "class": "lnk btn-sum btn-off", disabled: "disabled", title: "Este veículo bloqueia a leitura automática da matéria", text: "Sem resumo (bloqueado)" }));
+    else if (!e.c) actions.appendChild(el("button", { type: "button", "class": "lnk btn-sum", "data-url": safeUrl(e.u), "data-title": e.t, "data-source": e.s, "data-desc": e.d || "", text: "Resumir com IA" }));
     actions.appendChild(el("a", { "class": "lnk", href: safeUrl(e.u), target: "_blank", rel: "noopener", text: "Ler na fonte" }));
     if (R) actions.appendChild(el("a", { "class": "lnk lnk-zap", href: R.waLink(R.newsMessage({ title: e.t, source: e.s, url: e.u, desc: e.d || "", kind: e.c ? "checagem" : "noticia" }, { siteName: document.body.dataset.siteName })), target: "_blank", rel: "noopener noreferrer", text: e.c ? "Enviar checagem no WhatsApp" : "WhatsApp" }));
     var body = el("div", { "class": "body" }, [meta, el("h3", { "class": "title" }, [el("a", { href: safeUrl(e.u), target: "_blank", rel: "noopener", text: e.t })])]);

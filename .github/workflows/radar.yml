@@ -54,10 +54,16 @@ jobs:
           RADAR_FORCAR_IA: ${{ github.event_name == 'workflow_dispatch' && '1' || '0' }}
         run: python -m radar destaques-ia
 
+      # Veículos que bloqueiam a leitura automática: o site não oferece resumo dessas matérias (data/bloqueados.json)
+      - name: Sondar veículos que bloqueiam a leitura
+        continue-on-error: true
+        run: node scripts/sondar_hosts.mjs
+
       - name: Houve novidade?
         id: changes
         run: |
           git add -f data/articles.json data/health.json
+          if [ -f data/bloqueados.json ]; then git add -f data/bloqueados.json; fi
           if [ -f data/destaques_ia.json ]; then git add -f data/destaques_ia.json; fi
           if git diff --staged --quiet; then echo "changed=false" >> "$GITHUB_OUTPUT"; else echo "changed=true" >> "$GITHUB_OUTPUT"; fi
 

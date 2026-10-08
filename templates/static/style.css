@@ -147,6 +147,7 @@ main { max-width: var(--wrap); margin: 0 auto; padding: 22px 16px 40px; }
 .lnk-zap { color: var(--zap-text); }
 .lnk-zap:hover { color: var(--zap-text); text-decoration-color: currentColor; }
 .lnk[disabled] { opacity: .6; cursor: progress; }
+.lnk.btn-off, .lnk.btn-off[disabled] { opacity: .65; cursor: not-allowed; text-decoration: none; color: var(--muted); }
 .btn-sum { display: none; }
 .js .btn-sum { display: inline-block; }
 

@@ -3,14 +3,14 @@
 // O contexto (como outros veículos trataram o assunto) vem do índice do SERVIDOR, nunca do cliente: o resultado fica em
 // cache por URL e um cliente mal-intencionado não pode envenenar o resumo que os outros leitores vão ver.
 import {
-  allowedHosts, cacheGet, cachePut, checkLimits, checkTurnstile, chat, clip, fail, fetchPage, hostKey, json, log,
+  allowedHosts, blockedHosts, cacheGet, cachePut, checkLimits, checkTurnstile, chat, clip, fail, fetchPage, hostKey, json, log,
   methodNotAllowed, parseHttpUrl, parseJson, preflight, sha256,
 } from "../../lib/api.js";
 import { loadIndex } from "../../lib/data.js";
 import { checagensDoIndice, mesclarChecagens, publicas } from "../../lib/factcheck.js";
 import { topicTerms } from "../../lib/text.js";
 import {
-  AVISO_CURTO, AVISO_DESCRICOES, AVISO_IA, AVISO_NENHUMA, MIN_DESCRICOES, MIN_TEXTO, citaVeiculo, cobertura, descricoesUteis, outrosVeiculos, repeteTitulo,
+  AVISO_BLOQUEADA, AVISO_CURTO, AVISO_DESCRICOES, AVISO_IA, AVISO_NENHUMA, MIN_DESCRICOES, MIN_TEXTO, citaVeiculo, cobertura, descricoesUteis, outrosVeiculos, repeteTitulo,
 } from "../../lib/summary.js";
 
 const SISTEMA =
@@ -42,6 +42,16 @@ function extras(index, href, titulo, self) {
   return { veiculos: c.veiculos, oficiais: self?.o ? [] : c.oficiais, checagens };
 }
 
+/** Matéria que o veículo não deixa ler: sem IA, sem cota. Só lista como os outros veículos noticiaram. */
+async function respostaBloqueada(env, origin, url, body, indice) {
+  const index = indice !== undefined ? indice : await loadIndex(env, origin).catch(() => null);
+  const self = index?.porUrl(url.href) || null;
+  const titulo = self?.t || clip(body.title, 300);
+  const outros = titulo ? outrosVeiculos(index, url.href, titulo, self).filter((o) => parseHttpUrl(o.url)).map(({ fonte, titulo: t, url: u }) => ({ fonte, titulo: t, url: u })) : [];
+  const ex = titulo && self ? extras(index, url.href, titulo, self) : { veiculos: null, oficiais: [], checagens: [] };
+  return json({ resumo: "", contexto: "", outros, base: "bloqueada", aviso: AVISO_BLOQUEADA, ...ex });
+}
+
 export const onRequest = () => methodNotAllowed();
 
 export async function onRequestPost({ request, env }) {
@@ -55,6 +65,10 @@ export async function onRequestPost({ request, env }) {
     const origin = new URL(request.url).origin;
     const hosts = await allowedHosts(env, origin);
     if (!hosts.has(hostKey(url.hostname))) return fail("Só resumimos matérias das fontes monitoradas.", 403);
+
+    // Trava: veículo que bloqueia o robô não tem matéria para resumir. Resposta antes de Turnstile, cota e IA.
+    const bloqueados = await blockedHosts(env, origin);
+    if (bloqueados.has(hostKey(url.hostname))) return respostaBloqueada(env, origin, url, body);
 
     const key = "sum5:" + (await sha256(url.href)); // chave nova: sum5 descarta resumos feitos com texto errado (carrossel da Oeste, descrições de outros veículos)
     const cached = await cacheGet(env, key);
@@ -72,10 +86,11 @@ export async function onRequestPost({ request, env }) {
     // página e índice de manchetes em paralelo (o índice fica em cache de módulo e costuma custar nada)
     const empty = { title: "", description: "", text: "" };
     const [page, index] = await Promise.all([
-      fetchPage(url.href, (u) => hosts.has(hostKey(u.hostname))).catch((e) => { log("resumir_pagina", { erro: String(e.message).slice(0, 60) }); return empty; }),
+      fetchPage(url.href, (u) => hosts.has(hostKey(u.hostname))).catch((e) => { log("resumir_pagina", { erro: String(e.message).slice(0, 60) }); return /^pagina (401|403|451)$/.test(e.message) ? { ...empty, bloqueada: true } : empty; }),
       loadIndex(env, origin),
     ]);
     const self = index?.porUrl(url.href) || null;
+    if (page.bloqueada) { await lim.release(); log("resumir", { cache: false, base: "bloqueada" }); return respostaBloqueada(env, origin, url, body, index); }
 
     // Título e descrições do SERVIDOR (índice e página) têm prioridade. O que veio do cliente só entra se faltar, e então
     // o resultado não vai para o cache (usouCliente).

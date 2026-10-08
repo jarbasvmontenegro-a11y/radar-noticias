@@ -44,7 +44,7 @@ def weekday_date(d: datetime) -> str:
     return f"{DIAS[d.weekday()]}, {long_date(d)}"
 
 
-def prepare(articles: list[dict], sources: dict, now: datetime) -> list[dict]:
+def prepare(articles: list[dict], sources: dict, now: datetime, bloqueados: frozenset = frozenset()) -> list[dict]:
     out = []
     for a in articles:
         try:
@@ -57,7 +57,8 @@ def prepare(articles: list[dict], sources: dict, now: datetime) -> list[dict]:
         same_day = pub.date() == now.date()
         gap = (now.date() - pub.date()).days
         label = "Hoje" if gap == 0 else "Ontem" if gap == 1 else f"{DIAS[pub.weekday()].split('-')[0].capitalize()}, {pub.day} de {MESES[pub.month - 1]}"
-        out.append({**a, "source_name": src["name"], "source_id": src["id"], "dt": pub,
+        host = (urlsplit(a["url"]).hostname or "").lower().removeprefix("www.")
+        out.append({**a, "source_name": src["name"], "source_id": src["id"], "dt": pub, "bloq": host in bloqueados,
                     "day": pub.strftime("%Y-%m-%d"), "day_label": label, "hm": pub.strftime("%H:%M"),
                     "time_label": pub.strftime("%H:%M") if same_day else pub.strftime("%d/%m %H:%M")})
     return out
@@ -182,7 +183,8 @@ def build(out_dir: str = "site") -> str:
     health = load_json(DATA / "health.json", {})
     now = datetime.now(TZ)
 
-    items = prepare(store["articles"], sources, now)
+    bloqueados = frozenset(load_json(DATA / "bloqueados.json", {}).get("hosts", []))  # veículos que bloqueiam o robô: sem botão de resumo
+    items = prepare(store["articles"], sources, now, bloqueados)
     for a in items:
         a["grupo"] = sources.get(a["source"], {}).get("grupo", "nacional")
     for a in items:  # estados citados (até 3; notícia que cita muitos estados é nacional) + estado da fonte regional
@@ -512,6 +514,8 @@ def build(out_dir: str = "site") -> str:
             e["o"] = 1
         if a.get("pessoas"):
             e["g"] = a["pessoas"]
+        if a["bloq"]:
+            e["b"] = 1
         if i < 1200 and a.get("desc"):
             e["d"] = short_desc(a["desc"], 110)
         index.append(e)
@@ -521,6 +525,7 @@ def build(out_dir: str = "site") -> str:
     (out / "data").mkdir()
     shutil.copy(ROOT / "config" / "municipios.json", out / "data" / "municipios.json")  # lista do IBGE, usada pelo verificador
     (out / "data" / "search-index.json").write_text(json.dumps(index, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    (out / "data" / "bloqueados.json").write_text(json.dumps({"hosts": sorted(bloqueados)}), encoding="utf-8")  # as Functions consultam (travam o resumo)
     (out / "data" / "destaques.json").write_text(
         json.dumps(destaques_mod.montar(all_news, checks, now), ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     # dados leves da mini janela (assuntos em alta + últimas manchetes sem repetir assunto); a janela confere de 5 em 5 minutos
