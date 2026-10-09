@@ -1,47 +1,107 @@
 {
- "gerado": "2026-10-09T00:32:59+00:00",
+ "gerado": "2026-10-09T11:20:32+00:00",
  "assuntos": [
   {
-   "titulo": "Zanin nega recurso de Paes sobre anulação de votos de Garotinho no Rio",
-   "resumo": "O ministro Zanin, do STF, rejeitou o recurso de Eduardo Paes contra a decisão do TSE que anulou votos de Garotinho e pode eleger Douglas Ruas.",
+   "titulo": "Pesquisa AtlasIntel mostra Flávio à frente de Lula no 2º turno",
+   "resumo": "AtlasIntel/Bloomberg aponta Flávio Bolsonaro com 52,8% dos votos válidos contra 47,2% de Lula no segundo turno.",
    "ids": [
+    "5f29ed580c6d",
+    "6fc38a0556a8",
+    "d21ca185797f",
+    "9c7ed7fe4f84",
+    "1e949d1f0824",
+    "ad7da1f22a02",
+    "e5c8e843a540",
+    "6648e5fd9868",
+    "4fce5f45b09e",
+    "20f729f02c27",
+    "941e308a3e75",
+    "4aea41ad8a0a",
+    "1e248ca8fab7",
+    "082a4d567552",
+    "5f6011deb37e"
+   ]
+  },
+  {
+   "titulo": "Paes reconhece derrota no Rio após decisão do STF",
+   "resumo": "Eduardo Paes admite fim da disputa pelo governo do Rio após Zanin negar recurso e manter anulação de votos de Garotinho.",
+   "ids": [
+    "6bdbd965d60c",
+    "99fb88452a95",
+    "4d9381e0d6dd",
+    "9899921fe3cf",
+    "0b78b8be2c84",
+    "6265826b305d",
+    "756d1247a691",
+    "059bb20a5a07",
+    "82c99012790c",
+    "3b7a0ef99903",
+    "1fc2bdb061f1",
+    "a9706edecd1d",
+    "42961d052a6d",
+    "4fbcb5efb436",
+    "ce03fe8b6579",
+    "c579b03e4a1a",
+    "a89a605517ed",
+    "f4dfbd3a731e",
+    "2a86e30e60e4",
+    "1cb9a09e878f",
+    "249475741006",
+    "b66d341d95dd",
+    "059e24de1def",
+    "6d5532a4651f",
+    "c229de8dfd6e",
+    "a0095dee4c2f",
     "d6b22bd77620",
-    "cff8c16ddd1a",
-    "1b6278edbca2",
-    "442b9c15dd41",
-    "2f9ea0713774",
-    "890ceea9c08e",
+    "84f50c5d9b3b",
+    "069130c10fba",
     "2e8da76ef2ad",
     "e5e7fd4cd4b1",
     "6390454c826d",
     "5afde41af65e",
     "927ce87e6a49",
     "1036f5f26818",
+    "f46243a9ef9f",
     "2c748634d032",
     "890721d4f7a3",
     "d9390cad7841",
     "93739d8cbff9",
     "9eee145ce593",
     "2830dd288ea1",
+    "de20d74e5103",
+    "031435cc2bf7",
+    "556d34d2a903",
+    "ad3f37c58b7f",
     "70e1286fc56b",
-    "ea31d0b698bd",
-    "5c8a11b0088f",
-    "a7c3581aea61",
-    "2cb196540128",
-    "3fb3ba3ecd1e",
-    "c3e6c1e55a35",
-    "a6391a141224",
-    "8cfed043ee63",
-    "e7acac8eea76",
-    "f0ad8ddfed33",
-    "04084f7668d4"
+    "ea31d0b698bd"
    ]
   },
   {
-   "titulo": "Augusto Cury declara apoio a Flávio Bolsonaro no segundo turno",
-   "resumo": "Augusto Cury anunciou apoio a Flávio Bolsonaro no segundo turno, condicionado a compromissos de pacificação nacional.",
+   "titulo": "Vorcaro relata pagamento de R$ 30 milhões por filme sobre Lula",
+   "resumo": "Empresário Daniel Vorcaro afirma ter liberado verba para filme sobre Lula em troca de negócios no governo.",
    "ids": [
+    "62264ebb0467",
+    "e1118abd64a3",
+    "2e9157ef9e5d",
+    "3b6ec06652ed",
+    "c01f34fec7eb",
+    "ac3be148dd22"
+   ]
+  },
+  {
+   "titulo": "Augusto Cury declara apoio a Flávio Bolsonaro",
+   "resumo": "Augusto Cury anuncia apoio a Flávio Bolsonaro no segundo turno sob condição de pacificação nacional.",
+   "ids": [
+    "1bada0410316",
+    "39a80bdf846b",
+    "cd8f264d46ec",
+    "5c6163b3f741",
+    "2ead30b57532",
+    "b8cc410b61a8",
+    "1241c35b4ab4",
     "26a7b28cc896",
+    "deaabc1ee17e",
+    "8ae6f2269d23",
     "fb7b0d58de64",
     "49cd3ef84a85",
     "3c8c94639706",
@@ -52,142 +112,287 @@
     "2bf9f07421c2",
     "48a6a9e07e06",
     "5b5eee619363",
-    "989a21b383f2",
     "7ba8387fcd3e",
     "939d96cec747",
     "306512e9ffd2",
     "430961aeab18",
     "7924a878a9e0",
     "0fee25fc22bb",
-    "daf000664b76",
-    "b177707411cc",
-    "6709e9792396",
-    "ed5e4d7424fd",
-    "3645fb183971",
-    "e4b764c960f1",
-    "57d14df314d6",
-    "34c4b2068efe",
-    "edcc9f205549",
-    "e092fc3235c8",
-    "5b99e56d6c80",
-    "5db40db9cd3d",
-    "aa364ca27754",
-    "36023b3dca79",
-    "fe556dda95d1",
-    "8b67b21425f2",
-    "237f53ee0f8c",
-    "3125a0154422",
-    "ef81e605e2e5"
+    "daf000664b76"
    ]
   },
   {
-   "titulo": "Datafolha: Flávio Bolsonaro tem 52% e Lula 48% dos votos válidos",
-   "resumo": "Pesquisa Datafolha do segundo turno mostra Flávio Bolsonaro com 52% dos votos válidos contra 48% de Lula.",
+   "titulo": "Datafolha aponta Flávio com 52% e Lula com 48%",
+   "resumo": "Pesquisa Datafolha do segundo turno mostra Flávio Bolsonaro com 52% dos votos válidos e Lula com 48%.",
    "ids": [
+    "47ecd78f9909",
+    "7debd398cca4",
+    "7c4262d2032b",
     "e2510647031b",
-    "968994da2da0",
-    "7735f3930e89",
-    "ad0fe0ce48fd",
-    "572c45aee64e",
-    "545425cf8165",
-    "1a164071a199",
-    "1bebb20f972a",
-    "c0091eb04554",
-    "11a1a65ae8a8",
-    "4ef9b3305312",
-    "66b4a4f03ff9",
-    "7096f84803e5",
-    "f7e651bd6f90",
-    "c2ca853c8367",
-    "ca59f19737f0",
-    "be42f81d488f",
-    "fd18b6939460",
-    "44b7e41aea34",
-    "e0e7674be884",
-    "b717c8790c40",
-    "ab55cc9dfb28",
-    "7f333f524c90",
-    "25b3c1d6c26e",
-    "0d8c8c18ec10"
-   ]
-  },
-  {
-   "titulo": "Datafolha: Flávio Bolsonaro tem 49% e Lula 45% no segundo turno",
-   "resumo": "Pesquisa Datafolha aponta Flávio Bolsonaro com 49% das intenções de voto contra 45% de Lula no segundo turno.",
-   "ids": [
     "3f2ba0a07738",
-    "4d3e340c7281",
-    "340f3cf9962e",
-    "9a1e527f8ae1",
-    "ba12fef71315",
-    "82cdb3791bff",
-    "d1dbcb58bc27",
-    "e080359f6c34",
-    "14b033cd37d4",
-    "0e526a541325"
+    "968994da2da0"
    ]
   },
   {
-   "titulo": "Moraes determina prisão de Eduardo Bolsonaro e cancelamento de passaportes",
-   "resumo": "O ministro Alexandre de Moraes determinou o início do cumprimento da pena de Eduardo Bolsonaro e o cancelamento de seus passaportes.",
+   "titulo": "TSE manda remover vídeos de Lula e Janja contra Flávio",
+   "resumo": "Tribunal Superior Eleitoral determina retirada de publicações de Lula, Janja e aliados com ataques a Flávio Bolsonaro.",
    "ids": [
-    "85de3a5aba78",
-    "66a2e813a98e",
-    "2641f7fb789d",
-    "d787ee49751d",
-    "be7a8e4b4875",
-    "19db8ab7ece1",
-    "6b544324f4b1",
-    "c3b6614e8078",
-    "9df7b0a74f6b",
-    "abd0c1765df8",
-    "945eca10a9d2",
-    "4dfd1e7d70ed",
-    "c1ab5d603a9b",
-    "20bfcc2e709e",
-    "9cbacc80bc98",
-    "1743ecc971d5",
-    "a46a3e57be4a",
-    "c0ea692ecc81",
-    "834fea347a6d",
-    "d92e83980198",
-    "9259f7f205a8"
+    "af18f8669a44",
+    "6cd5142754c7",
+    "042db471ea82",
+    "f2c6ae9eb2cd",
+    "d57f76f3543d",
+    "844a4285b333",
+    "9e03f1428e56",
+    "0b184342173d",
+    "67d3ce38a858",
+    "a087b2b561e0"
    ]
   },
   {
-   "titulo": "TSE aciona PF para investigar ameaças a servidores da Justiça Eleitoral",
-   "resumo": "O TSE acionou a Polícia Federal para investigar ataques e ameaças a servidores da Justiça Eleitoral.",
+   "titulo": "Pesquisa Vox Brasil mostra Lula e Flávio em empate técnico",
+   "resumo": "Levantamento Vox Brasil aponta Lula com 44,2% e Flávio Bolsonaro com 42,7% no segundo turno.",
    "ids": [
+    "f04df2946445",
+    "8e930820c8b3",
+    "210cb04b820b",
+    "999c8e72d62b",
+    "b1676149165c",
+    "2d4e7ea6eb37",
+    "e05b96d13b35",
+    "0bc8a4362046",
+    "4ff80991a2f1",
+    "b34c5e1bde56",
+    "f4e282aa2b08"
+   ]
+  },
+  {
+   "titulo": "Moraes ordena prisão de Eduardo Bolsonaro",
+   "resumo": "Ministro Alexandre de Moraes determina cumprimento de pena de Eduardo Bolsonaro, gerando reação de Flávio.",
+   "ids": [
+    "b0a75e32373a",
+    "4ddc45c3843e",
+    "e33f182f3348",
+    "da99f17ec279",
+    "baf090c558f2",
+    "340af1e63911",
+    "cb81a77c512a",
+    "f66995444433",
+    "6ab613037041",
+    "cdf1c031c64d",
+    "45dd90517aea",
+    "3413d7fe3079",
+    "5a99ee3589ec",
+    "02f318b7ae0b",
+    "5ffbbd138cf6",
+    "62c2bc7bc1a5",
+    "2a7354715494",
+    "fe6d871bbe23",
+    "dd2ed8566959",
+    "ef780d245b47",
+    "a2509fe9a152"
+   ]
+  },
+  {
+   "titulo": "Flávio aciona TSE contra suposta rede de desinformação pró-Lula",
+   "resumo": "Campanha de Flávio Bolsonaro pede ao TSE investigação de rede de desinformação ligada a Lula e Janja.",
+   "ids": [
+    "dfeab0f8912b",
+    "e9b807cc4355",
+    "3d0dba46c0e9",
+    "e81c83c3c21e",
+    "6d63631af43b"
+   ]
+  },
+  {
+   "titulo": "Lula retoma campanha com caminhada em Ceilândia",
+   "resumo": "Lula retoma atos de campanha no segundo turno com caminhada em Ceilândia, no Distrito Federal.",
+   "ids": [
+    "7ec6c1371501",
+    "965ac3b3d35d",
+    "db1441c70fc9",
+    "17f1b0bc29a5",
+    "36871f06d482",
+    "5a41d2585351",
+    "d1ecdb6e090e"
+   ]
+  },
+  {
+   "titulo": "Horário eleitoral do segundo turno recomeça",
+   "resumo": "Propaganda eleitoral gratuita no rádio e na TV volta a ser exibida para o segundo turno.",
+   "ids": [
+    "c305875d80c5",
+    "4979f90f7f4a",
+    "17935ff42096",
+    "2777d65920c0",
+    "5d38499a164e",
+    "253e13cc5fcc",
+    "64cf5f7ba419",
+    "515a4236af60"
+   ]
+  },
+  {
+   "titulo": "Estudantes fazem atos pró-Lula em várias cidades",
+   "resumo": "Manifestações de estudantes em apoio a Lula ocorrem em estados como São Paulo, Paraná, Minas e Mato Grosso do Sul.",
+   "ids": [
+    "001fb8521381",
+    "029ec27525cf",
+    "b5e04fec57cf",
+    "52679ca938f7",
+    "e12f1e25d706",
+    "ea1892d33750",
+    "8d7c426270e4",
+    "6794a91bfca7",
+    "98f9d3cd9093",
+    "a2e42f2f49b1",
+    "52c4239478ea",
+    "0f4a4b6ae78e",
+    "271ac5ec6fdc",
+    "59417ff56b22",
+    "3d63b7e6179f",
+    "0b7d9531961a",
+    "7ba8ffa3d983"
+   ]
+  },
+  {
+   "titulo": "Ataque hacker encomendado por Vorcaro para apagar dados",
+   "resumo": "Vorcaro teria encomendado ataque hacker durante prisão domiciliar para apagar dados de celular apreendido.",
+   "ids": [
+    "873e4a5d25dd",
+    "c57ee9d3a1d1",
+    "cd7ccc445726",
+    "87adc0a2c444"
+   ]
+  },
+  {
+   "titulo": "TSE aciona PF para investigar ameaças a servidores",
+   "resumo": "Tribunal Superior Eleitoral aciona Polícia Federal após ataques e ameaças a servidores da Justiça Eleitoral.",
+   "ids": [
+    "2bc8503c0e0e",
+    "32df84fb83c1",
     "969add9c6e5e",
+    "6f9805583d8c",
     "ecdcf179e9d9",
     "209f1d2f6761",
     "81c0c2113171",
-    "4050d69f6b13",
-    "5b783d6cc07c"
+    "4050d69f6b13"
    ]
   },
   {
-   "titulo": "TRE-RJ marca retotalização de votos para sábado",
-   "resumo": "O TRE-RJ agendou para sábado a retotalização dos votos do primeiro turno no Rio de Janeiro, que pode confirmar Douglas Ruas como governador.",
+   "titulo": "Fux pede acesso a inquéritos de Moraes e processos de Bolsonaro",
+   "resumo": "Ministro Luiz Fux solicita acesso a inquéritos conduzidos por Moraes e a processos contra Jair Bolsonaro no STF.",
    "ids": [
-    "c9912ada85a8",
-    "4b0eaf3da4ea",
-    "d967cba4b436",
-    "3bf02c2a9ce3",
-    "ad43c7de3083",
-    "ac44b5e2b300",
-    "d2d364df32fa",
-    "0b969dca0745",
-    "469a497643d3",
-    "f00988d8c463",
-    "f1403f3fe7c3",
-    "f4d96264156f"
+    "aad6069366c4",
+    "56c2371208ac",
+    "8af9ffb864c4",
+    "449f687e6f4b",
+    "d751428af64b",
+    "7fc9d6ef3ed4",
+    "9136738e974a",
+    "1d24e1d8f9aa",
+    "d058abd36b26",
+    "0b4092a6b9ab",
+    "7e05275cc161",
+    "114bd01cdce2"
    ]
   },
   {
-   "titulo": "Boulos e Pavanato trocam provocações em aeroporto de Brasília",
-   "resumo": "Guilherme Boulos e Lucas Pavanato se encontraram no Aeroporto de Brasília e trocaram xingamentos e provocações.",
+   "titulo": "Lula critica tesouraço de Flávio e defende fim da escala 6x1",
+   "resumo": "Lula critica proposta de cortes de Flávio e cobra votação do fim da escala 6x1 no Senado.",
    "ids": [
+    "54e432c09d22",
+    "ec949e34477b",
+    "ad4918267520",
+    "ebec2e6735ca",
+    "600b1f887833",
+    "a174469317f8",
+    "71b9639459f7",
+    "80a161198a6a",
+    "587fa0ace41a",
+    "28eb44064a88",
+    "7fd05b1ae522",
+    "9a484c784e9b"
+   ]
+  },
+  {
+   "titulo": "Site oferece criptomoedas por posts pró-Flávio",
+   "resumo": "Campanha de Lula aciona Justiça contra site que promete criptomoedas por publicações de apoio a Flávio.",
+   "ids": [
+    "9a42145d66cd",
+    "6c3e1b4e53a2",
+    "c6d8a07579ba",
+    "a3428b2fa00a",
+    "2090b57e78d9",
+    "39988b90098f",
+    "3608909e906e",
+    "90f260592996",
+    "ee3c5f54d4d5",
+    "59d8cdb09ddd"
+   ]
+  },
+  {
+   "titulo": "Zanin nega recurso de Paes sobre anulação de votos de Garotinho",
+   "resumo": "Ministro Cristiano Zanin rejeita recurso de Eduardo Paes e mantém decisão do TSE que anula votos de Garotinho.",
+   "ids": [
+    "0ff5ad76ba59",
+    "34121622286d",
+    "d0f4317e8963",
+    "609f488108d5",
+    "cff8c16ddd1a",
+    "bdcf1835a35c",
+    "1b6278edbca2",
+    "442b9c15dd41",
+    "2f9ea0713774",
+    "890ceea9c08e",
+    "db457b94e585"
+   ]
+  },
+  {
+   "titulo": "Ato pró-Lula em Sergipe é interrompido por relatos de tiros",
+   "resumo": "Manifestação em apoio a Lula na Universidade Federal de Sergipe termina em correria após suspeita de disparos.",
+   "ids": [
+    "921b54ebf428",
+    "f2dec5e7622e",
+    "f43bcd035a0f",
+    "413a92e7495d",
+    "5d9a9d281090",
+    "edd85fcb9ad7",
+    "02efededdb55"
+   ]
+  },
+  {
+   "titulo": "Lula celebra avanço do fim da escala 6x1",
+   "resumo": "Lula comemora avanço da proposta que acaba com a escala 6x1 e defende investimento público.",
+   "ids": [
+    "bde5a9849e78",
+    "cbfcbeb7d38f",
+    "c899bb3f796c",
+    "14e5a1fb8095"
+   ]
+  },
+  {
+   "titulo": "Datafolha mostra rejeição de Lula em 46% e Flávio em 43%",
+   "resumo": "Pesquisa Datafolha aponta rejeição de 46% a Lula e de 43% a Flávio Bolsonaro no segundo turno.",
+   "ids": [
+    "4b3b13d7267a",
+    "f576c28f55ec",
+    "1dba08f16f98"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro proclama poema no Dia do Nordestino",
+   "resumo": "Flávio Bolsonaro lê poema em homenagem ao Dia do Nordestino, buscando eleitorado da região.",
+   "ids": [
+    "108efb519755",
+    "f261fac17041",
+    "69fe21c69a9f"
+   ]
+  },
+  {
+   "titulo": "Boulos e Pavanato trocam ofensas em aeroporto",
+   "resumo": "Guilherme Boulos e Lucas Pavanato se encontram no aeroporto de Brasília e trocam xingamentos.",
+   "ids": [
+    "f61e6aaa1a16",
     "a1d835f719e9",
     "16c99b2a2c57",
     "4032884846de",
@@ -197,364 +402,38 @@
    ]
   },
   {
-   "titulo": "Fux pede acesso a inquéritos das fake news e da trama golpista",
-   "resumo": "O ministro Fux determinou que sua equipe tenha acesso aos inquéritos das fake news e da trama golpista relatados por Moraes.",
+   "titulo": "MEC vai reconstruir prédio da UFPE após incêndio",
+   "resumo": "Ministério da Educação anuncia reconstrução de prédio da UFPE destruído por incêndio.",
    "ids": [
-    "0b4092a6b9ab",
-    "bee9f44fc0ae",
-    "438116d19930",
-    "ccf4202cb312",
-    "ce3b9631bd06",
-    "d62af63b4c7a",
-    "e777f13b8fa0",
-    "61b09d3b52c3",
-    "6f33957aa39d",
-    "094f3a9165b8",
-    "a5ac4098e7f1",
-    "de1f052fbf01",
-    "525761f1ee49",
-    "cf6a240112fb",
-    "63a681f34eef",
-    "8a69ae507a60",
-    "f7e3bf26cae4"
+    "e6c13e995e83",
+    "110edd49543c",
+    "7fca7856bbe7",
+    "0e08d66f8aa0",
+    "4bf10639f3ca"
    ]
   },
   {
-   "titulo": "Datafolha: Celina Leão lidera segundo turno no DF com 55%",
-   "resumo": "Pesquisa Datafolha no Distrito Federal mostra Celina Leão com 55% das intenções de voto contra 37% de Leandro Grass.",
+   "titulo": "Lula diz que Hugo Motta ajudará em sua reeleição",
+   "resumo": "Após encontro no Alvorada, Lula afirma que Hugo Motta o ajudará a ganhar a eleição.",
    "ids": [
-    "cd09c05be6de",
-    "076bdd0b1f0b",
-    "d3b419b5fb1d",
-    "e9437d8e693a",
-    "8c5f0361fdbe",
-    "8eccaeec69be",
-    "029771d67c15",
-    "1929bb2496e8",
-    "9246ad951489",
-    "dda3e6e7ca5d",
-    "dbf1bf7bf6b8",
-    "12093ce633de",
-    "c8aa09fd07eb",
-    "f53686570315",
-    "e01f39d9cf8e",
-    "5737896744e5",
-    "b6d9bfec0f7f",
-    "f04cf62f51c3",
-    "97b83f6a7671"
-   ]
-  },
-  {
-   "titulo": "Campanha de Lula aciona Justiça contra site de criptomoedas pró-Flávio",
-   "resumo": "A campanha de Lula pediu investigação de site que oferece criptomoedas por posts de apoio a Flávio Bolsonaro.",
-   "ids": [
-    "a3428b2fa00a",
-    "39988b90098f",
-    "3608909e906e",
-    "5500e5b12e60",
-    "ee3c5f54d4d5",
-    "59d8cdb09ddd",
-    "c6363c557159",
-    "696ae0e8adbb",
-    "46cb95eb829c",
-    "1e15feb461ad",
-    "e9d6b2f215f9"
-   ]
-  },
-  {
-   "titulo": "TSE manda Flávio Bolsonaro apagar vídeos com IA contra Lula",
-   "resumo": "O TSE determinou que Flávio Bolsonaro remova publicações com inteligência artificial que associam Lula a facções.",
-   "ids": [
-    "9e03f1428e56",
-    "31025d56746e",
-    "d9f91544396c",
-    "01dbf6c92118"
-   ]
-  },
-  {
-   "titulo": "MDB fecha apoio de diretórios estaduais a Flávio Bolsonaro",
-   "resumo": "O MDB anunciou apoio de 17 diretórios estaduais à campanha de Flávio Bolsonaro no segundo turno.",
-   "ids": [
-    "e3215a2c9b0e",
-    "980823044df0",
-    "87bb4492acfc",
-    "f08427c89b33",
-    "553b9985c79e"
-   ]
-  },
-  {
-   "titulo": "Lula critica 'tesouraço' de Flávio e defende programas sociais",
-   "resumo": "Lula criticou a proposta de cortes de Flávio Bolsonaro, chamando-a de 'tesouraço' e afirmando que prejudica os mais pobres.",
-   "ids": [
-    "ec949e34477b",
-    "ad4918267520",
-    "600b1f887833",
-    "71b9639459f7",
-    "352204fdf585",
-    "80a161198a6a",
-    "587fa0ace41a",
-    "7fd05b1ae522",
-    "1a71dc9d9ce1",
-    "8c7d6825ac2d",
-    "50b982d1d2da",
-    "7a122c73c5d9"
-   ]
-  },
-  {
-   "titulo": "Datafolha: Lula tem 46% de rejeição e Flávio 43%",
-   "resumo": "Pesquisa Datafolha aponta que 46% dos eleitores rejeitam Lula e 43% rejeitam Flávio Bolsonaro.",
-   "ids": [
-    "4b3b13d7267a",
-    "f576c28f55ec",
-    "1dba08f16f98",
-    "67063157fa6d",
-    "779b5897ee8f",
-    "f2419572d02e",
-    "2a6b506eafb0"
-   ]
-  },
-  {
-   "titulo": "Datafolha: 25% dos eleitores de Flávio votam para derrotar Lula",
-   "resumo": "Pesquisa Datafolha mostra que 25% dos eleitores de Flávio Bolsonaro escolhem o candidato para derrotar Lula.",
-   "ids": [
-    "11942f2dceb5",
-    "15659e555284",
-    "72f6ebff01cc",
-    "cfe841e8aabe",
-    "7834069b7de2",
-    "ed1fd0622d06"
-   ]
-  },
-  {
-   "titulo": "Datafolha: 46% dos eleitores de Cury, Renan, Caiado e Zema migram para Flávio",
-   "resumo": "Pesquisa Datafolha indica que 46% dos eleitores de Cury, Renan Santos, Caiado e Zema migram para Flávio Bolsonaro.",
-   "ids": [
-    "bed3aa6ee1a0",
-    "7fec2ad7451f",
-    "af9df7be38f3",
-    "27c01002333a",
-    "b1b4d9dd3479",
-    "5281da87f144",
-    "fd20a52457bc",
-    "9da7475b0ff3"
-   ]
-  },
-  {
-   "titulo": "Lula cobra votação do fim da escala 6x1 e critica abstenção do PL",
-   "resumo": "Lula cobrou de Flávio Bolsonaro e do PL a votação do fim da escala 6x1, criticando a possível abstenção.",
-   "ids": [
-    "54e432c09d22",
-    "ebec2e6735ca",
-    "a174469317f8",
-    "28eb44064a88",
-    "9a484c784e9b",
-    "d23bbab6357b",
-    "a6b0f4b7ccd0",
-    "cc7232b19d85",
-    "f36e4f66617d",
-    "2ef7dc3b3bec",
-    "231d537354d1",
-    "c38c7ea651eb"
-   ]
-  },
-  {
-   "titulo": "Eduardo Bolsonaro critica decisão de Moraes sobre prisão",
-   "resumo": "Eduardo Bolsonaro classificou como arbitrária a decisão de Moraes que determinou o início do cumprimento de sua pena.",
-   "ids": [
-    "45dd90517aea",
-    "ef780d245b47",
-    "a2509fe9a152",
-    "19ed1444128c",
-    "da4cf1c3bd0e",
-    "76f440b15970",
-    "cd4d5c0f85d5",
-    "b52ffdd7052d",
-    "7d0c9bbf32f8",
-    "27b241e2337e",
-    "ca83bd407bd1",
-    "f6cff27875fd",
-    "291221581774",
-    "662d4f5a2b98"
-   ]
-  },
-  {
-   "titulo": "Datafolha: governo Lula tem 40% de avaliação negativa e 35% positiva",
-   "resumo": "Pesquisa Datafolha mostra avaliação negativa de 40% e positiva de 35% do governo Lula.",
-   "ids": [
-    "9802a2e42029",
-    "4389bc188cc2",
-    "16fddd79b7bf",
-    "d3302c698797",
-    "aa0853883b4c"
-   ]
-  },
-  {
-   "titulo": "Datafolha: 49% desaprovam e 48% aprovam governo Lula",
-   "resumo": "Pesquisa Datafolha aponta 49% de desaprovação e 48% de aprovação ao governo Lula.",
-   "ids": [
-    "5c85fab65a50",
-    "2fb8aba73d6d",
-    "029aab161479",
-    "8f430b4d4595",
-    "4b8a525e1fb7"
-   ]
-  },
-  {
-   "titulo": "Douglas Ruas comemora decisão do TSE e se declara governador eleito",
-   "resumo": "Douglas Ruas comemorou a anulação dos votos de Garotinho pelo TSE e se declarou governador eleito do Rio de Janeiro.",
-   "ids": [
-    "556d34d2a903",
-    "ad3f37c58b7f",
-    "2d8bdad84a28",
-    "30b7111715c4",
-    "54c9c4d5b970",
-    "39223d8e076b",
-    "2de6d8ed742d",
-    "4edecbdf79a0",
-    "819648b3364a",
-    "a23c81280d38",
-    "469e877f4bc2",
-    "a0dbcc054db8",
-    "4428620f2218"
-   ]
-  },
-  {
-   "titulo": "Flávio Bolsonaro diz que fim da reeleição deve valer em eventual mandato",
-   "resumo": "Flávio Bolsonaro afirmou que o fim da reeleição deve valer já em um eventual mandato seu.",
-   "ids": [
-    "9daaa90349a9",
-    "e172cb5cdc5f",
-    "2738c9c29fd5"
-   ]
-  },
-  {
-   "titulo": "Lula diz que não avalia pesquisas e foca em ganhar votos",
-   "resumo": "Após o Datafolha, Lula afirmou que não avalia pesquisas e que sua obrigação é trabalhar para ter mais votos.",
-   "ids": [
-    "131028bedcef",
-    "1aed55d0cdeb",
-    "8ba034ec2137",
-    "8009e52fab8b",
-    "8079add8b2a5"
-   ]
-  },
-  {
-   "titulo": "Lula recebe Hugo Motta após Republicanos apoiar Flávio",
-   "resumo": "Lula se reuniu com Hugo Motta um dia após o Republicanos declarar apoio a Flávio Bolsonaro.",
-   "ids": [
+    "c4f34615ac02",
+    "1c23973258e6",
     "1adaac5532ef",
     "57ea3fd9f4a0",
-    "cddbba412c4a",
-    "209b8de9359f"
+    "cddbba412c4a"
    ]
   },
   {
-   "titulo": "PT amplia participação de Alckmin na campanha de Lula",
-   "resumo": "Após cobrança de aliados, o PT ampliou a participação de Geraldo Alckmin na campanha de Lula no segundo turno.",
+   "titulo": "Flávio Bolsonaro diz que quer pacificar o país",
+   "resumo": "Flávio Bolsonaro afirma que, se eleito, não brigará com Lula e tentará pacificar o Brasil.",
    "ids": [
-    "48951b54a251",
-    "e899db1c81b2",
-    "f465168d36be",
-    "1f29a3cf8f96",
-    "95a6255ee2f3"
+    "611ec3baaefa",
+    "58911f36fc39"
    ]
   },
   {
-   "titulo": "Moraes envia à PGR laudos da operação contra o CV no Rio",
-   "resumo": "O ministro Alexandre de Moraes encaminhou à PGR laudos da Polícia Federal sobre a operação contra o Comando Vermelho no Rio.",
-   "ids": [
-    "82810afd875b",
-    "7431b01c05f1",
-    "d2f4479efd5d"
-   ]
-  },
-  {
-   "titulo": "Senado encerra terceira sessão de discussão da PEC do fim da escala 6x1",
-   "resumo": "O Senado encerrou a terceira sessão de discussão da PEC que acaba com a escala 6x1, com divergências sobre a votação.",
-   "ids": [
-    "6dba041b04cd",
-    "4496ca3fa542",
-    "930ff4811093",
-    "1354b22ded35",
-    "efd115319c6c",
-    "3db55821cf8b",
-    "157751da38d2",
-    "84d29423f33e",
-    "d429bcaf3131",
-    "a8591a75247f"
-   ]
-  },
-  {
-   "titulo": "PSDB libera filiados para escolherem apoio no segundo turno",
-   "resumo": "O PSDB decidiu liberar seus filiados para escolherem entre apoiar Lula ou Flávio Bolsonaro no segundo turno.",
-   "ids": [
-    "59b62a1a0e3b",
-    "7980a4f8bb8d",
-    "a597e5a969fd",
-    "34a72d7d412e",
-    "0dbbf4eed2c8"
-   ]
-  },
-  {
-   "titulo": "Unidade Popular declara apoio a Lula no segundo turno",
-   "resumo": "O partido Unidade Popular, de Samara Martins, declarou apoio a Lula no segundo turno das eleições.",
-   "ids": [
-    "597d1f8b5bbb",
-    "8a878a77a61f",
-    "3b88a9c8ffd4"
-   ]
-  },
-  {
-   "titulo": "Carlos Bolsonaro pede inclusão de Janja no inquérito das fake news",
-   "resumo": "Carlos Bolsonaro questionou o STF sobre a possibilidade de incluir Janja no inquérito das fake news.",
-   "ids": [
-    "74f1671679f5",
-    "2e3ee2b2389d",
-    "2f38538d94b9",
-    "80d12ecf448c"
-   ]
-  },
-  {
-   "titulo": "Vorcaro pede a Fachin que libere pedido de soltura para Mendonça",
-   "resumo": "A defesa de Daniel Vorcaro pediu ao ministro Fachin que libere o pedido de soltura para análise de Mendonça.",
-   "ids": [
-    "e8bfd1cc297c",
-    "4e9d127d0427",
-    "9feb1e975b25",
-    "eb7abde6e28d",
-    "7489740149ed",
-    "3dc37bf4e5a2",
-    "eabc097fcdd9",
-    "7a64f06206e5",
-    "9a9a761a6da9"
-   ]
-  },
-  {
-   "titulo": "Senado defende sigilo de visitas de Vorcaro e Viviane Barci",
-   "resumo": "O Senado defendeu o sigilo de registros de visitas de Vorcaro e Viviane Barci, mulher de Moraes.",
-   "ids": [
-    "d058abd36b26",
-    "7e05275cc161",
-    "114bd01cdce2",
-    "5c900624abfa",
-    "8e59c476647b",
-    "14cf9431fe6c",
-    "9409fa3ca2e0"
-   ]
-  },
-  {
-   "titulo": "MEC anuncia reconstrução de prédio da UFPE após incêndio",
-   "resumo": "O Ministério da Educação anunciou recursos para reconstrução de prédio e reposição de equipamentos da UFPE após incêndio.",
-   "ids": [
-    "4bf10639f3ca",
-    "cc0be6abd99e",
-    "dfc2ef729d22",
-    "b0c04dc7f79c"
-   ]
-  },
-  {
-   "titulo": "Lula critica bets e diz que viraram desgraça para os pobres",
-   "resumo": "Lula afirmou que as bets se tornaram uma desgraça para o povo pobre e defendeu regulação.",
+   "titulo": "Lula critica bets e defende proibição",
+   "resumo": "Lula afirma que bets viraram desgraça para o povo pobre e defende regulação.",
    "ids": [
     "ddeff387937e",
     "085481bf119a",
@@ -563,13 +442,59 @@
    ]
   },
   {
-   "titulo": "Flávio Bolsonaro aciona TSE contra vídeo de Janja sobre programas sociais",
-   "resumo": "A campanha de Flávio Bolsonaro acionou o TSE contra vídeo em que Janja fala em perda de direitos e programas sociais.",
+   "titulo": "TSE anula votos em Garotinho e abre caminho para Ruas",
+   "resumo": "TSE anula votos de Garotinho ao governo do RJ, favorecendo Douglas Ruas no primeiro turno.",
    "ids": [
-    "0b184342173d",
-    "67d3ce38a858",
-    "a087b2b561e0",
-    "6d63631af43b"
+    "9c76d147cc9c",
+    "e1c71f12fd92"
+   ]
+  },
+  {
+   "titulo": "Lula diz que não avalia pesquisas e foca em votos",
+   "resumo": "Após Datafolha, Lula afirma que não trabalha com pesquisas e que sua obrigação é buscar votos.",
+   "ids": [
+    "85aef1cd7e40",
+    "131028bedcef",
+    "1aed55d0cdeb",
+    "8ba034ec2137",
+    "8009e52fab8b"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro amplia apoios e lidera pesquisa",
+   "resumo": "Flávio Bolsonaro soma apoios de governadores e Cury e lidera primeira pesquisa do segundo turno.",
+   "ids": [
+    "28c4c1a461d4",
+    "f739fb5b3cef",
+    "ad0c7e9bfc01",
+    "ddde1b44ba2d"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro visita arcebispo de Brasília",
+   "resumo": "Flávio Bolsonaro se reúne com arcebispo de Brasília e recebe imagem de Nossa Senhora.",
+   "ids": [
+    "ec351d514ead",
+    "b162ae7ecf3c"
+   ]
+  },
+  {
+   "titulo": "Datafolha mostra migração de votos da terceira via para Flávio",
+   "resumo": "Pesquisa Datafolha aponta que 46% dos eleitores de candidatos derrotados migram para Flávio.",
+   "ids": [
+    "36cf611d3a3a",
+    "bed3aa6ee1a0",
+    "7fec2ad7451f",
+    "af9df7be38f3"
+   ]
+  },
+  {
+   "titulo": "Lula diz que mudança na coordenação de campanha é do partido",
+   "resumo": "Lula afirma que mudança na coordenação de sua campanha não foi decisão sua, mas do partido.",
+   "ids": [
+    "ff49edac09f0",
+    "7acc9d45bf6e",
+    "e82ba88fd69a"
    ]
   }
  ]
