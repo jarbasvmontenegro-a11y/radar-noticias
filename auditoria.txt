@@ -1,0 +1,68 @@
+# Auditoria de https://radarnoticias.top  (2026-10-09T01:55Z)
+
+## 1. Segredos no que o visitante recebe
+200  /  text/html  183176 bytes
+200  /estados/  text/html  9996 bytes
+200  /fontes/  text/html  17406 bytes
+200  /estado/ce/  text/html  149907 bytes
+200  /pagina/2/  text/html  180757 bytes
+200  /og.png  image/png  50973 bytes
+200  /icon-192.png  image/png  9380 bytes
+200  /fonts/newsreader-400-text.woff2  font/woff2  21509 bytes
+200  /verificador/  text/html  10281 bytes
+200  /sobre/  text/html  18435 bytes
+200  /privacidade/  text/html  9144 bytes
+200  /app.js  application/javascript  13817 bytes
+200  /share.js  application/javascript  3839 bytes
+200  /style.css  text/css  28151 bytes
+200  /manifest.webmanifest  application/manifest+json  645 bytes
+200  /robots.txt  text/plain  2763 bytes
+200  /sitemap.xml  application/xml  14745 bytes
+200  /data/search-index.json  application/json  815310 bytes
+200  /data/allowed-hosts.json  application/json  1711 bytes
+200  /cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js  application/javascript  1239 bytes
+Turnstile configurado no HTML: SIM
+Beacon de analytics no HTML: sim (o token dele é público por desenho)
+Nenhum padrão de segredo encontrado nos arquivos públicos.
+
+## 2. Arquivos que não deveriam estar públicos (esperado: 404)
+404  /.env
+404  /.git/config
+404  /.git/HEAD
+404  /wrangler.toml
+404  /functions/api/resumir.js
+404  /functions/api/verificar.js
+404  /lib/api.js
+404  /package.json
+404  /config/site.json
+404  /config/sources.json
+404  /data/articles.json
+404  /data/health.json
+404  /data/status.json
+404  /.dev.vars
+404  /requirements.txt
+
+## 3. Cabeçalhos da página inicial
+content-security-policy      default-src 'self'; script-src 'self' https://challenges.cloudflare.com 'sha256-r39/fvkvBxCu0Ysr4vhRyFqNzUJx8MZQfuXgZtCGeAc=' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests
+strict-transport-security    max-age=31536000; includeSubDomains
+x-content-type-options       nosniff
+x-frame-options              SAMEORIGIN
+referrer-policy              strict-origin-when-cross-origin
+permissions-policy           camera=(), microphone=(), geolocation=(), payment=(), usb=()
+cache-control                public, max-age=300, s-maxage=300
+access-control-allow-origin  *
+
+## 4. APIs
+GET /api/verificar -> 405 (esperado 405)
+OPTIONS com origem estranha -> 405; allow-origin: (ausente, bom)
+POST de origem estranha (evil.example) -> 403 (esperado 403)
+POST gigante -> 413 (esperado 413); corpo: {"erro":"Pedido grande demais."}
+POST JSON quebrado -> 400 (esperado 400); corpo: {"erro":"Pedido inválido."}
+POST SEM navegador (sem Origin, token vazio) -> 403   <-- se 200, qualquer script consegue usar a IA do site
+   corpo: {"erro":"Origem não permitida."}
+POST com token falso -> 403   (200 = o servidor ignora o token; 403 = Turnstile ativo)
+POST /api/resumir sem token -> 403
+
+## 5. Resumo
+Sem segredos expostos nas respostas e nos arquivos públicos.
+Proteção contra robôs (Turnstile): ATIVA

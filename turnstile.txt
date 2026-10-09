@@ -1,0 +1,10 @@
+# Turnstile / Cloudflare (atacar)  2026-10-09T01:55Z
+
+Pages: GET projeto radar-noticias -> 200 ok
+Variáveis de produção: FACTCHECK_API_KEY(secret_text), LLM_API_KEY(secret_text), PUSH_SECRET(secret_text), TURNSTILE_SECRET(secret_text)
+KV: RADAR_KV
+Domínios: radar-noticias.pages.dev, radarnoticias.top
+
+Turnstile: listar widgets -> 403 10000 Authentication error
+
+O token tem permissão de Turnstile? NAO (adicione 'Conta > Turnstile > Editar' ao token da Cloudflare, ou crie o widget no painel)
