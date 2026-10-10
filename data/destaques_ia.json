@@ -1,494 +1,430 @@
 {
- "gerado": "2026-10-10T11:18:02+00:00",
+ "gerado": "2026-10-10T21:18:24+00:00",
  "assuntos": [
   {
-   "titulo": "Alcolumbre marca votação da PEC do fim da escala 6x1",
-   "resumo": "Presidente do Senado agenda para quarta-feira a votação da proposta que acaba com a escala 6x1.",
+   "titulo": "TRE-RJ confirma vitória de Douglas Ruas no primeiro turno após retotalização",
+   "resumo": "Após retotalização de votos e anulação dos votos de Garotinho, TRE-RJ confirma Douglas Ruas (PL) eleito governador do Rio no primeiro turno.",
    "ids": [
+    "0651c05410c2",
+    "632cc4487e88",
+    "8bc5c637a6a6",
+    "37b313399980",
+    "7d7ba15d1e98",
+    "2d2b952ca785",
+    "fa81f9594b1c",
+    "b48b5365bee0",
+    "b67ead17b7ee",
+    "74b01eae89b7",
+    "f753271e41aa",
+    "0e5a94014c0a",
+    "545fd51ba251",
+    "8b6026af5e2e",
+    "c80dd42b2669",
+    "0560c1debaa5",
+    "2883f194373d",
+    "372f2c5356f5",
+    "921f371de322",
+    "d1eebd123100",
+    "bce996ec5c86",
+    "22198c5e2d77",
+    "177c6c6f946d",
+    "73de3ccd1179",
+    "3a64e1c7c6b8",
+    "cac3caa5e480",
+    "790946070967",
+    "05fd3c15e560",
+    "1c6f99160f01",
+    "e536f92b6e28",
+    "49ae04b8c4be",
+    "ede71174e2c7",
+    "afdf5ba405b4",
+    "4ce44822ee99",
+    "6d0dea49f037",
+    "7e0dcf414c56",
+    "ef07b2ef16d0",
+    "79f90360c916",
+    "3946c2a442d7",
+    "16183f87e1bc",
+    "81f965b2f5a8",
+    "83810a24e48a",
+    "bc5de6ed4f38",
+    "9a4cfc9cc987",
+    "b3abfb043a82",
+    "04ad5756e7f3",
+    "f5201d7c36fc",
+    "79cccdbc6349",
+    "bde220c32e93",
+    "0c63800f4fe8",
+    "8d866f9268eb",
+    "95d763b18532",
+    "5c11b97b40c6",
+    "4ec7e62bdb77",
+    "63386a9d4ab0",
+    "f0b39f2bb4fe",
+    "672e6ae4702d",
+    "4f1629ab36b9"
+   ]
+  },
+  {
+   "titulo": "TSE dá 48 horas para Meta explicar restrições à campanha de Lula",
+   "resumo": "TSE determina que Meta, dona do Facebook e Instagram, esclareça em 48h suposta restrição a conteúdos da campanha de Lula.",
+   "ids": [
+    "ea993d1559af",
+    "b710b1570729",
+    "06fdba2de19f",
+    "762581d47efc",
+    "8778f4b18422",
+    "bd2c21949cb3",
+    "1a3f2cde8e25",
+    "ea6b4e8d60a9",
+    "9d1c28b1edb6",
+    "ea3d1ae37aeb",
+    "159c8cfcd0aa",
+    "645552a9bdbe",
+    "78b3b6f05759",
+    "96132da64f84",
+    "a255f63fa4b6",
+    "0d3f31b646c9",
+    "7594f48ddd39",
+    "65053f52bf12",
+    "49223c4c63af",
+    "000d6cb3ce4b",
+    "cf9c7d376403",
+    "d2a03d6b428f",
+    "cf49b655dc38",
+    "9bc1a670fd17",
+    "31d44159a73f",
+    "5529f3326662",
+    "9f7c8462e25d",
+    "c2c758168c91",
+    "b2abd8960594",
+    "5aa125604380",
+    "7a470aa84c48",
+    "83f7b16e8899",
+    "96f3a594cc9e",
+    "e184176c35d0",
+    "1e11b6166906"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro diz que Jair Bolsonaro lhe entregará a faixa presidencial",
+   "resumo": "Em atos de campanha, Flávio Bolsonaro afirma que, se eleito, receberá a faixa presidencial de Jair Bolsonaro, hoje em prisão domiciliar.",
+   "ids": [
+    "98924761ef58",
+    "95e2fa9365da",
+    "e4dea570cc2b",
+    "0210268293e2",
+    "c791bf923125",
+    "0b6858b75a87",
+    "52c9cf44e0ae",
+    "cf1a0678bc1a",
+    "8da5582cf692",
+    "12dfb75a96cf",
+    "4a69b1c16216",
+    "c199b401095b",
+    "de81fa37a23f",
+    "0978ee611165",
+    "91ce0b5542ae",
+    "2c6f620a4ab6",
+    "9d211c354343",
+    "4513c32490f8",
+    "33b30a3e0878",
+    "6ba915631836",
+    "0d843295cfd4",
+    "7055f3715b5a",
+    "4fb527e7c0eb",
+    "820fa3def092"
+   ]
+  },
+  {
+   "titulo": "Lula questiona corte de R$ 250 bilhões prometido por Flávio Bolsonaro",
+   "resumo": "Lula cobra que Flávio Bolsonaro detalhe de onde sairá o corte de R$ 250 bilhões prometido, sugerindo impacto em programas sociais.",
+   "ids": [
+    "0e82168cc6fd",
+    "c55406aa6e65",
+    "07e3d28a9b9e",
+    "d4bd4c46e929",
+    "113f93497e9d",
+    "1f999e8c26e3",
+    "582eebf1cfc6",
+    "f2e16283419b",
+    "e9d3492863a9",
+    "7571378be651",
+    "308ad9a9a863",
+    "ecfb7d6a1fa5",
+    "0d59c7888fd3",
+    "779950a262a6",
+    "b4310375a754",
+    "3f9216003f31",
+    "db4bae72016b",
+    "33c2dfb247a9",
+    "942a19ff4744",
+    "7907654ce26d",
+    "8dae0f8bb27e",
+    "93b927b2fa19",
+    "c21c15ba4404",
+    "52255ebeba83",
+    "73a0c2173549",
+    "7b31b99baf28",
+    "416afc89da29",
+    "41c65fe5dcea",
+    "a4ed5dc0260a"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro defende guerra ao narcotráfico e redução da maioridade penal",
+   "resumo": "Em ato no Rio, Flávio Bolsonaro promete guerra ao narcotráfico e defende redução da maioridade penal.",
+   "ids": [
+    "1a99cfb2fa8b",
+    "25c2d3002b88",
+    "abb8ac6c1db5",
+    "9a8e5b6849ac"
+   ]
+  },
+  {
+   "titulo": "Alcolumbre marca votação da PEC pelo fim da escala 6x1 para quarta-feira",
+   "resumo": "Presidente do Senado, Davi Alcolumbre, marca para quarta-feira (14) a votação da PEC que acaba com a escala 6x1.",
+   "ids": [
+    "3645e99597c2",
+    "05d5cfd7c8d2",
+    "45f5fef09152",
+    "d41800d4a841",
     "f22131d197e2",
-    "7e99ff29094d",
-    "7fd049dfdde3",
-    "a84aa5a2931b",
-    "70b90fcf3600",
-    "8e1d305f6b51",
-    "69541346b5e7",
-    "c9786225640f",
-    "adbe5fabe397",
-    "b4c3fb3ca4da",
-    "f1120437f538",
-    "622e42187a68",
-    "9aa42c501400",
-    "ac47ffcaabf4",
-    "7ed0318636c0",
-    "6041c274f6f7",
-    "05effce9ecd6",
-    "761f56f6ed87",
-    "283cd8807e48",
-    "5ee2924b6941",
-    "ab1489ea4edf",
-    "a2c6f268a3b1",
-    "ef5319276a8e",
-    "d563b399288f",
-    "6b0cdba67063",
-    "034a87dd2b42",
-    "05c88a4fee41",
-    "7dc6e9067d1d",
-    "2c3501f9c88a",
-    "4d56a07ebca0",
-    "f8f7fee35d90"
+    "427885a33571",
+    "608d4e429929",
+    "76b2460e1388",
+    "346c047b8e1b"
    ]
   },
   {
-   "titulo": "Fachin aciona PF para investigar ameaças contra Flávio Dino",
-   "resumo": "Ministro Edson Fachin determina que a Polícia Federal apure ameaças de morte contra o ministro Flávio Dino.",
+   "titulo": "Camilo Santana diz que cabe ao Congresso discutir reeleição",
+   "resumo": "Ministro Camilo Santana afirma que a discussão sobre reeleição presidencial cabe ao Congresso Nacional.",
    "ids": [
-    "ea2f6fb76e7d",
-    "3b5e9cd4fda4",
-    "5925a184a511",
-    "a93fcb4f7073",
-    "4a079d8a2982",
-    "e87b59f8d7fc",
-    "f034b2c3615b",
-    "88f0cd028a3f",
-    "3f26629c7ccc",
-    "1b2a6a11d1be",
-    "690579fde508",
-    "4a944f6a7948",
-    "cd641e255153",
-    "1ea2210c72e5",
-    "fa4b27c2c063",
-    "09d0a6c3e6a3",
-    "0739b7a7edac",
-    "b9ea135c2f85",
-    "55e86d984b86",
-    "136a2cd8031b"
+    "39126b3ef852",
+    "397f49e56ad5"
    ]
   },
   {
-   "titulo": "TSE suspende site que oferecia criptomoedas por apoio a Flávio",
-   "resumo": "Tribunal Superior Eleitoral determina suspensão de site que prometia criptomoedas em troca de propaganda pró-Flávio Bolsonaro.",
+   "titulo": "Flávio Bolsonaro acerta apoio de Ratinho Jr. à sua candidatura",
+   "resumo": "Flávio Bolsonaro liga para o governador Ratinho Jr. e acerta apoio do Paraná à sua candidatura presidencial.",
    "ids": [
-    "f8d68733f90a",
-    "d5c1c7be4c3c",
-    "6aac887f851f",
-    "efac93851f53",
-    "33113e0d4178",
-    "a1896c79d810",
-    "8b6063d61e4c",
-    "3a52042ea2cf",
-    "a14c0071b1d9",
-    "a0822d0d1128",
-    "eeb242815b1c",
-    "a43166b8cf1a",
-    "6aa2802834c7",
-    "bcd636e666f9",
-    "ed55d2002639",
-    "7ec239d9f49b",
-    "15d02afdb6ce",
-    "2bacceff3061",
-    "7affc2ea9569",
-    "6e2338d847ce",
-    "3516a605f163"
+    "f1be73f41a21",
+    "4ae994ab3706"
    ]
   },
   {
-   "titulo": "Record cancela debate entre Lula e Flávio Bolsonaro",
-   "resumo": "Emissora cancela debate presidencial do segundo turno por incompatibilidade de agendas dos candidatos.",
+   "titulo": "Governo federal envia ajuda para combater incêndios no Amazonas",
+   "resumo": "Governo federal anuncia envio de aeronaves e brigadistas para combater incêndios no Amazonas, que encobrem Manaus de fumaça.",
    "ids": [
-    "5bb764bdc27b",
-    "8ca3afe2ad88",
-    "5214f371b3ab",
-    "68925b622107",
-    "503ffaf71a13",
-    "4f4320bbc6e7",
-    "d20afec62f97",
-    "227dca4c7889",
-    "8f5c2c5f50cd",
-    "d3d76f225fec",
-    "452353f886b3",
-    "eec7abd9c539",
-    "edea3c510a95",
-    "8b013f40a099",
-    "d5cdfca7044e",
-    "b6112843a4f4",
-    "5f8edca5109d",
-    "ac8869f25c24",
-    "148f7e7d869f",
-    "580e9a570a73"
+    "2c40b40ce83b",
+    "5c2e311df74d",
+    "5f05a529b715",
+    "406f29adce1e",
+    "29fa8195c517",
+    "bace823104e4",
+    "152de6b19229",
+    "0bf8cbf0617a",
+    "e4b3e784d58f",
+    "9efb9f84baa3",
+    "3c3838dbeec2"
    ]
   },
   {
-   "titulo": "Fachin nega acesso de Fux ao inquérito das fake news",
-   "resumo": "Ministro Edson Fachin recusa pedido de Luiz Fux para acesso imediato ao inquérito das fake news e indica arquivamento.",
+   "titulo": "Candidatos não podem ser presos a partir deste sábado",
+   "resumo": "A partir deste sábado, candidatos do segundo turno não podem ser presos, conforme calendário eleitoral.",
    "ids": [
-    "ad1979ce991e",
-    "b8531a3ef344",
-    "70bfef53ab31",
-    "25269c1e2fca",
-    "457abd24644a",
-    "94cfeae63a5e",
-    "8905ab163265",
-    "8a6f8828495d",
-    "6d022e7111e1",
-    "b71a1e879c94",
-    "47bd8180d05c",
-    "99b07ccf2954",
-    "27d750f9a3ed",
-    "846387d9d1f3",
-    "306a69c90eb7",
-    "6d38206a455f",
-    "e75a233b70f9",
-    "b8e391becd85",
-    "c43ce2d8f02f",
-    "62d97c22c4db",
-    "7df4fa12cf98",
-    "fe13a05b926f",
-    "41bbbcbeaa44",
-    "6eccb660ee1c",
-    "b5704d8a5442",
-    "061b0a00be29"
+    "7dcf1e5edf4f",
+    "0a8aa4e5eef5",
+    "b9a99053a58b",
+    "2b0551102488",
+    "07626d9bee5d"
    ]
   },
   {
-   "titulo": "Datafolha mostra divisão sobre vida com Lula ou Flávio",
-   "resumo": "Pesquisa Datafolha aponta que eleitorado se divide entre vida melhor ou pior com Flávio, e 43% projetam vida igual com Lula.",
+   "titulo": "Camilo Santana nega demissões do centrão após apoio a Flávio",
+   "resumo": "Camilo Santana nega que o governo cortará cargos de partidos do centrão que apoiaram Flávio Bolsonaro.",
    "ids": [
-    "97a031c39556",
-    "a723d9e5cd00",
-    "e1cc475cf883",
-    "e7a2e0dc9a16",
-    "b0c9dd85425b",
-    "9b600eab911f",
-    "f9dbbbcb1fb4"
+    "75764f228ceb",
+    "5c5834dd0462",
+    "44b74a756f78",
+    "7c44369601c5",
+    "c180ef867dd4"
    ]
   },
   {
-   "titulo": "Áudio de Vorcaro sobre filme de Lula gera reações",
-   "resumo": "Áudio atribuído a Daniel Vorcaro menciona dinheiro em filme de Lula; PF e PGR negam depoimento e campanha reage.",
+   "titulo": "Flávio Bolsonaro faz motociata no Rio e pede votos",
+   "resumo": "Flávio Bolsonaro participa de motociata no Rio de Janeiro e pede 'mais um votinho' para vencer a eleição.",
    "ids": [
-    "7ddb3aa47d54",
-    "bbbc052e775a",
-    "f792db3d4f9d",
-    "5d083a477b24",
-    "3e2f4e74951f",
-    "ab85bcd16de1",
-    "53f73cdb5e1c",
-    "e9f11e4231b1",
-    "c16345256e0f",
-    "7075155c5753",
-    "8c57f0745e7b",
-    "3cd1369f4904",
-    "b455763d283c",
-    "4551df9af144",
-    "0bf21def349a",
-    "f80abae8bcfb",
-    "359037df85b2",
-    "85a0a4fe3866",
-    "e4bd82674c89",
-    "2db04dbf8b61",
-    "235ca76940e4",
-    "05fedca1d41c",
-    "9ebe611266dc",
-    "d3f388d799af",
-    "d96957b84859",
-    "684a5aa49c22",
-    "1326c007c4cc",
-    "7a647264fb99",
-    "56f90dcb0d9b",
-    "51a9f5cf2420",
-    "e83bce2d9d84",
-    "a571fcc3d2fc",
-    "818b69391978",
-    "3f248ff3b31d",
-    "649a2f750edb",
-    "fc04e1eb3fd1",
-    "62bfb88d36e9",
-    "d99024ba5d2c",
-    "78d4deff8ced",
-    "e9fa7b138924",
-    "dbe3bd0fe178",
-    "6128aa37a795"
+    "1acdb38201d2",
+    "70e1695014f8"
    ]
   },
   {
-   "titulo": "Lula zera impostos federais sobre gasolina",
-   "resumo": "Governo federal zera tributos sobre a gasolina e amplia subsídio ao etanol a duas semanas do segundo turno.",
+   "titulo": "PF desmente Veja e Padilha aciona Justiça sobre fake news contra Lula",
+   "resumo": "Polícia Federal desmente reportagem da Veja e o ministro Padilha aciona a Justiça por fake news contra Lula.",
    "ids": [
-    "1cf7de8454da",
-    "49271886e0f7",
-    "37ddb9001d49",
-    "dc96b8d3875f",
-    "ba4ed7cc3e2b",
-    "91c73cab536e",
-    "e27c3e513252",
-    "450bbf824f84",
-    "ff4c0a422019"
+    "ebb220d7ba18",
+    "e11453b80797",
+    "9cf58c357533",
+    "536ebea01090"
    ]
   },
   {
-   "titulo": "Fachin diz que pretende arquivar inquérito das fake news",
-   "resumo": "Ministro Edson Fachin afirma que pretende arquivar o inquérito das fake news após mais de sete anos.",
+   "titulo": "Ipespe aponta Flávio Bolsonaro com 52,7% e Lula com 47,3% no segundo turno",
+   "resumo": "Pesquisa Ipespe mostra Flávio Bolsonaro com 52,7% dos votos válidos contra 47,3% de Lula no segundo turno.",
    "ids": [
-    "dca629ad7022",
-    "384c74277260",
-    "87830ceab5ae",
-    "d8b286a12a03",
-    "cd86d093ccca",
-    "f043d5b6ed1b"
+    "1bda0c1fce79",
+    "5f90e8e9f2e1",
+    "1d3b1999188d",
+    "698f83d67069",
+    "389e851b9055",
+    "0d0bb07f2dd3",
+    "85ec27cc55c9",
+    "bc5526ba5dff",
+    "ad9e7cab39ec",
+    "254c26201c38",
+    "5e4d2d839c9c"
    ]
   },
   {
-   "titulo": "CNJ suspende cassação de Aava Santiago em Goiânia",
-   "resumo": "Conselho Nacional de Justiça suspende a cassação do mandato da vereadora Aava Santiago após posse de suplente.",
+   "titulo": "Justiça italiana marca novo julgamento sobre extradição de Carla Zambelli",
+   "resumo": "Justiça da Itália marca nova audiência para decidir sobre a extradição da ex-deputada Carla Zambelli ao Brasil.",
    "ids": [
-    "0d14bdcd776b",
-    "2342add2c7b1",
-    "4a40b23b8f6c"
+    "4f39adae832f",
+    "b6c8bd536dfc",
+    "d47825115e47",
+    "3c001abdc8b1",
+    "901473084f29",
+    "a1c8339563e3",
+    "cd1225f9e1ef",
+    "af9f1bd36a07",
+    "219b6a918417",
+    "a44095bf7e33",
+    "bc2a200e9cad",
+    "4c2e7ca6b687",
+    "419fbb22d9f5",
+    "b810de9d8640",
+    "204d9bb01939",
+    "e222bbd46a68",
+    "ad3de6353f5f",
+    "f9676d62960e",
+    "b4f85d844671",
+    "c45f0d278b6c"
    ]
   },
   {
-   "titulo": "TRE-RJ retotaliza votos e confirma eleição de Douglas Ruas",
-   "resumo": "Tribunal Regional Eleitoral do Rio retotaliza votos e deve confirmar vitória de Douglas Ruas no primeiro turno.",
+   "titulo": "Jair Bolsonaro teve taquicardia e falta de ar, diz boletim médico",
+   "resumo": "Boletim médico informa que Jair Bolsonaro apresentou taquicardia e dificuldade para respirar na última semana.",
    "ids": [
-    "bc23d53d2fe2",
-    "10cb71246e97",
-    "b700b37f4770",
-    "a6a9b014e06a",
-    "3c560d383950",
-    "a7f5e926f0f6"
+    "7a6e67066f21",
+    "cbcd51ab47d6",
+    "919ed7af0f6a",
+    "56097e8bc4e7",
+    "2534fabc9013",
+    "fe40a63ec8ef",
+    "f13431572092"
    ]
   },
   {
-   "titulo": "Bolsonaro teve taquicardia e falta de ar, diz boletim",
-   "resumo": "Boletim médico informa que Jair Bolsonaro apresentou episódio de taquicardia e dificuldade para respirar.",
+   "titulo": "Governo federal aciona programa de proteção para Ana Elisa após ameaças",
+   "resumo": "Após ameaças de morte e estupro, governo federal aciona programa de proteção para a deputada eleita Ana Elisa.",
    "ids": [
-    "9c255d10e78f",
-    "bf1c5c3c87af",
-    "c53cb82990bd",
-    "3fa92cf56360",
-    "ddc8e73e87e2",
-    "f2d340f594c0",
-    "aec08031c721",
-    "f43afe8df0f5",
-    "2b3f53f9cfa9"
+    "e7ada8b25dfa",
+    "6869e16f06d7",
+    "b1d99e65a805",
+    "8c4977ca3f6e",
+    "5296660d8844",
+    "08ecf0a4160e",
+    "3c955db6a7fc"
    ]
   },
   {
-   "titulo": "José Sarney é internado e passa por cirurgia abdominal",
-   "resumo": "Ex-presidente José Sarney passa por cirurgia abdominal e permanece em observação na UTI em São Luís.",
+   "titulo": "José de Abreu cobra artistas por silêncio político nas eleições",
+   "resumo": "Ator José de Abreu cobra posicionamento de artistas como Selton Mello e Giovanna Antonelli sobre o cenário político.",
    "ids": [
-    "459f6c7afb8c",
-    "f85ea0719b5e",
-    "1075b10172b5",
-    "484622b22ea9",
-    "b9b6bc1f5871",
-    "dd2dbeef3eb8"
+    "66aab40012ca",
+    "8c10b4fe038c",
+    "e2b6af3608c8",
+    "e7b85b6dcb58",
+    "06884a5da565",
+    "d647ae407ab6",
+    "62a2c3cfb20a"
    ]
   },
   {
-   "titulo": "Terremoto de magnitude 7,7 atinge o Panamá",
-   "resumo": "Forte terremoto atinge o Panamá e provoca evacuações; Itamaraty diz que não há brasileiros afetados.",
+   "titulo": "Brasileiros votantes do Oscar criticam Flávio Bolsonaro e alertam para risco à democracia",
+   "resumo": "Votantes brasileiros da Academia do Oscar assinam carta aberta manifestando preocupação com a eleição e criticando Flávio Bolsonaro.",
    "ids": [
-    "b70860179a38",
-    "c3a159457095",
-    "2c9f18b017da",
-    "71bea5a78cf1",
-    "a9a5a5a8fb13",
-    "e7f8e9aaf3a0",
-    "29a903b71dec"
+    "6f26602e6dfc",
+    "fd0f438f3c7a",
+    "2b085f967bc8",
+    "05ccea79c810",
+    "01ad374ad1ed",
+    "0ca84d62be36",
+    "e2cc7cdb8be6"
    ]
   },
   {
-   "titulo": "Estudantes fazem atos pró-Lula em várias cidades",
-   "resumo": "Estudantes e movimentos sociais realizam atos de apoio a Lula em ao menos oito estados.",
+   "titulo": "Flávio Bolsonaro promete ampliar programas sociais e crédito",
+   "resumo": "Flávio Bolsonaro promete manter e ampliar programas sociais, além de oferecer crédito e creches nas Casas da Mulher Brasileira.",
    "ids": [
-    "1f52a2cb4916",
-    "89f36ced7075",
-    "47c98e8ffb29",
-    "926009a4bd2b",
-    "71fbe0dc562e",
-    "5accc097db44",
-    "90df8251e88e",
-    "5304ed10d4d9",
-    "ec94f127c951",
-    "33f708d102cf",
-    "9a0e8a70d290"
+    "e2966e8cf1fc",
+    "c269bac1da0f",
+    "4d499fadb6d7"
    ]
   },
   {
-   "titulo": "Lula e Flávio têm 78% de importância em debates, diz Datafolha",
-   "resumo": "Pesquisa Datafolha aponta que 78% consideram muito importante a participação de Lula e Flávio em debates.",
+   "titulo": "Cleitinho convida ex-adversário Gabriel Azevedo para secretariado de Minas",
+   "resumo": "Governador eleito de Minas, Cleitinho, convida o ex-adversário Gabriel Azevedo para integrar seu secretariado.",
    "ids": [
-    "023b25f98732",
-    "206c19078a41",
-    "04c875a7036f",
-    "cdcae39db4bd",
-    "f2dd542f24c1",
-    "58daeab827d8"
+    "05907f123508",
+    "07d73c3bc07a",
+    "8d6c22e93958",
+    "258a9add0f41"
    ]
   },
   {
-   "titulo": "Ato pró-Lula no Rio é atacado com objetos",
-   "resumo": "Ato de campanha de Lula no centro do Rio é interrompido após lançamento de pedras e água, deixando feridos.",
+   "titulo": "Mãe de Eduarda Campopiano recebe benefício social",
+   "resumo": "Reportagens revelam que a mãe da deputada eleita Eduarda Campopiano, crítica de políticas sociais, recebe benefício assistencial.",
    "ids": [
-    "d737faa76fd0",
-    "f4676540ba4a",
-    "86b2d89c8c26"
+    "11f516205d4f",
+    "b7088812f23f",
+    "45f47bc0f142",
+    "73561bab89ec",
+    "5eb8ac43c11d",
+    "4b3bb715e4e5",
+    "a44c9df93c3d",
+    "161e593ac3e1"
    ]
   },
   {
-   "titulo": "Gabi Guimarães declara apoio à reeleição de Lula",
-   "resumo": "Capitã da seleção de vôlei, Gabi Guimarães, manifesta apoio à reeleição de Lula.",
+   "titulo": "TSE manda suspender site que oferecia criptomoedas por apoio a Flávio",
+   "resumo": "TSE determina suspensão de site que oferecia criptomoedas em troca de propaganda eleitoral pró-Flávio Bolsonaro.",
    "ids": [
-    "4c6565626ab7",
-    "3a287d919899",
-    "003af1e82ead"
+    "1026fe77d98c",
+    "79af98c7975e",
+    "822bef7c4e1d",
+    "643a8f61dafb",
+    "f48aaa5247a2"
    ]
   },
   {
-   "titulo": "TSE manda remover posts de Lula e aliados contra Flávio",
-   "resumo": "Tribunal Superior Eleitoral determina remoção de publicações de Lula, Janja e aliados com críticas a Flávio Bolsonaro.",
+   "titulo": "Sidônio Palmeira tira férias para se dedicar à campanha de Lula",
+   "resumo": "Ministro da Secom, Sidônio Palmeira, tira férias do governo para se dedicar integralmente à campanha de Lula no segundo turno.",
    "ids": [
-    "f45a345a6f02",
-    "78a494d7946c",
-    "894ff514e63d"
+    "9a26ee497f25",
+    "47238f224fd6",
+    "b10e9ad0b181",
+    "e16e83511c04"
    ]
   },
   {
-   "titulo": "Cleitinho diz que Flávio vai renegociar dívida de Minas",
-   "resumo": "Senador Cleitinho afirma que Flávio Bolsonaro se comprometeu a renegociar a dívida de Minas Gerais com a União.",
+   "titulo": "Camilo Santana diz que quem tem relações com Vorcaro é Flávio Bolsonaro",
+   "resumo": "Ministro Camilo Santana afirma que quem tem relações com o banqueiro Daniel Vorcaro é Flávio Bolsonaro, não Lula.",
    "ids": [
-    "c701dad7bce6",
-    "d482fba0120c"
-   ]
-  },
-  {
-   "titulo": "Dólar tem maior queda semanal pós-1º turno desde 1994",
-   "resumo": "Dólar registra maior queda semanal após primeiro turno desde 1994 e bolsa bate recorde.",
-   "ids": [
-    "0b764feea853",
-    "dc5214d2b63a",
-    "f80065485965",
-    "2c03d2767c02",
-    "fd7d61e3c5d6",
-    "d7c7990a032b"
-   ]
-  },
-  {
-   "titulo": "Mobilização online pró-Lula preocupa campanha de Flávio",
-   "resumo": "Campanha de Flávio Bolsonaro reage a mobilização online pró-Lula que liga alerta no segundo turno.",
-   "ids": [
-    "e090402fe6e7",
-    "1ae446f94ec9",
-    "413cd0f16d62",
-    "8f77801624a0",
-    "d5cda2d765d7"
-   ]
-  },
-  {
-   "titulo": "Perfis pró-Flávio expõem eleitores de Lula e incentivam denúncias",
-   "resumo": "Perfis favoráveis a Flávio Bolsonaro no Brasil e no exterior expõem eleitores de Lula e incentivam denúncias.",
-   "ids": [
-    "7fe0f87c9810",
-    "4ad05738cca1"
-   ]
-  },
-  {
-   "titulo": "Grupo de token pró-Flávio briga após prejuízos",
-   "resumo": "Investidores de token pró-Flávio Bolsonaro brigam após prejuízos e retiram política do site até a eleição.",
-   "ids": [
-    "93155b60e4d8",
-    "af0876cf12c2",
-    "f37feb6d827c"
-   ]
-  },
-  {
-   "titulo": "Lula perde votos em capitais onde focou campanha de rua",
-   "resumo": "Levantamento aponta que Lula perdeu votos em capitais onde equipe concentrou campanha de rua.",
-   "ids": [
-    "5cfa69dc35fa",
-    "9ef842b1d4e4",
-    "9b72164c5a84",
-    "66000652e84b"
-   ]
-  },
-  {
-   "titulo": "Justiça suspende liminar que autorizava operação da Stake",
-   "resumo": "Justiça derruba liminar que permitia à plataforma de apostas Stake operar no Brasil.",
-   "ids": [
-    "883bfacd6af1",
-    "882198d57d03",
-    "c4158895ba3f",
-    "5e6d57242b80",
-    "a8e97530e894",
-    "b594000c8261",
-    "1518d62fc97b"
-   ]
-  },
-  {
-   "titulo": "Renan Santos critica pressão por apoio a Flávio",
-   "resumo": "Renan Santos critica pressão para apoiar Flávio Bolsonaro e diz que ninguém o conduz.",
-   "ids": [
-    "1a6217a482dc",
-    "480e18418876",
-    "28db329e7cbd",
-    "82205eac65e5",
-    "7a13b9594450",
-    "6e15e45a0fdc",
-    "57534cd245f3",
-    "fdf3649608ee"
-   ]
-  },
-  {
-   "titulo": "PF aponta atuação de Ibaneis na compra do Master pelo BRB",
-   "resumo": "Polícia Federal aponta atuação direta do governador Ibaneis Rocha na tentativa de compra do Banco Master pelo BRB.",
-   "ids": [
-    "83d37ccec446",
-    "993304646e4f",
-    "175958d6c66a",
-    "e3eaa3031923"
-   ]
-  },
-  {
-   "titulo": "Toffoli nega ao PL acesso a documentos sobre jantar de Lula",
-   "resumo": "Ministro Dias Toffoli nega ao PL acesso a documentos sobre jantar de Lula com empresários.",
-   "ids": [
-    "121e73f408cc",
-    "c551eabf9a86"
-   ]
-  },
-  {
-   "titulo": "Moraes vê cenário adverso no Senado após eleição",
-   "resumo": "Ministro Alexandre de Moraes avalia cenário adverso no Senado após eleição de bolsonaristas.",
-   "ids": [
-    "b594a43779e0",
-    "7b9aefcea4be"
-   ]
-  },
-  {
-   "titulo": "Lula e Flávio montam tropas digitais para 2º turno",
-   "resumo": "Campanhas de Lula e Flávio Bolsonaro estruturam equipes digitais para a disputa do segundo turno.",
-   "ids": [
-    "800aa83de272",
-    "7a1d745dd183"
-   ]
-  },
-  {
-   "titulo": "Eduardo Bolsonaro entra em banco de mandados de prisão",
-   "resumo": "Eduardo Bolsonaro passa a constar em banco nacional de mandados de prisão abertos.",
-   "ids": [
-    "d62be6cd3c5d",
-    "deebe096c404",
-    "eab7e3079c60"
-   ]
-  },
-  {
-   "titulo": "Lula e Flávio têm agendas de campanha no sábado",
-   "resumo": "Candidatos Lula e Flávio Bolsonaro cumprem agendas de campanha em diferentes estados no sábado.",
-   "ids": [
-    "f82b4590c354",
-    "51edaf83e59e",
-    "65438e93dae2"
+    "c6c8fa1713ca",
+    "7bf5c1b084fa",
+    "20b7b68d3348"
    ]
   }
  ]
