@@ -1,319 +1,506 @@
 {
- "gerado": "2026-10-11T11:18:23+00:00",
+ "gerado": "2026-10-11T20:18:57+00:00",
  "assuntos": [
   {
-   "titulo": "TRE-RJ confirma Douglas Ruas como governador eleito do Rio",
-   "resumo": "Após retotalização de votos e anulação dos votos de Garotinho, TRE-RJ confirma Douglas Ruas (PL) como governador eleito no primeiro turno.",
+   "titulo": "Corregedor do TSE derruba decisão de Nunes Marques e libera canal 'Exército do Lula'",
+   "resumo": "O corregedor do TSE suspendeu a decisão de Nunes Marques e restabeleceu o canal 'Exército do Lula' no WhatsApp, de autoria de André Janones.",
    "ids": [
-    "c77c7706123d",
-    "b807caf55523",
-    "d5ef66fdc67d",
-    "bdc2b19e5788",
-    "4713cf464d06",
-    "8c513585e59e",
-    "4c0e7d28aa49",
-    "3877ea8a8588",
-    "bb69b6c33563",
-    "c5714d606dd6",
-    "0651c05410c2",
-    "632cc4487e88",
-    "8bc5c637a6a6",
-    "37b313399980",
-    "7d7ba15d1e98",
-    "818b4ed19d9d",
-    "2d2b952ca785",
-    "fa81f9594b1c",
-    "b48b5365bee0",
-    "b67ead17b7ee",
-    "74b01eae89b7",
-    "f753271e41aa",
-    "0e5a94014c0a",
-    "545fd51ba251",
-    "8b6026af5e2e",
-    "c80dd42b2669",
-    "2883f194373d",
-    "cc675203b7c6",
-    "372f2c5356f5",
-    "921f371de322",
-    "d1eebd123100",
-    "bce996ec5c86",
-    "22198c5e2d77",
-    "177c6c6f946d",
-    "73de3ccd1179",
-    "3a64e1c7c6b8",
-    "cac3caa5e480",
-    "790946070967",
-    "05fd3c15e560",
-    "1c6f99160f01",
-    "e536f92b6e28",
-    "49ae04b8c4be",
-    "ede71174e2c7",
-    "afdf5ba405b4",
-    "4ce44822ee99",
-    "6d0dea49f037",
-    "7e0dcf414c56",
-    "ef07b2ef16d0",
-    "79f90360c916",
-    "3946c2a442d7",
-    "16183f87e1bc",
-    "81f965b2f5a8",
-    "83810a24e48a",
-    "bc5de6ed4f38",
-    "9a4cfc9cc987",
-    "b3abfb043a82",
-    "04ad5756e7f3",
-    "f5201d7c36fc",
-    "79cccdbc6349",
-    "bde220c32e93",
-    "0c63800f4fe8",
-    "8d866f9268eb",
-    "e8077f42cf81",
-    "95d763b18532"
+    "2134d8669c30",
+    "dc9e16b9e09e",
+    "956ededdcf4a",
+    "0b31206452db",
+    "b5e7a5495c01",
+    "1b96f463509e",
+    "43a47a4f081a",
+    "0a066ef64c5a",
+    "c42fc5448b91",
+    "352e80f4c5fc",
+    "2da502c515ae",
+    "aed15036c987",
+    "1321d5c7413c",
+    "37715aecb761",
+    "3c183ccc79c3",
+    "7f2ed34c244b",
+    "68609ea2e580",
+    "4d608ec8821a",
+    "53faa625bafe",
+    "c52c8982f2d9",
+    "0bedb6825627",
+    "12bf81af2160",
+    "fbbaed434626",
+    "039225c9be64",
+    "405068d6891e",
+    "c82c30f73ebd",
+    "9ee591c2df99",
+    "56b2100ca00f",
+    "64a66d652afb",
+    "65510441a5a3"
    ]
   },
   {
-   "titulo": "Ratinho Junior declara apoio a Flávio Bolsonaro no segundo turno",
-   "resumo": "Governador do Paraná, Ratinho Junior, anuncia apoio à candidatura de Flávio Bolsonaro no segundo turno das eleições presidenciais.",
+   "titulo": "Nunes Marques suspende canal 'Exército do Lula' a pedido de Flávio Bolsonaro",
+   "resumo": "O presidente do TSE, Nunes Marques, atendeu pedido da campanha de Flávio Bolsonaro e determinou a suspensão do canal 'Exército do Lula' no WhatsApp.",
    "ids": [
-    "dc9869b2bbbc",
-    "b0a74007108c",
-    "5b2c139eec56",
-    "f790d7da99b4",
-    "9853e0f79e43",
-    "1f2ac0d3647e",
-    "e8506cc3a370",
-    "baefb42549c4",
-    "d7d68d94149b",
-    "b1b179197ab0",
-    "18f501b19a9e",
-    "a549dccb4ef4",
-    "f1be73f41a21",
-    "2a63163fcd92",
-    "4ae994ab3706",
-    "6a5103b14df4"
+    "e3a69e683323",
+    "4b9e56e16260",
+    "a79b006e039f",
+    "7bc32d0ecbe5",
+    "70d118d45742",
+    "ae6ac784affd",
+    "59f8ec6293be",
+    "fe551657a16b",
+    "ae8a25fa59ef",
+    "2390486a970a",
+    "3ff86d4fcccc",
+    "9f51530c670d",
+    "c4620c4da2c8",
+    "bc1748a668a3",
+    "37921e7d4756",
+    "a7e7c7e71736",
+    "ee33a5d8595b",
+    "de5f1939969e",
+    "20d6f885042f",
+    "8627df8f05c4",
+    "27ce846bbf0d",
+    "005612323f12",
+    "469665acca3b",
+    "5d734037ba2a",
+    "930d17079899",
+    "f6e84ba2d9c1",
+    "31c7cf52ac99",
+    "3658188dfec1",
+    "5b4f56f3c3f1",
+    "572963817142",
+    "b925957947bd",
+    "c31d257c3443",
+    "c8293c3fa697",
+    "daeec71a98ed",
+    "0a64090d492e",
+    "f511c428ef69",
+    "ab47c466a156",
+    "6bc2ce800891"
    ]
   },
   {
-   "titulo": "TSE questiona Meta sobre suposta interferência na campanha de Lula",
-   "resumo": "Após campanha de Lula acusar Meta de favorecer Flávio Bolsonaro, TSE dá 48 horas para empresa esclarecer restrições a conteúdos do petista.",
+   "titulo": "Lula critica decisão do TSE sobre canal 'Exército do Lula'",
+   "resumo": "Lula criticou a decisão do TSE que suspendeu o canal 'Exército do Lula' e afirmou que o PT recorrerá à Justiça.",
    "ids": [
-    "49b01bcbf3b5",
-    "e834151da0a5",
-    "5d094fb5b932",
-    "6dc9fd9a0635",
-    "64c41bb31435",
-    "13d2a3c155ee",
-    "9eacc1762c9e",
-    "85a1e4668361",
-    "fecf249bf7e7",
-    "cb44aed14262",
-    "87e01298daea",
-    "e5d8c72488c3",
-    "d1d0fd0ef488",
-    "b726b8f63280",
-    "4a368f7d5a10",
-    "b958687603a7",
-    "0dd87c057a28",
-    "290bf1d51ff8",
-    "b5ae77ce3a37",
-    "db890c3e60db",
-    "ea993d1559af",
-    "64ba5030729d",
-    "9d4dc4737a8d",
-    "b710b1570729",
-    "846cb2055fcb",
-    "06fdba2de19f",
-    "762581d47efc",
-    "8778f4b18422",
-    "78dacfc13f83",
-    "bd2c21949cb3",
-    "1a3f2cde8e25",
-    "ea6b4e8d60a9",
-    "9d1c28b1edb6",
-    "ea3d1ae37aeb",
-    "645552a9bdbe",
-    "78b3b6f05759",
-    "96132da64f84",
-    "e11453b80797",
-    "a255f63fa4b6",
-    "9cf58c357533",
-    "0d3f31b646c9",
-    "7594f48ddd39",
-    "65053f52bf12",
-    "536ebea01090",
-    "49223c4c63af",
-    "000d6cb3ce4b",
-    "cf9c7d376403",
-    "d2a03d6b428f",
-    "cf49b655dc38",
-    "9bc1a670fd17",
-    "31d44159a73f",
-    "5529f3326662",
-    "9f7c8462e25d",
-    "c2c758168c91",
-    "b2abd8960594",
-    "5aa125604380",
-    "7a470aa84c48",
-    "83f7b16e8899"
+    "fa3975443fe8",
+    "b4e415318b86",
+    "8bc8fa2cdf11",
+    "c1915ce875a0",
+    "b33b9d44320a",
+    "f1434ddb01fd",
+    "e819b38f5ce5",
+    "225d0b38881b",
+    "24fcbbe6a27a",
+    "6c3535ea5957",
+    "4d7130ab86de",
+    "35a7082dd4f6",
+    "5e1609b9bc1a",
+    "fb7ea21a8042",
+    "54cda290fb0a",
+    "daf28fb60d73",
+    "a9928f3338b4",
+    "b9bcea92144b",
+    "5048645bd9bc",
+    "54fc152e8ea7",
+    "6cc5ce62976d",
+    "0f36055b3095",
+    "8c27090df959",
+    "9f3951119ce9",
+    "27a1d7687341",
+    "e9e507454e1f",
+    "d7c5e0ad77e4",
+    "223675bd4652",
+    "51c10b57c372",
+    "4a98d59280f9"
    ]
   },
   {
-   "titulo": "Flávio Bolsonaro diz que Jair Bolsonaro lhe entregará a faixa presidencial",
-   "resumo": "Em eventos de campanha, Flávio Bolsonaro afirma que, se eleito, receberá a faixa presidencial de seu pai, Jair Bolsonaro, atualmente preso.",
+   "titulo": "Ato pró-Lula reúne milhares na Avenida Paulista",
+   "resumo": "Ato em apoio à reeleição de Lula reuniu milhares de pessoas na Avenida Paulista, com discursos de Lula e aliados.",
    "ids": [
-    "f5efc8b5e0c9",
-    "92a8522161b7",
-    "91e370de07f9",
-    "ad0e65e4ec26",
-    "98924761ef58",
-    "95e2fa9365da",
-    "e4dea570cc2b",
-    "0210268293e2",
-    "c791bf923125",
-    "0b6858b75a87",
-    "52c9cf44e0ae",
-    "cf1a0678bc1a",
-    "8da5582cf692",
-    "6562ab3a7171",
-    "12dfb75a96cf",
-    "4a69b1c16216",
-    "c199b401095b",
-    "de81fa37a23f",
-    "0978ee611165",
-    "2c6f620a4ab6",
-    "9d211c354343",
-    "4513c32490f8"
-   ]
-  },
-  {
-   "titulo": "Flávio Bolsonaro diz que Brasil enfrenta 'guerra espiritual'",
-   "resumo": "Durante culto evangélico no Rio, Flávio Bolsonaro afirma que o Brasil vive uma 'guerra espiritual' e enfrenta 'inimigos mentirosos'.",
-   "ids": [
-    "eb9d7de6f29b",
-    "8762795654a4",
-    "c71f4ee212e9",
-    "f3c38ec8233c",
-    "6c7d7658bf10",
-    "69fd92a167ff",
-    "a159352037c1",
-    "6e0b5ebb7b93",
-    "9d6de2ce16ad",
-    "e1a354c4c067",
-    "353a84092a06",
-    "86e9e11219a7",
-    "89e1ec58df52",
-    "c1c3c7c46639",
-    "d7935567790f",
-    "8b5e8005f965"
-   ]
-  },
-  {
-   "titulo": "Lula questiona corte de R$ 250 bilhões prometido por Flávio Bolsonaro",
-   "resumo": "Lula cobra que Flávio Bolsonaro detalhe de onde virão os cortes de R$ 250 bilhões prometidos, sugerindo impacto em programas sociais.",
-   "ids": [
-    "0e82168cc6fd",
-    "07e3d28a9b9e",
-    "d4bd4c46e929",
-    "113f93497e9d",
-    "1f999e8c26e3",
-    "582eebf1cfc6",
-    "f2e16283419b",
-    "e9d3492863a9",
-    "dd059e40c280",
-    "7571378be651",
-    "308ad9a9a863",
-    "ecfb7d6a1fa5",
-    "0d59c7888fd3",
-    "779950a262a6",
-    "b4310375a754",
-    "3f9216003f31",
-    "db4bae72016b",
-    "33c2dfb247a9",
-    "942a19ff4744",
-    "7907654ce26d"
-   ]
-  },
-  {
-   "titulo": "E-mails indicam que Flávio Bolsonaro dividia conta com suspeito de fraude no INSS",
-   "resumo": "Reportagem revela que Flávio Bolsonaro compartilhava conta bancária com advogado investigado por fraudes no INSS; aliados pedem investigação.",
-   "ids": [
-    "1c06d77caf8c",
-    "bace42ebab71",
-    "16637f2fe960",
-    "9be524ddc7d0",
-    "6ae46c76d38a",
-    "768f57d26893",
-    "8cf1365fa1ed",
-    "696638425b4d",
-    "e07bd7ba7c26"
-   ]
-  },
-  {
-   "titulo": "Flávio Bolsonaro pede ao TSE derrubada de canal pró-Lula",
-   "resumo": "Campanha de Flávio Bolsonaro aciona o TSE para suspender canal 'Exército do Lula' no WhatsApp; tribunal pede esclarecimentos.",
-   "ids": [
-    "53794927601f",
-    "7d0c0002f57a",
-    "4dafff25ab17",
-    "3f9e4e2fed0f",
-    "025559ccd300",
-    "83eb316c4283",
-    "b11740a83141",
-    "c4d209273cd2",
-    "db5fae5cd1de",
-    "1e65232976a4",
-    "7e289e010950",
-    "66e7a54cdd1f",
-    "c1c6609144b3",
-    "2b0399d6f13e",
-    "159c8cfcd0aa"
-   ]
-  },
-  {
-   "titulo": "Pesquisas apontam Flávio Bolsonaro à frente de Lula no segundo turno",
-   "resumo": "Levantamentos Ipespe e Datafolha mostram Flávio Bolsonaro com 52,7% e 52% dos votos válidos, contra 47,3% e 48% de Lula.",
-   "ids": [
-    "b0a70898a1bc",
-    "9d4715fa9f4c",
-    "bd86b49b7ac3",
-    "c9410878a978",
-    "1bda0c1fce79",
-    "5f90e8e9f2e1",
-    "1d3b1999188d"
-   ]
-  },
-  {
-   "titulo": "Lula e Flávio Bolsonaro fazem campanha em Natal e no Rio",
-   "resumo": "Lula participa de comício em Natal, enquanto Flávio Bolsonaro realiza moto-carreata no Rio de Janeiro.",
-   "ids": [
+    "bd471e70eac2",
+    "252cca06866d",
+    "a4a0ce9af950",
+    "90ed98f3d5a6",
+    "bb4c545376b5",
+    "32e9c8527bca",
+    "696512526f26",
+    "34a182b1736b",
+    "8e618a08a871",
+    "49b29f23a3e3",
+    "1fd149e0da67",
+    "b2512bb7fa78",
+    "7704791c391a",
+    "2d1a454b98f0",
+    "d8a7641081f2",
+    "74a7e3abc387",
+    "969877f55a93",
+    "fc97c3f23dd2",
+    "308151bfffbc",
+    "51d87fd5f944",
+    "b56443ca0c37",
+    "9bc602dbbe39",
+    "825a4b3d5948",
+    "0216ec12acdd",
+    "871555710e98",
+    "7d63405ada5d",
+    "2b9d9fe75e87",
+    "d2f1343c957a",
+    "eeef5f62f8a6",
+    "49acbd20203c",
+    "583c785e353f",
+    "512c5821d134",
+    "3d4a8dae8f54",
+    "7ed8d5a6ea3c",
+    "ebd0fa11683c",
+    "8ca07f791791",
+    "30c5e93e0e47",
+    "02730f6b87b1",
+    "676f98afbe5c",
+    "81eed805fb3b",
+    "0c6f7ff6899c",
     "25d80ef7a144",
+    "97d88475fcdd",
+    "fbf2b9ef061c",
+    "b2d13109665c",
     "0a22ef667321",
-    "0a63c7aee22d",
-    "5ee7276fa67f",
-    "ef955f2347c2",
-    "ccd57218c593",
-    "5a2898b07b75",
-    "6cfc6600d630",
-    "1acdb38201d2",
-    "70e1695014f8",
-    "2377e88f02d0"
+    "6c325d190160",
+    "429a2102d3b5",
+    "cc1e9e162df2",
+    "1f1a652dccc7",
+    "86fd4066420c"
    ]
   },
   {
-   "titulo": "Alckmin defende conquista de eleitores que não votaram no primeiro turno",
-   "resumo": "Vice-presidente e candidato a vice, Alckmin afirma que Lula precisa atrair eleitores que faltaram às urnas e a classe média.",
+   "titulo": "Flávio Bolsonaro promete manter Bolsa Família e reajuste do salário mínimo",
+   "resumo": "Flávio Bolsonaro afirmou que, se eleito, manterá o Bolsa Família e o reajuste do salário mínimo.",
    "ids": [
-    "fbf2b9ef061c",
-    "a59c1efd0dd9",
-    "e867cebf8cf9",
-    "bf7a4139f72e",
-    "b263a39666e8",
-    "3daf281eece5",
-    "747fbf3536d5",
-    "8a6ad8657106",
-    "22c16ba4c5ce",
-    "1ac468940f6a",
-    "2144b93741c9"
+    "cb1370423924",
+    "5e2e8cb07cef",
+    "f17312382dbf",
+    "bb793e4cb71b",
+    "4168b21f7177",
+    "5581543dd347"
+   ]
+  },
+  {
+   "titulo": "TSE suspende propaganda de Lula que associa Flávio ao caso Master",
+   "resumo": "O TSE suspendeu a propaganda eleitoral de Lula que associava Flávio Bolsonaro ao caso do Banco Master.",
+   "ids": [
+    "ea742373fe05",
+    "e4e97eccc8fd",
+    "fb00ba03cdc9",
+    "a38ed01e9d6d",
+    "96ddec01ac29",
+    "130b9c0e2598",
+    "c860eee6f98e",
+    "9e0ef6fa8bd5"
+   ]
+  },
+  {
+   "titulo": "Meta nega interferência eleitoral e alega problemas técnicos para menor alcance de Lula",
+   "resumo": "A Meta negou interferência na campanha de Lula e atribuiu o menor alcance de publicações a problemas técnicos.",
+   "ids": [
+    "acf78a627e75",
+    "2f5a080b170e",
+    "7f5036dae21d",
+    "3a926e84eb9e",
+    "018ba9ec401e",
+    "0d748dd32496",
+    "385b54a490a8",
+    "701181542cf6",
+    "da3e95782e3e",
+    "e595fa0fb141"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro pede que Justiça Eleitoral seja mais ágil contra fake news",
+   "resumo": "Flávio Bolsonaro pediu mais agilidade da Justiça Eleitoral no combate a fake news durante evento com prefeitos em São Paulo.",
+   "ids": [
+    "6a3625b0eb7b",
+    "74ee485701bb",
+    "775e61852c8a",
+    "9b052d401977",
+    "4fec202c5fcd"
+   ]
+  },
+  {
+   "titulo": "TSE manda Meta esclarecer restrições a postagens da campanha de Lula",
+   "resumo": "O TSE deu 48 horas para a Meta esclarecer supostas restrições a postagens da campanha de Lula.",
+   "ids": [
+    "a380ec626fca",
+    "448a6b5c9082",
+    "09681fccc5cf",
+    "32768d6d85c9",
+    "6c372b20891c"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro aciona TSE contra diretor-geral da PF",
+   "resumo": "Flávio Bolsonaro apresentou pedido de investigação contra o diretor-geral da PF por suposto uso eleitoral da corporação.",
+   "ids": [
+    "69571f4627de",
+    "0ad2659211b5",
+    "1cb4f4ad7102"
+   ]
+  },
+  {
+   "titulo": "Eduardo Bolsonaro diz que ministros de governo Flávio terão aval de Jair Bolsonaro",
+   "resumo": "Eduardo Bolsonaro afirmou que ministros de um eventual governo Flávio Bolsonaro passarão pelo aval de Jair Bolsonaro.",
+   "ids": [
+    "ae9ce9a9b58d",
+    "670109585e4c",
+    "7967dde5371d",
+    "bf09ba41d59e",
+    "68f57af81542",
+    "5b4ddbb64b85"
+   ]
+  },
+  {
+   "titulo": "Ratinho Jr confirma apoio a Flávio Bolsonaro no segundo turno",
+   "resumo": "O governador Ratinho Jr confirmou apoio à candidatura de Flávio Bolsonaro no segundo turno.",
+   "ids": [
+    "cbf5628c659a",
+    "dc9869b2bbbc",
+    "b0a74007108c"
+   ]
+  },
+  {
+   "titulo": "Papa Leão XIV passará por cirurgia para retirar nódulo no pulmão",
+   "resumo": "O papa Leão XIV anunciou que passará por cirurgia para retirada de nódulo no pulmão detectado em estágio inicial.",
+   "ids": [
+    "abd6bb2acb2f",
+    "1eb2e2f0c240",
+    "60d5ce27f1b5",
+    "98864cb2bffa",
+    "f365338f7f3b",
+    "9a1e0ba6b19a",
+    "9f2ece64f803"
+   ]
+  },
+  {
+   "titulo": "Morre Telma de Souza, ex-prefeita de Santos e fundadora do PT",
+   "resumo": "Morreu aos 82 anos Telma de Souza, ex-prefeita de Santos e uma das fundadoras do PT.",
+   "ids": [
+    "c272b1453903",
+    "f6965221b3ce",
+    "0fbf034cdabc",
+    "a2f1a7eafca9",
+    "e60085d44fcb",
+    "358ab2fe503a",
+    "4f03e661cf6c",
+    "0a03cb26c378",
+    "0440e519cdb7",
+    "b199f4cc91d4"
+   ]
+  },
+  {
+   "titulo": "Polícia polonesa investiga suposto plano para assassinar primeiro-ministro",
+   "resumo": "A polícia da Polônia investiga um suposto plano para assassinar o primeiro-ministro Donald Tusk.",
+   "ids": [
+    "47fdf650dce7",
+    "e8df5ca961f8",
+    "71787f896e0f",
+    "2abf4abe2bc4",
+    "c5058c569496",
+    "85b02d989481",
+    "c027e593773e",
+    "64db4867f644",
+    "efaa67c8205a"
+   ]
+  },
+  {
+   "titulo": "Zelensky condiciona eleições na Ucrânia a cessar-fogo",
+   "resumo": "Zelensky afirmou que só realizará eleições na Ucrânia se a Rússia aceitar um cessar-fogo.",
+   "ids": [
+    "98f1ccc6a637",
+    "6a9a62d4e742",
+    "9b25d557c75c",
+    "bfbf8e4668ee",
+    "81ea671ee75a",
+    "9f23202884d2",
+    "2d3115483920",
+    "c60e9bf0e600"
+   ]
+  },
+  {
+   "titulo": "Incêndios florestais no Amazonas levam governo a enviar ajuda federal",
+   "resumo": "O governo federal enviou aeronaves e força-tarefa para combater incêndios florestais no Amazonas, que afetam 36 cidades.",
+   "ids": [
+    "6268440c0e58",
+    "a70e330de5ff",
+    "178b18b68da4",
+    "299f7df8e3ca",
+    "3c0507dbcb64",
+    "33094f3e2145",
+    "2f413b7e9a0d",
+    "47f36be004ae",
+    "7cc474171010",
+    "7ffac4b08206",
+    "313b840d7cc3",
+    "a1cd81108c23",
+    "a4fb8ff685a1"
+   ]
+  },
+  {
+   "titulo": "Tarcísio de Freitas critica tratamento de Lula a São Paulo",
+   "resumo": "Tarcísio de Freitas criticou o tratamento de Lula a São Paulo durante evento com prefeitos ao lado de Flávio Bolsonaro.",
+   "ids": [
+    "8dca95429322",
+    "ded5ca32d9d6",
+    "6bcc9f49d7ee",
+    "176b07df7cb0",
+    "079c90e7df9f",
+    "cb69594a350e"
+   ]
+  },
+  {
+   "titulo": "André Mendonça manda campanha de Lula parar impulsionamento de post contra Flávio",
+   "resumo": "O ministro André Mendonça determinou que a campanha de Lula interrompa o impulsionamento de publicações contra Flávio Bolsonaro.",
+   "ids": [
+    "4fc9d72e9499",
+    "e05fba049e93",
+    "fac1319802cc"
+   ]
+  },
+  {
+   "titulo": "Janones denuncia censura após suspensão do canal 'Exército do Lula'",
+   "resumo": "André Janones classificou como censura a suspensão do canal 'Exército do Lula' pelo TSE e prometeu recorrer.",
+   "ids": [
+    "d14b64bf95f4",
+    "285fae2e59b9",
+    "84f2de52b864",
+    "455bc730b44f",
+    "93047982bc7d",
+    "9232f19dae7b",
+    "6377ad42f504",
+    "0a8e88abbb7d",
+    "a42c8f47ddd5",
+    "f866257a7493",
+    "635b1d520f03",
+    "67ad13821f70",
+    "dd23ba327ed9",
+    "4e4d6385ba5f",
+    "54cee6379c90",
+    "328eff5fa2a5"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro venceu em 86% dos locais de votação em áreas de milícias no Rio",
+   "resumo": "Levantamento aponta que Flávio Bolsonaro venceu em 86% dos locais de votação em áreas controladas por milícias no Rio de Janeiro.",
+   "ids": [
+    "302dd4bf54fd",
+    "7172b0ef89cc",
+    "746d1c4efa71"
+   ]
+  },
+  {
+   "titulo": "TSE abre ação para investigar Pablo Marçal na campanha de Flávio",
+   "resumo": "O TSE abriu ação para investigar a atuação de Pablo Marçal na campanha de Flávio Bolsonaro.",
+   "ids": [
+    "b472b1cf9ed3",
+    "f172ba959087",
+    "88564b1f26df"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro diz que Lula não aprendeu nada na cadeia",
+   "resumo": "Flávio Bolsonaro afirmou que Lula não aprendeu nada na cadeia durante discurso em evento de campanha.",
+   "ids": [
+    "4b11a3e9e62d",
+    "e2931b5d1f64"
+   ]
+  },
+  {
+   "titulo": "Tarcísio e Nunes confirmam ato pró-Flávio na Paulista",
+   "resumo": "Tarcísio de Freitas e Ricardo Nunes confirmaram participação em ato pró-Flávio Bolsonaro na Avenida Paulista.",
+   "ids": [
+    "5f0387714108",
+    "cab9e7aebe35"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro promete 'tesouraço' na censura e IA como amiga",
+   "resumo": "Flávio Bolsonaro prometeu cortar gastos e usar inteligência artificial como aliada em eventual governo.",
+   "ids": [
+    "c78feec87d08",
+    "8caf705c18e6"
+   ]
+  },
+  {
+   "titulo": "Lula diz que votação do fim da escala 6x1 está 'conversada' com Alcolumbre",
+   "resumo": "Lula afirmou que a votação do fim da escala 6x1 no Senado está acertada com o presidente da Casa, Davi Alcolumbre.",
+   "ids": [
+    "96aae24ce5e5",
+    "4bb05c46a703",
+    "7137f92ae896",
+    "f9429b8ae1bf",
+    "048abb2a6ba5",
+    "04439972ef3a",
+    "cbb5561ecf7f",
+    "45f691b37f90",
+    "11a8b82d8463",
+    "7b7b164d5703",
+    "c7e3c21de986",
+    "11e64a4611ae",
+    "4b9fc736266e",
+    "ee7a277d3982",
+    "5f2906eb8c9c"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro diz que cenário eleitoral é favorável, mas alerta aliados",
+   "resumo": "Flávio Bolsonaro afirmou que o cenário eleitoral é favorável, mas pediu que aliados não baixem a guarda.",
+   "ids": [
+    "8e76f536e8cb",
+    "5ce3e8659d21"
+   ]
+  },
+  {
+   "titulo": "Lula diz que Elmano 'enterrou' carreira política de Ciro Gomes",
+   "resumo": "Lula afirmou que o governador Elmano de Freitas enterrou a carreira política de Ciro Gomes.",
+   "ids": [
+    "03e1db4151d8",
+    "b36841a5de0a",
+    "852b9f0a6786"
+   ]
+  },
+  {
+   "titulo": "Camilo Santana diz que CCJ votará PEC da Segurança na quarta-feira",
+   "resumo": "O ministro Camilo Santana afirmou que a CCJ do Senado votará a PEC da Segurança Pública na quarta-feira.",
+   "ids": [
+    "40677b0a4daa",
+    "753cbec76d47"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro se reúne com prefeitos em SP e pede mobilização",
+   "resumo": "Flávio Bolsonaro reuniu prefeitos e vereadores em São Paulo e pediu mobilização para o segundo turno.",
+   "ids": [
+    "9ce294b1e262",
+    "69733d511ae9"
+   ]
+  },
+  {
+   "titulo": "Lula e Flávio Bolsonaro participam de atos de campanha em SP",
+   "resumo": "Lula participou de ato na Paulista enquanto Flávio Bolsonaro se reuniu com prefeitos no centro de São Paulo.",
+   "ids": [
+    "bc89412a326c",
+    "d9ec343fc35f",
+    "085400825e0b",
+    "55c1533c0418",
+    "180b2dbde687"
+   ]
+  },
+  {
+   "titulo": "Flávio Bolsonaro diz que canal da campanha de Lula faz 'divulgação de mentiras em massa'",
+   "resumo": "Flávio Bolsonaro afirmou que o canal da campanha de Lula no WhatsApp faz divulgação de mentiras em massa.",
+   "ids": [
+    "29e07dc6762f",
+    "909286f688a8"
    ]
   }
  ]
