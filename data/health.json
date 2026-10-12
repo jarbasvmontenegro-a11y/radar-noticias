@@ -280,7 +280,7 @@
   "last_ok": "2026-10-12"
  },
  "infonet": {
-  "down_since": "2026-10-12 02:00",
+  "down_since": "",
   "last_ok": "2026-10-12"
  },
  "intercept": {
@@ -288,8 +288,8 @@
   "last_ok": "2026-10-12"
  },
  "istoe": {
-  "down_since": "2026-10-12 00:00",
-  "last_ok": "2026-10-11"
+  "down_since": "",
+  "last_ok": "2026-10-12"
  },
  "jornal-da-paraiba": {
   "down_since": "",
