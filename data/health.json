@@ -60,8 +60,8 @@
   "last_ok": "2026-10-13"
  },
  "campo-grande-news": {
-  "down_since": "2026-10-13 00:00",
-  "last_ok": "2026-10-12"
+  "down_since": "",
+  "last_ok": "2026-10-13"
  },
  "cartacapital": {
   "down_since": "",
@@ -288,7 +288,7 @@
   "last_ok": "2026-10-13"
  },
  "istoe": {
-  "down_since": "",
+  "down_since": "2026-10-13 01:00",
   "last_ok": "2026-10-13"
  },
  "jornal-da-paraiba": {
