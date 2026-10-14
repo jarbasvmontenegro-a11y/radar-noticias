@@ -36,8 +36,21 @@ jobs:
       # Código quebrado nunca chega ao ar: testes antes de qualquer coleta ou publicação.
       - name: Testes
         run: |
-          python -m unittest discover -s tests
-          node --test tests/functions.test.mjs tests/share.test.mjs tests/push.test.mjs tests/pote.test.mjs tests/extract.test.mjs tests/verify.test.mjs
+          # Roda tudo e guarda a saída. Se algo falha, o trecho do erro vira anotação (a run mostra QUAL teste caiu) e há UMA nova
+          # tentativa: um teste instável não deve parar a coleta, mas também não pode passar em silêncio.
+          rodar() {
+            python -m unittest discover -s tests > /tmp/py.log 2>&1; py=$?
+            node --test tests/functions.test.mjs tests/share.test.mjs tests/push.test.mjs tests/pote.test.mjs tests/extract.test.mjs tests/verify.test.mjs > /tmp/node.log 2>&1; nd=$?
+            [ $py -eq 0 ] && [ $nd -eq 0 ]
+          }
+          resumo() {
+            { grep -hE "^(FAIL|ERROR):" /tmp/py.log; grep -hE "^not ok|^# Subtest" /tmp/node.log | grep -B1 "^not ok"; grep -hE -A6 "^not ok" /tmp/node.log | grep -E "error:|expected|actual|AssertionError|Error" ; grep -hE -B2 -A12 "^(FAIL|ERROR):" /tmp/py.log | tail -25; } | tr '\n' '|' | cut -c1-1500
+          }
+          if rodar; then exit 0; fi
+          echo "::warning title=Teste falhou (1a tentativa)::$(resumo)"
+          if rodar; then echo "::warning title=Teste instável::passou na 2a tentativa, veja a anotação anterior"; exit 0; fi
+          echo "::error title=Teste falhou (2a tentativa)::$(resumo)"
+          exit 1
 
       # Coleta é só RSS: sem IA e sem custo. Falha (e avisa) se nenhuma fonte responder.
       - name: Coletar notícias

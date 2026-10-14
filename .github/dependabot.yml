@@ -5,6 +5,11 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      # as etapas do CodeQL (init e analyze) PRECISAM ter a mesma versão: sobem juntas, no mesmo PR
+      codeql:
+        patterns:
+          - "github/codeql-action*"
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
