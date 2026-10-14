@@ -61,6 +61,7 @@ def prepare(articles: list[dict], sources: dict, now: datetime, bloqueados: froz
         out.append({**a, "source_name": src["name"], "source_id": src["id"], "dt": pub, "bloq": host in bloqueados,
                     "day": pub.strftime("%Y-%m-%d"), "day_label": label, "hm": pub.strftime("%H:%M"),
                     "time_label": pub.strftime("%H:%M") if same_day else pub.strftime("%d/%m %H:%M")})
+    out.sort(key=lambda x: x["dt"], reverse=True)  # mais recente primeiro, qualquer que seja a ordem do arquivo
     return out
 
 
@@ -507,7 +508,7 @@ def build(out_dir: str = "site") -> str:
     # "d" = descrição curta, só nas mais recentes para não pesar)
     index = []
     for i, a in enumerate(items[:2500]):
-        e = {"t": a["title"], "s": a["source_name"], "i": a["source"], "u": a["url"], "p": a["published"][:16]}
+        e = {"t": a["title"], "s": a["source_name"], "i": a["source"], "u": a["url"], "p": a["dt"].strftime("%Y-%m-%dT%H:%M")}  # hora de Brasília, igual para todas as fontes
         if a["kind"] == "checagem":
             e["c"] = 1
         if a["grupo"] == "oficial":

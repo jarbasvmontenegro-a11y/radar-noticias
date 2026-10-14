@@ -74,6 +74,13 @@ jobs:
           TAREFA: ${{ inputs.tarefa }}
         run: node scripts/diagnostico_texto.mjs diag "$(echo "${TAREFA#texto}" | sed 's/^-//;s/^$/oeste/')" 8
 
+      - name: Datas cruas dos feeds (fuso)
+        if: inputs.tarefa == 'datas'
+        continue-on-error: true
+        env:
+          PYTHONPATH: .
+        run: python scripts/diagnostico_datas.py diag
+
       - name: Guardar resultado na branch diagnostico
         if: always()
         run: |

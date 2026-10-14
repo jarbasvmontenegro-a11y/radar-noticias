@@ -65,7 +65,11 @@ def load_store() -> dict:
         return {}
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
-        return {a["id"]: a for a in data["articles"]}
+        store = {a["id"]: a for a in data["articles"]}
+        for a in store.values():  # arquivos antigos misturam fusos: normaliza para UTC
+            if not a["published"].endswith("+00:00"):
+                a["published"] = _utc_iso(datetime.fromisoformat(a["published"]))
+        return store
     except (json.JSONDecodeError, KeyError, TypeError) as exc:
         backup = path.with_name("articles.corrompido.json")
         try:
@@ -160,6 +164,25 @@ def _child_text(node: ET.Element, *names: str) -> str:
         if _local(child.tag) in names and (child.text or "").strip():
             return child.text.strip()
     return ""
+
+
+def _utc_iso(dt: datetime) -> str:
+    """Sempre em UTC: o arquivo é ordenado por data e misturar fusos (+00:00 e -03:00) embaralhava a ordem."""
+    return dt.astimezone(timezone.utc).isoformat(timespec="seconds")
+
+
+def _ts(a: dict) -> datetime:
+    return datetime.fromisoformat(a["published"])
+
+
+def corrigir_relogio(src: dict, dt):
+    """Alguns feeds escrevem a hora num fuso e rotulam com outro (hora de Brasília marcada como UTC, ou o contrário).
+    `relogio` na fonte diz em que fuso a hora escrita REALMENTE está: "utc" ou "-03:00". O rótulo do feed é ignorado."""
+    modo = src.get("relogio")
+    if not dt or not modo:
+        return dt
+    tz = timezone.utc if modo == "utc" else timezone(timedelta(hours={"-03:00": -3, "-04:00": -4}[modo]))
+    return dt.replace(tzinfo=tz)
 
 
 def _parse_date(raw: str):
@@ -412,7 +435,7 @@ def collect(window_days: int = 7, per_source_limit: int = 40, validar: bool = Fa
                 continue
             if aid in pend_ids or tkey in seen_titles:
                 continue
-            pub = e["published"] or now  # sem data no feed: usamos o momento da coleta
+            pub = corrigir_relogio(src, e["published"]) or now  # sem data no feed: usamos o momento da coleta
             if pub > now + timedelta(hours=2):
                 pub = now
             if pub < cutoff:
@@ -420,7 +443,7 @@ def collect(window_days: int = 7, per_source_limit: int = 40, validar: bool = Fa
             pendentes.append({
                 "id": aid, "title": e["title"], "desc": e["desc"], "url": canonical_url(e["url"]),
                 "source": src["id"], "kind": src.get("kind", "noticia"),
-                "published": pub.isoformat(timespec="seconds"), "seen": now.isoformat(timespec="seconds"),
+                "published": _utc_iso(pub), "seen": now.isoformat(timespec="seconds"),
             })
             seen_titles.add(tkey)
             pend_ids.add(aid)
@@ -440,8 +463,8 @@ def collect(window_days: int = 7, per_source_limit: int = 40, validar: bool = Fa
         status[sid] = {"name": src["name"], "ok": not err, "items": len(entries), "usable": usable_n, "new": por_fonte.get(sid, 0), "error": err,
                        "checked": now.isoformat(timespec="seconds")}
 
-    articles = [a for a in store.values() if datetime.fromisoformat(a["published"]) >= cutoff]
-    articles.sort(key=lambda a: a["published"], reverse=True)
+    articles = [a for a in store.values() if _ts(a) >= cutoff]
+    articles.sort(key=_ts, reverse=True)
     articles = articles[:MAX_ARTICLES]
     write_atomic(DATA / "articles.json", json.dumps({"articles": articles}, ensure_ascii=False, separators=(",", ":")))
     write_atomic(DATA / "status.json", json.dumps(status, ensure_ascii=False, indent=1))
