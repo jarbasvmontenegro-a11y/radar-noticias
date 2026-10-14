@@ -52,7 +52,7 @@ jobs:
           PYTHONPATH: .
         run: python scripts/diagnostico_coleta.py diag
 
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         if: inputs.tarefa == 'extracao' || inputs.tarefa == 'tudo'
         with:
           node-version: "22"
@@ -62,7 +62,7 @@ jobs:
         continue-on-error: true
         run: node scripts/diagnostico_extracao.mjs diag
 
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         if: startsWith(inputs.tarefa, 'texto')
         with:
           node-version: "22"
