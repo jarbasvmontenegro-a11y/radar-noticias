@@ -155,7 +155,7 @@ class CollectTests(Base):
     def test_teto_de_artigos(self):
         now = datetime.now(timezone.utc)
         feed = rss([(f"Titulo numero {i}", f"https://x.com/{i}", "d", now - timedelta(minutes=i)) for i in range(30)])
-        with mock.patch.object(c, "MAX_ARTICLES", 10):
+        with mock.patch.object(c, "MAX_ARTICLES", 10), mock.patch.object(c, "MIN_POR_FONTE", 0):
             r = self.run_collect([self.src()], lambda s: c.parse_feed(feed))
         self.assertEqual(r["total"], 10)
 
@@ -308,3 +308,53 @@ class TestTituloNaDescricao(unittest.TestCase):
     def test_so_o_uol_usa_a_troca(self):
         com = sorted(s["id"] for s in c.load_sources() if s.get("titulo_na_descricao"))
         self.assertEqual(com, ["uol"])
+
+
+class RelogioTest(unittest.TestCase):
+    """Feeds que escrevem a hora num fuso e rotulam com outro (ver corrigir_relogio)."""
+
+    def test_hora_local_rotulada_como_utc_vira_brasilia(self):
+        from radar.collect import corrigir_relogio, _utc_iso
+        from datetime import datetime, timezone
+        escrito = datetime(2026, 10, 14, 17, 55, tzinfo=timezone.utc)  # o feed diz "17:55 GMT", mas é 17:55 de Brasília
+        self.assertEqual(_utc_iso(corrigir_relogio({"relogio": "-03:00"}, escrito)), "2026-10-14T20:55:00+00:00")
+
+    def test_hora_utc_rotulada_como_brasilia_vira_utc(self):
+        from radar.collect import corrigir_relogio, _utc_iso
+        from datetime import datetime, timedelta, timezone
+        escrito = datetime(2026, 10, 14, 20, 30, tzinfo=timezone(timedelta(hours=-3)))  # "20:30-03:00" que na verdade é 20:30 UTC
+        self.assertEqual(_utc_iso(corrigir_relogio({"relogio": "utc"}, escrito)), "2026-10-14T20:30:00+00:00")
+
+    def test_sem_relogio_nada_muda_e_arquivo_sai_em_utc_ordenado(self):
+        from radar.collect import corrigir_relogio, _utc_iso, _ts
+        from datetime import datetime, timedelta, timezone
+        d = datetime(2026, 10, 14, 16, 29, tzinfo=timezone(timedelta(hours=-3)))
+        self.assertIs(corrigir_relogio({}, d), d)
+        a = {"published": _utc_iso(d)}
+        b = {"published": "2026-10-14T19:40:00+00:00"}  # mais novo que 16:29-03:00 (=19:29Z), mas como texto "16:29..." < "19:40..." também; o caso difícil é o inverso
+        c = {"published": _utc_iso(datetime(2026, 10, 14, 10, 0, tzinfo=timezone(timedelta(hours=-3))))}  # 13:00Z
+        self.assertEqual([x["published"] for x in sorted([c, a, b], key=_ts, reverse=True)], [b["published"], a["published"], c["published"]])
+
+
+class RuidoProgramasTest(unittest.TestCase):
+    def test_chamada_de_programa_em_video_nao_entra(self):
+        from radar import collect
+        collect._noise.cache_clear()
+        pats = collect._noise()
+        for t in ["Jornal da Oeste, Segunda Edição: assista ao noticiário de 7/10/2026", "A Força do Agro #842: assista ao programa de 7/10/2026"]:
+            self.assertTrue(any(p.search(t) for p in pats), t)
+        self.assertFalse(any(p.search("Governo anuncia programa de moradia e pede que todos assistam ao debate") for p in pats))
+
+
+class LimitarTest(unittest.TestCase):
+    def test_fonte_que_publica_pouco_nao_some_do_arquivo(self):
+        from radar.collect import limitar
+        from datetime import datetime, timedelta, timezone
+        base = datetime(2026, 10, 14, 12, tzinfo=timezone.utc)
+        arts = [{"id": f"g{i}", "source": "g1", "published": (base - timedelta(minutes=i)).isoformat()} for i in range(100)]
+        arts += [{"id": f"s{i}", "source": "stf", "published": (base - timedelta(days=3, minutes=i)).isoformat()} for i in range(40)]
+        arts.sort(key=lambda a: a["published"], reverse=True)
+        out = limitar(arts, teto=50, minimo=5)
+        self.assertEqual(sum(1 for a in out if a["source"] == "g1"), 50)
+        self.assertEqual(sum(1 for a in out if a["source"] == "stf"), 5)
+        self.assertEqual([a["id"] for a in out], sorted([a["id"] for a in out], key=lambda i: next(x["published"] for x in out if x["id"] == i), reverse=True))

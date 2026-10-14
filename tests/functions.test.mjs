@@ -246,6 +246,41 @@ test("resumir: página que responde 403 vira 'bloqueada' (sem IA, cota devolvida
   assert.equal(cacheKeys(env, "sum5:").length, 0);
 });
 
+test("resumir: a mesma matéria com #fragmento ou utm_* usa o mesmo cache (não gasta IA de novo)", async () => {
+  const { env, calls } = setup({ llm: () => resumoJson() });
+  await call(resumir, env, "/api/resumir", OK_BODY);
+  assert.equal(calls.llm, 1);
+  for (const sufixo of ["?utm_source=zap&utm_medium=x", "#comentarios", "?fbclid=abc"]) {
+    const d = await (await call(resumir, env, "/api/resumir", { ...OK_BODY, url: OK_BODY.url + sufixo })).json();
+    assert.ok(d.resumo, sufixo);
+  }
+  assert.equal(calls.llm, 1);
+  assert.equal(cacheKeys(env, "sum5:").length, 1);
+});
+
+test("parseHttpUrl: host local com ponto final também é recusado", async () => {
+  const { parseHttpUrl } = await import("../lib/api.js");
+  for (const u of ["https://localhost./x", "https://foo.local./x", "https://api.internal./x"]) assert.equal(parseHttpUrl(u), null, u);
+  assert.ok(parseHttpUrl("https://g1.globo.com/a"));
+});
+
+test("resumir: se a lista de hosts falhar uma vez, a falha não fica em cache por 5 minutos", async () => {
+  let falhar = true;
+  const { env, calls } = setup({ llm: () => resumoJson() });
+  const base = globalThis.fetch;
+  globalThis.fetch = async (input, init) => {
+    const u = String(input instanceof Request ? input.url : input);
+    if (u.includes("/data/allowed-hosts.json") && falhar) return new Response("", { status: 500 });
+    return base(input, init);
+  };
+  const r1 = await call(resumir, env, "/api/resumir", OK_BODY);
+  assert.equal(r1.status, 403);
+  falhar = false;
+  const r2 = await call(resumir, env, "/api/resumir", OK_BODY);
+  assert.equal(r2.status, 200);
+  assert.ok(calls.llm >= 1);
+});
+
 test("resumir: 'contexto' que não cita nenhum veículo da lista é descartado; sem outros, contexto é sempre vazio", async () => {
   const sem = setup({ llm: () => resumoJson("Resumo de teste.", "Outros veículos também noticiaram o caso.") });
   assert.equal((await (await call(resumir, sem.env, "/api/resumir", OK_BODY)).json()).contexto, "");

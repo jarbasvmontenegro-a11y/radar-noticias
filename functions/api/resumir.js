@@ -3,7 +3,7 @@
 // O contexto (como outros veículos trataram o assunto) vem do índice do SERVIDOR, nunca do cliente: o resultado fica em
 // cache por URL e um cliente mal-intencionado não pode envenenar o resumo que os outros leitores vão ver.
 import {
-  allowedHosts, blockedHosts, cacheGet, cachePut, checkLimits, checkTurnstile, chat, clip, fail, fetchPage, hostKey, json, log,
+  allowedHosts, blockedHosts, cacheGet, canonicalUrl, cachePut, checkLimits, checkTurnstile, chat, clip, fail, fetchPage, hostKey, json, log,
   methodNotAllowed, parseHttpUrl, parseJson, preflight, sha256,
 } from "../../lib/api.js";
 import { loadIndex } from "../../lib/data.js";
@@ -60,8 +60,9 @@ export async function onRequestPost({ request, env }) {
     if (pre.error) return pre.error;
     const { body } = pre;
 
-    const url = parseHttpUrl(body.url);
-    if (!url) return fail("Link inválido.");
+    const url0 = parseHttpUrl(body.url);
+    if (!url0) return fail("Link inválido.");
+    const url = canonicalUrl(url0);
     const origin = new URL(request.url).origin;
     const hosts = await allowedHosts(env, origin);
     if (!hosts.has(hostKey(url.hostname))) return fail("Só resumimos matérias das fontes monitoradas.", 403);

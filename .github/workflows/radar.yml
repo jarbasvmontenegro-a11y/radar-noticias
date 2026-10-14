@@ -110,12 +110,15 @@ jobs:
             echo "::warning title=push falhou (tentativa $i)::$(tr '\n' ' ' < /tmp/push.log | cut -c1-900)"
             # outra execução guardou dados antes: descarta o commit local, refaz a coleta em cima dos dados mais novos
             cp data/destaques_ia.json /tmp/destaques_ia.json 2>/dev/null || true
+            cp data/bloqueados.json /tmp/bloqueados.json 2>/dev/null || true
             git fetch -q origin main
             git reset -q --hard origin/main
             python -m radar collect
             cp /tmp/destaques_ia.json data/destaques_ia.json 2>/dev/null || true
+            cp /tmp/bloqueados.json data/bloqueados.json 2>/dev/null || true
             git add -f data/articles.json data/health.json
             if [ -f data/destaques_ia.json ]; then git add -f data/destaques_ia.json; fi
+            if [ -f data/bloqueados.json ]; then git add -f data/bloqueados.json; fi
             git diff --staged --quiet && exit 0
             git commit -qm "dados: $(date -u +%FT%TZ)"
             sleep $((i * 5))

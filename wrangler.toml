@@ -14,4 +14,4 @@ id = "57ba7a22ffcb4277a43b904989f7bc26"
 #   TURNSTILE_SECRET     (opcional) segredo do Cloudflare Turnstile
 # Variáveis opcionais:
 #   LLM_BASE_URL (padrão https://api.deepseek.com)   LLM_MODEL (padrão deepseek-chat)
-#   IP_DAILY_LIMIT (padrão 10)   DAILY_CAP (padrão 1500)   IP_SALT (qualquer texto)
+#   IP_DAILY_LIMIT (padrão 10)   DAILY_CAP (padrão 400)   IP_SALT (qualquer texto)

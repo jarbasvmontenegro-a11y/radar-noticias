@@ -203,8 +203,8 @@
     if (!btn) return;
     (function () {
       var out = btn.closest(".item").querySelector(".sum");
-      if (!out.hidden && btn.dataset.done) { out.hidden = true; btn.textContent = "Resumir com IA"; return; }
-      btn.disabled = true; btn.textContent = "Resumindo…";
+      if (!out.hidden && btn.dataset.done) { out.hidden = true; btn.textContent = "Resumir com IA"; btn.setAttribute("aria-expanded", "false"); return; }
+      btn.disabled = true; btn.textContent = "Resumindo…"; btn.setAttribute("aria-expanded", "true");
       out.hidden = false; out.className = "sum"; out.textContent = "Gerando o resumo…";
       post("/api/resumir", { url: btn.dataset.url, title: btn.dataset.title, source: btn.dataset.source, desc: btn.dataset.desc })
         .then(function (d) {
@@ -230,7 +230,7 @@
           lista("Checagem relacionada", d.checagens, function (o) { return o.agencia + (o.avaliacao ? ": " + o.avaliacao : ""); });
           var tail = (d.aviso ? d.aviso + " " : "") + (d.resumo ? (d.nota || "Resumo gerado por IA, pode conter erros. Confirme na fonte.") : "");
           if (tail) out.appendChild(el("span", { class: "note", text: tail }));
-          if (d.base === "bloqueada") { btn.dataset.off = "1"; btn.classList.add("btn-off"); btn.textContent = "Sem resumo (bloqueado)"; btn.title = "Este veículo bloqueia a leitura automática da matéria"; return; }
+          if (d.base === "bloqueada") { btn.dataset.off = "1"; btn.removeAttribute("aria-expanded"); btn.classList.add("btn-off"); btn.textContent = "Sem resumo (bloqueado)"; btn.title = "Este veículo bloqueia a leitura automática da matéria"; return; }
           btn.dataset.done = "1"; btn.textContent = d.resumo ? "Ocultar resumo" : "Fechar";
         })
         .catch(function (e) {

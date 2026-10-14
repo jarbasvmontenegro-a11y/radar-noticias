@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import crypto from "node:crypto";
 
 import { criptografar, jwtVapid } from "../lib/webpush.js";
-import { b64uToBytes, bytesToB64u, chaveDaInscricao, endpointValido, gerarVapid, inscricaoValida, prefsValidas, segredoConfere } from "../lib/push.js";
+import { b64uToBytes, bytesToB64u, chaveDaInscricao, endpointValido, gerarVapid, inscricaoValida, lerOuCriarVapid, prefsValidas, segredoConfere } from "../lib/push.js";
 import { LIMIARES, montarCarga, pontuar, selecionar } from "../lib/pushselect.js";
 import { rodar } from "../lib/pushrun.js";
 import { onRequestPost as inscrever } from "../functions/api/inscrever.js";
@@ -289,6 +289,68 @@ test("rodar: envia só o que cada pessoa escolheu, marca como enviado e remove i
   const antes = enviados.length;
   await rodar({ base: ORIGEM, segredo: SEG, destaques: dest2, agora: meioDia, fetchFn, enviarFn, log: () => {} });
   assert.equal(enviados.length, antes);
+});
+
+test("rodar: entrega parcial registra só o que o serviço aceitou (não o primeiro da fila) e o reenvio vale só para o que falhou", async () => {
+  const kv = new FakeKV();
+  const envs = { IP_DAILY_LIMIT: "1000", DAILY_CAP: "1000" };
+  const sub = inscricaoFalsa("fcm.googleapis.com", 7);
+  await inscrever(ctx(kv, "/api/inscrever", { method: "POST", env: envs, body: { acao: "salvar", sub, prefs: { geral: true } } }));
+  const fetchFn = async (url, init = {}) => {
+    const u = new URL(url);
+    return (u.pathname.endsWith("lista") ? lista : baixa)(ctx(kv, u.pathname + u.search, { method: init.method || "GET", headers: init.headers, body: init.body ? JSON.parse(init.body) : undefined }));
+  };
+  const enviados = [];
+  const falhar = new Set(["c"]);
+  const enviarFn = async (_s, carga) => { enviados.push(carga.id); return falhar.has(carga.id) ? 500 : 201; };
+  const dest1 = [D("a", 9)];
+  await rodar({ base: ORIGEM, segredo: SEG, destaques: dest1, agora: meioDia, fetchFn, enviarFn, log: () => {} });
+  const dest2 = [...dest1, D("c", 10), D("e", 9)];
+  const s = await rodar({ base: ORIGEM, segredo: SEG, destaques: dest2, agora: meioDia, fetchFn, enviarFn, log: () => {} });
+  assert.equal(s.enviadas, 1);
+  assert.equal(s.falhas, 1);
+  const reg = await kv.get(await chaveDaInscricao(sub.endpoint), "json");
+  assert.ok(reg.s.includes("e"), "o entregue (e) fica registrado");
+  assert.ok(!reg.s.includes("c"), "o que falhou (c) NÃO pode ficar como enviado");
+  falhar.clear();
+  enviados.length = 0;
+  await rodar({ base: ORIGEM, segredo: SEG, destaques: dest2, agora: meioDia, fetchFn, enviarFn, log: () => {} });
+  assert.deepEqual(enviados, ["c"]); // só o que falhou é reenviado; "e" não duplica
+});
+
+test("rodar: dá baixa a cada página, então uma página que falha depois não faz reenviar o que já foi entregue", async () => {
+  const kv = new FakeKV();
+  const envs = { IP_DAILY_LIMIT: "1000", DAILY_CAP: "1000" };
+  const subs = Array.from({ length: 45 }, (_, i) => inscricaoFalsa("fcm.googleapis.com", 100 + i)); // a lista pagina em 40
+  for (const sub of subs) await inscrever(ctx(kv, "/api/inscrever", { method: "POST", env: envs, body: { acao: "salvar", sub, prefs: { geral: true } } }));
+  let falhaNaPagina2 = false;
+  const fetchFn = async (url, init = {}) => {
+    const u = new URL(url);
+    if (falhaNaPagina2 && u.pathname.endsWith("lista") && u.searchParams.get("cursor")) return new Response("{}", { status: 500 });
+    const c = ctx(kv, u.pathname + u.search, { method: init.method || "GET", headers: init.headers, body: init.body ? JSON.parse(init.body) : undefined });
+    return (u.pathname.endsWith("lista") ? lista : baixa)(c);
+  };
+  const enviados = [];
+  const enviarFn = async (s, carga) => { enviados.push([s.endpoint, carga.id]); return 201; };
+  await rodar({ base: ORIGEM, segredo: SEG, destaques: [D("a", 9)], agora: meioDia, fetchFn, enviarFn, log: () => {} });
+  falhaNaPagina2 = true;
+  await assert.rejects(rodar({ base: ORIGEM, segredo: SEG, destaques: [D("a", 9), D("c", 10)], agora: meioDia, fetchFn, enviarFn, log: () => {} }));
+  const entregues = enviados.length;
+  assert.equal(entregues, 40, "a primeira página foi entregue");
+  falhaNaPagina2 = false;
+  enviados.length = 0;
+  await rodar({ base: ORIGEM, segredo: SEG, destaques: [D("a", 9), D("c", 10)], agora: meioDia, fetchFn, enviarFn, log: () => {} });
+  assert.equal(enviados.length, 5, "quem já recebeu na 1ª página não recebe de novo");
+});
+
+test("lerOuCriarVapid: erro do KV não gera chave nova por cima da verdadeira", async () => {
+  const kv = new FakeKV();
+  const v = await lerOuCriarVapid({ RADAR_KV: kv });
+  const puts = [];
+  const kvQuebrado = { get: async () => { throw new Error("kv 500"); }, put: async (k, x) => { puts.push(k); } };
+  await assert.rejects(lerOuCriarVapid({ RADAR_KV: kvQuebrado }), /kv 500/);
+  assert.equal(puts.length, 0);
+  assert.equal((await lerOuCriarVapid({ RADAR_KV: kv })).pub, v.pub); // e a chave existente continua a mesma
 });
 
 test("rodar avisa claramente quando o segredo não confere", async () => {

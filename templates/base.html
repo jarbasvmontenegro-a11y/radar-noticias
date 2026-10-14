@@ -43,7 +43,7 @@
       <a class="brand" href="/">{% include "_logo.html" %}<span class="brand-name">{{ cfg.name }}</span></a>
       <form class="gs" role="search" id="gs-form" action="/busca/" method="get">
         <label for="gs" class="sr">Buscar nas manchetes</label>
-        <input id="gs" name="q" type="search" placeholder="Buscar nas manchetes" autocomplete="off" aria-controls="gs-out" aria-expanded="false">
+        <input id="gs" name="q" type="search" placeholder="Buscar nas manchetes" role="combobox" aria-autocomplete="list" autocomplete="off" aria-controls="gs-out" aria-expanded="false">
         <div id="gs-out" class="gs-out" hidden></div>
       </form>
       <span class="tools" role="group" aria-label="Aparência">

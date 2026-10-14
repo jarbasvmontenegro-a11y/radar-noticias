@@ -33,6 +33,7 @@ MAX_TITLE = 300
 MAX_URL = 2000
 MAX_BYTES = 5_000_000   # tamanho máximo de um feed
 MAX_ARTICLES = 4000     # teto do arquivo
+MIN_POR_FONTE = 15      # fonte que publica pouco (STF, Comprova, piauí...) não some do arquivo só porque o teto é por data
 RETRIES = 2
 TRACKING = {"utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid", "fbclid", "ref"}
 ILLEGAL_XML = re.compile(rb"[\x00-\x08\x0b\x0c\x0e-\x1f]")
@@ -179,9 +180,9 @@ def corrigir_relogio(src: dict, dt):
     """Alguns feeds escrevem a hora num fuso e rotulam com outro (hora de Brasília marcada como UTC, ou o contrário).
     `relogio` na fonte diz em que fuso a hora escrita REALMENTE está: "utc" ou "-03:00". O rótulo do feed é ignorado."""
     modo = src.get("relogio")
-    if not dt or not modo:
+    if not dt or modo not in ("utc", "-03:00", "-04:00"):
         return dt
-    tz = timezone.utc if modo == "utc" else timezone(timedelta(hours={"-03:00": -3, "-04:00": -4}[modo]))
+    tz = timezone.utc if modo == "utc" else timezone(timedelta(hours=int(modo[:3])))
     return dt.replace(tzinfo=tz)
 
 
@@ -465,7 +466,7 @@ def collect(window_days: int = 7, per_source_limit: int = 40, validar: bool = Fa
 
     articles = [a for a in store.values() if _ts(a) >= cutoff]
     articles.sort(key=_ts, reverse=True)
-    articles = articles[:MAX_ARTICLES]
+    articles = limitar(articles)
     write_atomic(DATA / "articles.json", json.dumps({"articles": articles}, ensure_ascii=False, separators=(",", ":")))
     write_atomic(DATA / "status.json", json.dumps(status, ensure_ascii=False, indent=1))
     health = update_health(status, now)
@@ -473,6 +474,23 @@ def collect(window_days: int = 7, per_source_limit: int = 40, validar: bool = Fa
     ok = sum(s["ok"] for s in status.values())
     return {"novas": novas, "total": len(articles), "fontes_ok": ok, "fontes": len(status), "validacao": validacao,
             "fora_do_ar": sorted(k for k, v in health.items() if v["down_since"])}
+
+
+def limitar(articles: list[dict], teto: int | None = None, minimo: int | None = None) -> list[dict]:
+    """Corta em `teto` itens (os mais recentes), mas garante os `minimo` itens mais recentes de CADA fonte: sem isso, os
+    veículos que publicam pouco sumiam do arquivo inteiro. `articles` já vem do mais novo ao mais antigo."""
+    teto = MAX_ARTICLES if teto is None else teto
+    minimo = MIN_POR_FONTE if minimo is None else minimo
+    mantidos, resto = articles[:teto], articles[teto:]
+    por_fonte: dict[str, int] = {}
+    for a in mantidos:
+        por_fonte[a["source"]] = por_fonte.get(a["source"], 0) + 1
+    for a in resto:
+        if por_fonte.get(a["source"], 0) < minimo:
+            mantidos.append(a)
+            por_fonte[a["source"]] = por_fonte.get(a["source"], 0) + 1
+    mantidos.sort(key=_ts, reverse=True)
+    return mantidos
 
 
 def check_feeds() -> None:
