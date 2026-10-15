@@ -319,8 +319,11 @@ def build(out_dir: str = "site") -> str:
     topo = max([p["n24"] for p in placar] or [0]) or 1
     for p in placar:
         p["pct"] = round(100 * p["n24"] / topo)
+    lst_escala = [a for a in news if "escala" in a["topics"]]
+    escala = {"n24": sum(1 for a in lst_escala if now - a["dt"] <= timedelta(hours=24)), "n": len(lst_escala),
+              "v": len({a["source"] for a in lst_escala}), "top": lst_escala[:3]} if lst_escala else None
     ctx = {
-        "pessoas_links": [p for p in pessoas_info if p["total"]][:10], "placar": placar if any(p["n24"] for p in placar) else [],
+        "escala": escala, "pessoas_links": [p for p in pessoas_info if p["total"]][:10], "placar": placar if any(p["n24"] for p in placar) else [],
         "regioes": regioes, "uf_nome": {e["uf"]: e["nome"] for e in estados}, "active_uf": None,
         "day_links": day_links,
         "cfg": cfg, "news_sources": news_sources, "check_sources": check_sources, "counts": counts,

@@ -49,6 +49,20 @@
       {% if source is defined %}<p class="sub"><a href="{{ source.home }}" target="_blank" rel="noopener">Abrir o site de {{ source.name }}</a></p>{% endif %}
     </header>
 
+    {% if path == "/" and page == 1 and escala %}
+    <section class="escala" aria-labelledby="escala-h">
+      <div class="escala-num" aria-hidden="true">5<span>x</span>2</div>
+      <div class="escala-txt">
+        <h2 id="escala-h">Fim da escala 6x1: o debate do momento</h2>
+        <p class="escala-sub">{% if escala.n24 %}{{ escala.n24 }} {{ "manchete" if escala.n24 == 1 else "manchetes" }} nas últimas 24 horas{% else %}{{ escala.n }} manchetes recentes{% endif %}, de {{ escala.v }} {{ "veículo" if escala.v == 1 else "veículos" }}.</p>
+        <ul>
+          {% for a in escala.top %}<li><a href="{{ a.url }}" target="_blank" rel="noopener">{{ a.title }}</a> <span class="src">{{ a.source_name }}, {{ a.hm }}</span></li>{% endfor %}
+        </ul>
+        <a class="escala-btn" href="/tema/escala/">Ver tudo sobre a escala 5x2</a>
+      </div>
+    </section>
+    {% endif %}
+
     {% if path == "/" and highlights %}
     <section class="trending" aria-labelledby="trend-h">
       <h2 id="trend-h">Assuntos em alta</h2>
