@@ -20,11 +20,11 @@
   "last_ok": "2026-10-15"
  },
  "agencia-camara": {
-  "down_since": "",
+  "down_since": "2026-10-15 14:00",
   "last_ok": "2026-10-15"
  },
  "agencia-senado": {
-  "down_since": "",
+  "down_since": "2026-10-15 14:00",
   "last_ok": "2026-10-15"
  },
  "aos-fatos": {
@@ -68,7 +68,7 @@
   "last_ok": "2026-10-15"
  },
  "cgu": {
-  "down_since": "",
+  "down_since": "2026-10-15 14:00",
   "last_ok": "2026-10-15"
  },
  "cidade-verde": {
@@ -88,7 +88,7 @@
   "last_ok": "2026-10-15"
  },
  "conjur": {
-  "down_since": "2026-10-15 12:00",
+  "down_since": "",
   "last_ok": "2026-10-15"
  },
  "correio-24h": {
@@ -392,7 +392,7 @@
   "last_ok": "2026-10-15"
  },
  "tcu": {
-  "down_since": "",
+  "down_since": "2026-10-15 14:00",
   "last_ok": "2026-10-15"
  },
  "tnh1": {
