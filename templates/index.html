@@ -51,7 +51,7 @@
 
     {% if path == "/" and page == 1 and escala %}
     <section class="escala" aria-labelledby="escala-h">
-      <div class="escala-num" aria-hidden="true">5<span>x</span>2</div>
+      <button type="button" class="escala-num" id="festa" aria-label="Comemorar a escala 5x2" title="Toque para comemorar">5<span aria-hidden="true">x</span>2</button>
       <div class="escala-txt">
         <h2 id="escala-h">Fim da escala 6x1: o debate do momento</h2>
         <p class="escala-sub">{% if escala.n24 %}{{ escala.n24 }} {{ "manchete" if escala.n24 == 1 else "manchetes" }} nas últimas 24 horas{% else %}{{ escala.n }} manchetes recentes{% endif %}, de {{ escala.v }} {{ "veículo" if escala.v == 1 else "veículos" }}.</p>

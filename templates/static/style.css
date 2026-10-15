@@ -355,7 +355,13 @@ table.status th[scope="row"] { font-weight: 700; }
 
 /* assuntos em alta (home) e página de assuntos */
 .escala { display: flex; gap: 22px; align-items: center; margin: 16px 0 10px; padding: 20px 22px; background: var(--accent); color: var(--accent-ink); border-radius: 6px; }
-.escala-num { flex: 0 0 auto; font: 800 clamp(4rem, 12vw, 6.6rem)/.85 var(--serif); letter-spacing: -.04em; }
+.escala-num { appearance: none; background: none; border: 0; padding: 0; margin: 0; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; flex: 0 0 auto; font: 800 clamp(4rem, 12vw, 6.6rem)/.85 var(--serif); letter-spacing: -.04em; }
+.escala-num:hover { transform: scale(1.04) rotate(-2deg); }
+.escala-num { transition: transform .15s; }
+.escala-num:focus-visible { outline: 3px solid var(--accent-ink); outline-offset: 6px; border-radius: 4px; }
+.festa { position: fixed; inset: 0; z-index: 60; pointer-events: none; overflow: hidden; }
+.festa i { position: absolute; left: 0; top: 0; display: block; will-change: transform, opacity; }
+@media (prefers-reduced-motion: reduce) { .escala-num { transition: none; } .escala-num:hover { transform: none; } }
 .escala-num span { font-size: .5em; vertical-align: .32em; margin: 0 .04em; opacity: .75; }
 .escala-txt { min-width: 0; }
 .escala h2 { font: 800 clamp(1.3rem, 3.4vw, 1.75rem)/1.15 var(--serif); margin: 0 0 4px; }
