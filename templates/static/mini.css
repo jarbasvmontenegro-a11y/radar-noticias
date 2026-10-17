@@ -4,7 +4,7 @@
 @font-face { font-family: "Atkinson Hyperlegible"; font-style: normal; font-weight: 400; font-display: swap; src: url("/fonts/atkinson-400.woff2") format("woff2"); }
 @font-face { font-family: "Atkinson Hyperlegible"; font-style: normal; font-weight: 700; font-display: swap; src: url("/fonts/atkinson-700.woff2") format("woff2"); }
 :root {
-  --bg: #f6f1e7; --paper: #fffdf8; --ink: #1b1a17; --muted: #5f5a4f; --rule: #d9d0bd; --accent: #8c1c13; --focus: #0b57d0;
+  --bg: #f3f2ef; --paper: #fff; --ink: #1b1a17; --muted: #524f48; --rule: #d6d3cc; --accent: #8c1c13; --focus: #0b57d0;
   --serif: "Newsreader", Georgia, "Times New Roman", serif;
   --sans: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }

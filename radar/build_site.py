@@ -319,11 +319,8 @@ def build(out_dir: str = "site") -> str:
     topo = max([p["n24"] for p in placar] or [0]) or 1
     for p in placar:
         p["pct"] = round(100 * p["n24"] / topo)
-    lst_escala = [a for a in news if "escala" in a["topics"]]
-    escala = {"n24": sum(1 for a in lst_escala if now - a["dt"] <= timedelta(hours=24)), "n": len(lst_escala),
-              "v": len({a["source"] for a in lst_escala}), "top": lst_escala[:3]} if lst_escala else None
     ctx = {
-        "escala": escala, "pessoas_links": [p for p in pessoas_info if p["total"]][:10], "placar": placar if any(p["n24"] for p in placar) else [],
+        "pessoas_links": [p for p in pessoas_info if p["total"]][:10], "placar": placar if any(p["n24"] for p in placar) else [],
         "regioes": regioes, "uf_nome": {e["uf"]: e["nome"] for e in estados}, "active_uf": None,
         "day_links": day_links,
         "cfg": cfg, "news_sources": news_sources, "check_sources": check_sources, "counts": counts,
@@ -500,7 +497,7 @@ def build(out_dir: str = "site") -> str:
     # app instalável + recebe "compartilhar" do WhatsApp: o texto cai direto no verificador
     (out / "manifest.webmanifest").write_text(json.dumps({
         "name": cfg["name"], "short_name": cfg["name"][:12], "description": cfg["tagline"], "lang": cfg["lang"],
-        "start_url": "/", "scope": "/", "display": "standalone", "background_color": "#f6f1e7", "theme_color": "#8c1c13",
+        "start_url": "/", "scope": "/", "display": "standalone", "background_color": "#f3f2ef", "theme_color": "#8c1c13",
         "icons": [{"src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"},
                   {"src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
                   {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"}],

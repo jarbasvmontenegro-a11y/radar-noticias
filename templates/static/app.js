@@ -346,42 +346,4 @@
       }).then(function () { btnV.disabled = false; btnV.textContent = "Verificar"; });
     });
   }
-  // comemoração da escala 5x2: confete ao entrar na tela (uma vez por sessão) e a cada toque no "5x2"
-  (function () {
-    var btn = $("#festa");
-    if (!btn || !window.Element || !Element.prototype.animate) return;
-    var calmo = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (calmo) return;
-    var CORES = ["#ffd23f", "#ff5a5f", "#3bceac", "#4cc9f0", "#ffffff", "#ff9f1c", "#b388ff", "#7bd957"];
-    function rnd(a, b) { return a + Math.random() * (b - a); }
-    function festa(n) {
-      var r = btn.getBoundingClientRect(), ox = r.left + r.width / 2, oy = r.top + r.height / 2;
-      var cx = document.createElement("div"); cx.className = "festa"; cx.setAttribute("aria-hidden", "true");
-      var vh = window.innerHeight, vw = window.innerWidth;
-      for (var i = 0; i < n; i++) {
-        var p = document.createElement("i"), w = rnd(6, 12), h = Math.random() < .4 ? w : rnd(10, 18);
-        p.style.width = w + "px"; p.style.height = h + "px"; p.style.background = CORES[i % CORES.length];
-        p.style.borderRadius = Math.random() < .3 ? "50%" : "2px";
-        var ang = rnd(-Math.PI * .95, -Math.PI * .05), v = rnd(180, 520);
-        var dx = Math.cos(ang) * v, up = Math.sin(ang) * v, drift = rnd(-80, 80);
-        var rot = rnd(-900, 900), dur = rnd(2200, 3800);
-        p.animate([
-          { transform: "translate(" + ox + "px," + oy + "px) rotate(0deg)", opacity: 1, offset: 0 },
-          { transform: "translate(" + (ox + dx * .6) + "px," + (oy + up * .6) + "px) rotate(" + rot * .4 + "deg)", opacity: 1, offset: .35, easing: "cubic-bezier(.2,.6,.4,1)" },
-          { transform: "translate(" + (ox + dx + drift) + "px," + (vh + 40) + "px) rotate(" + rot + "deg)", opacity: .9, offset: 1 }
-        ], { duration: dur, delay: rnd(0, 180), easing: "cubic-bezier(.4,0,.9,.6)", fill: "forwards" });
-        cx.appendChild(p);
-      }
-      document.body.appendChild(cx);
-      setTimeout(function () { if (cx.parentNode) cx.parentNode.removeChild(cx); }, 4400);
-    }
-    btn.addEventListener("click", function () { festa(110); });
-    var visto = null; try { visto = sessionStorage.getItem("festa5x2"); } catch (e) {}
-    if (!visto && "IntersectionObserver" in window) {
-      var io = new IntersectionObserver(function (es) {
-        if (es[0].isIntersecting) { io.disconnect(); try { sessionStorage.setItem("festa5x2", "1"); } catch (e) {} setTimeout(function () { festa(140); }, 350); }
-      }, { threshold: .6 });
-      io.observe(btn);
-    }
-  })();
 })();

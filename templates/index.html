@@ -40,7 +40,7 @@
   {{ rail(active_uf, active, news_sources) }}
 
   <section class="feed" aria-labelledby="h1">
-    <header class="feed-head">
+    <header class="feed-head{% if path == '/' %} is-home{% endif %}">
       {% if active_uf or source is defined or active_topic or day is defined or active_pessoa is defined %}<p class="crumbs"><a href="/">Últimas</a>{% if active_uf %} / <a href="/estados/">Estados</a>{% endif %}{% if active_pessoa is defined %} / <a href="/pessoas/">Pessoas</a>{% endif %}</p>{% endif %}
       <h1 id="h1">{{ heading }}</h1>
       {% if path == "/" %}<p class="sub">Atualizado às {{ updated_label[-5:] }} · {{ "{:,}".format(total).replace(",", ".") }} manchetes{% if assuntos and assuntos < total %} em {{ "{:,}".format(assuntos).replace(",", ".") }} assuntos{% endif %}</p>
@@ -49,31 +49,32 @@
       {% if source is defined %}<p class="sub"><a href="{{ source.home }}" target="_blank" rel="noopener">Abrir o site de {{ source.name }}</a></p>{% endif %}
     </header>
 
-    {% if path == "/" and page == 1 and escala %}
-    <section class="escala" aria-labelledby="escala-h">
-      <button type="button" class="escala-num" id="festa" aria-label="Comemorar a escala 5x2" title="Toque para comemorar">5<span aria-hidden="true">x</span>2</button>
-      <div class="escala-txt">
-        <h2 id="escala-h">Fim da escala 6x1: o debate do momento</h2>
-        <p class="escala-sub">{% if escala.n24 %}{{ escala.n24 }} {{ "manchete" if escala.n24 == 1 else "manchetes" }} nas últimas 24 horas{% else %}{{ escala.n }} manchetes recentes{% endif %}, de {{ escala.v }} {{ "veículo" if escala.v == 1 else "veículos" }}.</p>
-        <ul>
-          {% for a in escala.top %}<li><a href="{{ a.url }}" target="_blank" rel="noopener">{{ a.title }}</a> <span class="src">{{ a.source_name }}, {{ a.hm }}</span></li>{% endfor %}
-        </ul>
-        <a class="escala-btn" href="/tema/escala/">Ver tudo sobre a escala 5x2</a>
-      </div>
-    </section>
-    {% endif %}
-
     {% if path == "/" and highlights %}
     <section class="trending" aria-labelledby="trend-h">
       <h2 id="trend-h">Assuntos em alta</h2>
-      <ol>
-        {% for h in highlights %}
+      {% set top = highlights[0] %}
+      {% set rows = top.veiculos[:3] if top.ia else top.veiculos[1:4] %}
+      <article class="top-story">
+        <h3 class="top-t"><a href="/assuntos/#a1">{{ top.titulo if top.ia else top.lead.title }}</a></h3>
+        {% if top.ia and top.resumo %}<p class="top-dek">{{ top.resumo }}</p>{% endif %}
+        {% if rows %}
+        <dl class="lead-rows top-rows">
+          {% for x in rows %}<dt>{{ x.source_name }}</dt><dd><a href="{{ x.url }}" target="_blank" rel="noopener">{{ x.title|marcar }}</a></dd>
+          {% endfor %}
+        </dl>
+        {% endif %}
+        <p class="top-more"><a href="/assuntos/#a1">Ver como os {{ top.n }} veículos deram</a></p>
+      </article>
+      {% if highlights|length > 1 %}
+      <ol class="rest">
+        {% for h in highlights[1:] %}
         <li>
-          <a href="/assuntos/#a{{ loop.index }}"><span class="t">{{ h.titulo if h.ia else h.lead.title }}</span><span class="src">{{ h.n }} veículos</span></a>
+          <a href="/assuntos/#a{{ loop.index + 1 }}"><span class="t">{{ h.titulo if h.ia else h.lead.title }}</span><span class="src">{{ h.n }} veículos</span></a>
         </li>
         {% endfor %}
       </ol>
-      <p class="small"><a href="/assuntos/">Ver todos os assuntos e buscar um</a>{% if highlights[0].ia and ia_hora %} <span class="ia-note">Agrupados por IA às {{ ia_hora }}</span>{% endif %}</p>
+      {% endif %}
+      <p class="small"><a href="/assuntos/">Ver todos os assuntos e buscar um</a>{% if top.ia and ia_hora %} <span class="ia-note">Agrupados por IA às {{ ia_hora }}</span>{% endif %}</p>
     </section>
     {% endif %}
 
