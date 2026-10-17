@@ -401,17 +401,27 @@ table.status th[scope="row"] { font-weight: 700; }
 .placar { margin: 18px 0; padding: 12px 0 4px; border-top: 3px solid var(--ink); }
 .zap-band { margin: 18px 0; }
 
-/* home: o assunto que mais veículos deram vira a manchete da página; o título da página fica de dateline */
-.is-home h1 { font-size: clamp(1.25rem, 2.4vw, 1.5rem); letter-spacing: 0; margin-bottom: 2px; }
-.top-story { padding: 6px 0 4px; }
-.top-t { font: 800 clamp(1.45rem, 3.2vw, 1.9rem)/1.1 var(--serif); letter-spacing: -.015em; margin: 4px 0 8px; }
+/* home: uma coisa grande só (a manchete do assunto mais coberto); título da página e contagem viram uma linha discreta */
+.is-home h1 { font: 700 .92rem/1.3 var(--sans); letter-spacing: 0; margin: 0; }
+.is-home .sub { font: 400 .86rem/1.4 var(--sans); margin: 0; }
+.top-story { padding: 14px 0 6px; }
+.top-t { font: 800 clamp(1.7rem, 3vw, 1.85rem)/1.08 var(--serif); letter-spacing: -.01em; margin: 0 0 10px; }
 .top-t a { text-decoration: none; }
 .top-t a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
-.top-dek { margin: 0 0 12px; font: 400 1.12rem/1.45 var(--serif); max-width: 62ch; }
-.top-rows { margin: 0 0 6px; }
-.top-more { margin: 0 0 10px; font: 700 .92rem var(--sans); }
-.top-more a { color: var(--accent); }
-.trending ol.rest { counter-reset: tr 1; border-top: 3px solid var(--ink); }
+.top-dek { margin: 0 0 12px; font: 400 1rem/1.5 var(--serif); color: var(--muted); max-width: 62ch; }
+.top-rows { margin: 0 0 4px; }
+.top-rows dd { font-size: 1rem; }
+.top-more { margin: 2px 0 6px; font: 700 .92rem var(--sans); }
+.top-more a { color: var(--accent); display: inline-block; padding: 8px 0; }
+.rest-h { font: 800 1.12rem var(--serif); margin: 18px 0 0; padding-bottom: 6px; border-bottom: 1px solid var(--ink); }
+.trending ol.rest { counter-reset: tr 1; }
+.trending ol.rest .t { font-size: 1.04rem; }
+@media (max-width: 640px) {
+  .top-dek { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .top-rows dt:nth-of-type(n+3), .top-rows dd:nth-of-type(n+3) { display: none; }
+  .top-rows dt { font-size: .86rem; }
+  .top-rows dd { font-size: .98rem; line-height: 1.35; }
+}
 
 /* estados/fontes: botões compactos em vez de títulos grandes */
 .rail-now { display: none; }
