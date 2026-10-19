@@ -1,5 +1,7 @@
 # Radar de Notícias
 
+> **Encerrado em 18/10/2026.** O site saiu do ar e as automações foram desligadas. O código fica aqui como registro.
+
 Política do Brasil em um só lugar, direto das fontes.
 
 **Site:** https://radarnoticias.top

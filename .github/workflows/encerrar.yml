@@ -1,0 +1,86 @@
+name: Encerrar o site
+
+# Tira o Radar do ar na Cloudflare: domínio próprio, implantações, projeto do Pages e o KV.
+# O código continua neste repositório. Só roda à mão e com a palavra de confirmação.
+on:
+  workflow_dispatch:
+    inputs:
+      confirmar:
+        description: 'Digite APAGAR para tirar o site do ar'
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  encerrar:
+    if: inputs.confirmar == 'APAGAR'
+    runs-on: ubuntu-latest
+    env:
+      CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      PROJ: ${{ vars.CF_PROJECT || 'radar-noticias' }}
+      KV_ID: 57ba7a22ffcb4277a43b904989f7bc26
+    steps:
+      - name: Remover domínios próprios do projeto
+        continue-on-error: true
+        run: |
+          API="https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/$PROJ"
+          doms=$(curl -fsS -H "Authorization: Bearer $CF_TOKEN" "$API/domains" | jq -r '.result[].name')
+          for d in $doms; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -X DELETE -H "Authorization: Bearer $CF_TOKEN" "$API/domains/$d")
+            echo "domínio $d -> $code" | tee -a "$GITHUB_STEP_SUMMARY"
+          done
+
+      - name: Apagar as implantações antigas
+        continue-on-error: true
+        run: |
+          API="https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/$PROJ/deployments"
+          total=0
+          for volta in $(seq 1 200); do
+            ids=$(curl -fsS -H "Authorization: Bearer $CF_TOKEN" "$API?per_page=25&page=1" | jq -r '.result[].id')
+            [ -z "$ids" ] && break
+            apagou=0
+            for id in $ids; do
+              code=$(curl -s -o /dev/null -w '%{http_code}' -X DELETE -H "Authorization: Bearer $CF_TOKEN" "$API/$id?force=true")
+              [ "$code" = "200" ] && apagou=$((apagou+1))
+            done
+            total=$((total+apagou))
+            [ "$apagou" = "0" ] && break
+          done
+          echo "implantações apagadas: $total" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Apagar o projeto do Pages
+        continue-on-error: true
+        run: |
+          code=$(curl -s -o resp.json -w '%{http_code}' -X DELETE -H "Authorization: Bearer $CF_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/$PROJ")
+          echo "projeto $PROJ -> $code $(jq -c '.errors' resp.json 2>/dev/null)" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Apagar o KV (cache, inscrições de notificação e contadores)
+        continue-on-error: true
+        run: |
+          code=$(curl -s -o resp.json -w '%{http_code}' -X DELETE -H "Authorization: Bearer $CF_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/storage/kv/namespaces/$KV_ID")
+          echo "kv -> $code $(jq -c '.errors' resp.json 2>/dev/null)" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Conferir que o projeto sumiu
+        run: |
+          code=$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $CF_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/$PROJ")
+          echo "projeto ainda existe? HTTP $code" | tee -a "$GITHUB_STEP_SUMMARY"
+          [ "$code" = "404" ]
+
+      - name: Conferir que o KV sumiu
+        run: |
+          code=$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $CF_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/storage/kv/namespaces/$KV_ID")
+          echo "kv ainda existe? HTTP $code" | tee -a "$GITHUB_STEP_SUMMARY"
+          [ "$code" = "404" ]
+
+      - name: Como o endereço responde agora
+        if: always()
+        run: |
+          for u in https://radarnoticias.top/ https://radar-noticias.pages.dev/; do
+            echo "$u -> $(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$u")" | tee -a "$GITHUB_STEP_SUMMARY"
+          done
