@@ -62,25 +62,27 @@ jobs:
         run: |
           code=$(curl -s -o resp.json -w '%{http_code}' -X DELETE -H "Authorization: Bearer $CF_TOKEN" \
             "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/storage/kv/namespaces/$KV_ID")
-          echo "kv -> $code $(jq -c '.errors' resp.json 2>/dev/null)" | tee -a "$GITHUB_STEP_SUMMARY"
+          msg="kv -> $code $(jq -c '.errors' resp.json 2>/dev/null)"
+          echo "$msg" | tee -a "$GITHUB_STEP_SUMMARY"; echo "::notice title=kv-apagar::$msg"
 
       - name: Conferir que o projeto sumiu
         run: |
           code=$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $CF_TOKEN" \
             "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/$PROJ")
-          echo "projeto ainda existe? HTTP $code" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "projeto ainda existe? HTTP $code" | tee -a "$GITHUB_STEP_SUMMARY"; echo "::notice title=projeto-conferir::HTTP $code"
           [ "$code" = "404" ]
 
       - name: Conferir que o KV sumiu
         run: |
           code=$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $CF_TOKEN" \
             "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/storage/kv/namespaces/$KV_ID")
-          echo "kv ainda existe? HTTP $code" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "kv ainda existe? HTTP $code" | tee -a "$GITHUB_STEP_SUMMARY"; echo "::notice title=kv-conferir::HTTP $code"
           [ "$code" = "404" ]
 
       - name: Como o endereço responde agora
         if: always()
         run: |
           for u in https://radarnoticias.top/ https://radar-noticias.pages.dev/; do
-            echo "$u -> $(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$u")" | tee -a "$GITHUB_STEP_SUMMARY"
+            msg="$u -> $(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$u")"
+            echo "$msg" | tee -a "$GITHUB_STEP_SUMMARY"; echo "::notice title=endereco::$msg"
           done
